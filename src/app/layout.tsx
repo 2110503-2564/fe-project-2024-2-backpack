@@ -1,6 +1,33 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import TopBar from "@/components/TopBar";
+import Sidebar from "@/components/Sidebar";
+
+// const Comic_sans_MS = localFont({
+//   src: [
+//     {
+//       path: "/fonts/COMIC.TTF",
+//       style: "normal",
+//     },
+//     {
+//       path: "/fonts/COMICBD.TTF",
+//       style: "normal",
+//       weight: "bold"
+//     },
+//     {
+//       path: "/fonts/COMICI.TTF",
+//       style: "italic",
+//     },
+//     {
+//       path: "/fonts/COMICZ.TTF",
+//       style: "italic",
+//       weight: "bold",
+//     }
+//   ],
+//   variable: "--font-comic-sans",
+// });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +53,10 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      >      
+        <Sidebar/> 
+        <TopBar/>
+        
         {children}
       </body>
     </html>
