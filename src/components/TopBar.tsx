@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AdminTopBar } from "./BarComponents";
 
 export default function TopBar () {
 
@@ -12,14 +13,15 @@ export default function TopBar () {
                 width={150}
                 height={0}
             />
+
+            <AdminTopBar/>
+
             <div className= "w-full h-fit">
                 <div className="text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
                 text-4xl font-bold text-right">
                     Log in
                 </div>
             </div>
-
-
         </div>
     );
 

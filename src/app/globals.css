@@ -12,7 +12,7 @@
   --color-background: var(--color-rainbow);
   --color-foreground: rgb(0, 0, 0);
   --font-sans: "Comic Sans MS", "Comic Sans", cursive;
-  --font-mono: "Comic Sans MS", "Comic Sans", cursive;
+  --font-mono: "Arial", mono;
 }
 
 @media (prefers-color-scheme: light) {
