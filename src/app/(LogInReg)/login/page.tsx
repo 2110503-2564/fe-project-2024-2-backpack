@@ -1,9 +1,9 @@
+import LogInPanel from "@/components/LogInPanel";
 export default function LogIn() {
-    return (
-      <div
-        className="min-w-[100vw] min-h-[100vh] bg-cover bg-no-repeat bg-center"
-        style={{
-          backgroundImage: `
+  return (
+    <div className="min-w-[100vw] min-h-[100vh] bg-cover bg-no-repeat bg-center flex justify-center items-center"
+      style={{
+        backgroundImage: `
             url('/img/logInRegPage.png'), 
             radial-gradient(54.4% 54.4% at 50% 45.6%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 100%), 
             radial-gradient(75.85% 79.48% at 50% 50%, 
@@ -16,13 +16,12 @@ export default function LogIn() {
             rgba(0, 212, 255, 0.52) 85.5%, 
             rgba(0, 85, 255, 0.52) 95%, 
             rgba(149, 0, 255, 0.52) 100%)`,
-          backgroundBlendMode: "overlay",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <h1 className="text-white text-4xl font-bold">Login Page</h1>
-      </div>
-    );
-  }
-  
+        backgroundBlendMode: "overlay",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+    <LogInPanel/>
+    </div>
+  );
+}
