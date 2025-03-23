@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function AdminHomePage () {
     return (
-        <div className="z-1 relative h-[90vh] w-2/3">
+        <div className="z-1 relative h-[90vh] w-auto">
             <Image 
                 src="/img/WowYouAreRealAdmin.png"
                 alt="+1000 Social Credit"

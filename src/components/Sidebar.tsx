@@ -26,9 +26,9 @@ export default function Sidebar () {
             <Searchbar img="/img/locationIcon.svg" text="search by location... ex) Ratchathewi" setValue={setSearchLoc}/>
             <Searchbar img="/img/dateIcon.svg" text="Day of reservation.." setValue={setSearchDate}/>
             <div className="flex flex-row items-center">
-                <SmallSearchbar img="/img/timeIcon.svg" text="Time..." setValue={setSearchStart}/>
+                <SmallSearchbar text="Time..." setValue={setSearchStart}/>
                 <h1 className="text-black text-[16px] font-bold mx-2 [-webkit-text-stroke:0.2px_white]">to</h1>
-                <SmallSearchbar img="/img/timeIcon.svg" text="Time..." setValue={setSearchEnd}/>
+                <SmallSearchbar text="Time..." setValue={setSearchEnd}/>
             </div>
 
             <div className="bg-white p-3 rounded-2xl flex-auto max-h-full">

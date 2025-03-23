@@ -29,10 +29,6 @@ export default function AdminObjectCard ({id, name, email, coid, coname}:{id:str
                     : ""
                 }
 
-                {
-                    coname? "" : ""
-                }
-
             </div>
             <div className="flex flex-col space-y-2.5 w-fit flex-none items-start">
                 <YellowButton text="edit"/>

@@ -11,6 +11,7 @@
 @theme inline {
   --color-background: var(--color-rainbow);
   --color-foreground: rgb(0, 0, 0);
+  --color-editgradient: linear-gradient(90deg, #FFE11C, #30FFEE);
   --font-sans: "Comic Sans MS", "Comic Sans", cursive;
   --font-mono: "Arial", mono;
 }

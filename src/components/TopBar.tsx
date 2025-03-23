@@ -4,7 +4,7 @@ import { AdminTopBar } from "./BarComponents";
 export default function TopBar () {
 
     return (
-        <div className="z-50 fixed top-0 left-0 flex items-center p-8 w-full h-[10vh] 
+        <div className="z-50 fixed top-0 left-0 flex items-center p-8 w-full h-[10vh]
         bg-linear-to-r from-red-300 via-emerald-300 to-sky-300">
             <Image
                 src="/img/logo.svg"
