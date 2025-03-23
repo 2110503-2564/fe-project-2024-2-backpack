@@ -1,15 +1,15 @@
 interface SuccessResponse<T> {
   success: true;
   data: T[];
-  count?: bigint;
+  count?: number;
   pagination?: {
     prev?: {
-      page: bigint;
-      limit: bigint;
+      page: number;
+      limit: number;
     };
     next?: {
-      page: bigint;
-      limit: bigint;
+      page: number;
+      limit: number;
     };
   };
 }

@@ -1,11 +1,12 @@
 export type MeetingRoom = {
   _id?: string;
-  roomNumber: bigint;
+  roomNumber: number;
   location: string;
   coworkingSpace: string;
-  capacity: bigint;
+  capacity: number;
   projector: boolean;
   whiteboard: boolean;
   ledTV: boolean;
   speaker: boolean;
+  __v?: number;
 };

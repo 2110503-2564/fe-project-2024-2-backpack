@@ -5,4 +5,5 @@ export type Reservation = {
   user?: string;
   meetingRoom: string;
   createdAt?: Date;
+  __v?: number;
 };
