@@ -20,12 +20,12 @@ export function EditBg ({children, text}:{children:ReactNode, text:string}) {
 
 }
 
-export function EditProfile ({id}:{id:string}) {
+export function EditProfile ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
 
 
 
     return (
-        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-80 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
+        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
         border-4 border-black rounded-2xl"
         style={{boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)"}}>
             <div className="relative w-full h-[75vh] p-5">
@@ -40,22 +40,22 @@ export function EditProfile ({id}:{id:string}) {
                         <input type="text" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                     </EditBg>
                     <EditBg text="Password">
-                        <input type="text" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
+                        <input type="password" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                     </EditBg>
                 </div>
                 
                 <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-                    <SubmitButton/>
+                    <SubmitButton clickto={() => {closeOverlayWhenSubmit();}}/>
                 </div>               
             </div>        
         </div>  
     );
 }
 
-export function EditReservation ({id}:{id:string}) {
+export function EditReservation ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
 
     return (
-        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-80 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
+        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
         border-4 border-black rounded-2xl"
         style={{boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)"}}>
             <div className="relative w-full h-[75vh] p-5">
@@ -81,7 +81,7 @@ export function EditReservation ({id}:{id:string}) {
                 </div>
                 
                 <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-                    <SubmitButton/>
+                    <SubmitButton clickto={() => {closeOverlayWhenSubmit();}}/>
                 </div>               
             </div>        
         </div>  
@@ -89,10 +89,10 @@ export function EditReservation ({id}:{id:string}) {
 
 }
 
-export function EditMeetingRoom ({id}:{id:string}) {
+export function EditMeetingRoom ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
 
     return (
-        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-80 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
+        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
         border-4 border-black rounded-2xl"
         style={{boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)"}}>
             <div className="relative w-full h-[75vh] p-5">
@@ -127,7 +127,7 @@ export function EditMeetingRoom ({id}:{id:string}) {
                 </div>
                 
                 <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-                    <SubmitButton/>
+                    <SubmitButton clickto={() => {closeOverlayWhenSubmit();}}/>
                 </div>               
             </div>        
         </div>  
@@ -135,16 +135,22 @@ export function EditMeetingRoom ({id}:{id:string}) {
 
 }
 
-export function EditCoworkingSpace ({id}:{id:string}) {
+export function EditCoworkingSpace ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
+
+    // set submit button to call POST api when clicked
+    const clickSubmit = () => {
+        // pass info to api
+        // .. useState ??
+    }
 
     return (
-        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-80 bg-white w-[calc(100vw-500px)] min-h-[75vh] max-h-[100vh]
+        <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] max-h-[100vh]
         border-4 border-black rounded-2xl"
         style={{boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)"}}>
             <div className="relative w-full min-h-[75vh] p-5">
                 <div className="flex flex-col space-y-4 mb-[60px]">
                     <EditBg text="User ID">
-                        <h2 className="">{id}</h2>
+                        <h2>{id}</h2>
                     </EditBg>
                     <EditBg text="Co-working space">
                         <input type="text" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
@@ -179,7 +185,7 @@ export function EditCoworkingSpace ({id}:{id:string}) {
                 </div>
                 
                 <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-                    <SubmitButton/>
+                    <SubmitButton clickto={() => {closeOverlayWhenSubmit();}}/>
                 </div>               
             </div>        
         </div>  

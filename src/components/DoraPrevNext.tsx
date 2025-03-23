@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function DoraNextPrev () {
     return (
-        <div className="absolute bottom-0 w-[calc(100vw-350px)] h-fit">
+        <div className="fixed bottom-0 right-0 w-[calc(100vw-350px)] h-fit">
             <div className="relative w-full h-[200px] flex flex-row">
                 <Image
                     src="/img/prev.png"

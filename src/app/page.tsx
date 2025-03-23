@@ -1,15 +1,27 @@
-import Image from "next/image";
-import Sidebar from "@/components/Sidebar";
-import AdminHomePage from "@/components/AdminHomePage";
-import { SubmitButton, YellowButton } from "@/components/OtherComponents";
-import AdminObjectCard from "@/components/AdminObjectCard";
-import DoraNextPrev from "@/components/DoraPrevNext";
-import { EditCoworkingSpace, EditMeetingRoom, EditProfile, EditReservation } from "@/components/EditOverlay";
+// /app/page.tsx
+"use client";
+import { useEffect, useState } from "react";
+import { getUserRole } from "@/libs/getUserRole";
+
+// Define the possible roles
+type UserRole = "admin" | "user" | null;
 
 export default function Home() {
+  const [role, setRole] = useState<UserRole>(null);
+
+  useEffect(() => {
+    const userRole = getUserRole() as UserRole; // Cast to UserRole type
+    setRole(userRole);
+  }, []);
+
+  if (!role) return <h1>Loading...</h1>;
+
   return (
-    <main className="w-[calc(100vw-350px)] min-h-[90vh]">
-      <EditMeetingRoom id="2y9rf9oywg9wg020-vw0m-wib-uwbv"/>
-    </main>
+    <div>
+      {getUserRole()==="user"?
+        <h1>Welcome, User! Change role in layout.tsx</h1> // Text for "user"
+       : <h1>Welcome, Admin!  Change role in layout.tsx</h1>
+       }
+    </div>
   );
 }

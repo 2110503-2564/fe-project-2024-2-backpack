@@ -40,7 +40,7 @@ export default function Sidebar () {
                 <BarCheckBox text="Speaker" id="speaker" setValue={setSearchSpeaker}/>
             </div>
 
-            <button className="border-white border-4 bg-(--color-rainbow) rounded-md text-center font-bold font-stretch-125% w-full h-11 text-bold" 
+            <button className="border-white border-4 rounded-md text-center font-bold font-stretch-125% w-full h-11 text-bold" 
             style={{ backgroundImage: "var(--color-rainbow)" }}>SEARCH</button>
 
             </div>
