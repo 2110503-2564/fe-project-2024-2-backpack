@@ -1,4 +1,4 @@
-import { YellowButton } from "./OtherComponents";
+import { YellowButton } from "./YellowButton";
 
 export default function AdminObjectCard ({id, name, email, coid, coname}:{id:string, name:string, email?:string, coid?:string, coname?:string}) {
     return (
