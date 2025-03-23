@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   useEffect(() => {
-    localStorage.setItem("role", "user"); // Change to 'user' / 'admin' for testing
+    localStorage.setItem("role", "admin"); // Change to 'user' / 'admin' for testing
     document.cookie = `role=${localStorage.getItem("role")}; path=/; secure; samesite=lax`;
   }, []);
 
