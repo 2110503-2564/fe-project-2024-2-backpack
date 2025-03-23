@@ -1,6 +1,6 @@
 import { CoWorkingSpace } from "@/types/CoWorkingSpace";
 
-export async function getCoWorkingSpaces(token: string, page?: string) {
+export async function getCoWorkingSpaces(page?: string) {
   let response;
 
   if (page) {
@@ -8,17 +8,11 @@ export async function getCoWorkingSpaces(token: string, page?: string) {
       `http://localhost:5000/api/coworkingSpace?page=${page}`,
       {
         method: "GET",
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
       }
     );
   } else {
     response = await fetch(`http://localhost:5000/api/coworkingSpace`, {
       method: "GET",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
     });
   }
 
@@ -28,14 +22,11 @@ export async function getCoWorkingSpaces(token: string, page?: string) {
   return response.json();
 }
 
-export async function getCoWorkingSpace(token: string, id: string) {
+export async function getCoWorkingSpace(id: string) {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}}`,
     {
       method: "GET",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
     }
   );
 

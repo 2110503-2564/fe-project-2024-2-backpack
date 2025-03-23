@@ -8,4 +8,4 @@ export type CoWorkingSpace = {
   region: string;
   open_time: Date;
   close_time: Date;
-}
+};
