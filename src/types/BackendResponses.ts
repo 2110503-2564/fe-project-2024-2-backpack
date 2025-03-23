@@ -24,4 +24,7 @@ interface ErrorResponse {
   message: string;
 }
 
-export type BackendResponse<T> = SuccessResponse<T> | LoginSuccessResponse | ErrorResponse;
+export type BackendResponse<T> =
+  | SuccessResponse<T>
+  | LoginSuccessResponse
+  | ErrorResponse;
