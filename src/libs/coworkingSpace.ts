@@ -1,20 +1,13 @@
 import { CoWorkingSpace } from "@/types/CoWorkingSpace";
 
 export async function getCoWorkingSpaces(page?: string) {
-  let response;
+  let responseString: string = `http://localhost:5000/api/coworkingSpace`;
 
-  if (page) {
-    response = await fetch(
-      `http://localhost:5000/api/coworkingSpace?page=${page}`,
-      {
-        method: "GET",
-      }
-    );
-  } else {
-    response = await fetch(`http://localhost:5000/api/coworkingSpace`, {
-      method: "GET",
-    });
-  }
+  if (page) responseString += `?page=${page}`;
+
+  const response = await fetch(responseString, {
+    method: "GET",
+  });
 
   if (!response.ok)
     throw new Error(`Failed to fetch co-working spaces of page: ${page}`);
