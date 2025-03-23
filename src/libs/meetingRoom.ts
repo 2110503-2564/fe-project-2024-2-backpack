@@ -1,9 +1,10 @@
 import { MeetingRoom } from "@/types/MeetingRoom";
+import { BackendResponse } from "@/types/BackendResponses";
 
 export async function getMeetingRooms(
   page?: string,
   coworkingSpaceId?: string
-) {
+): Promise<BackendResponse<MeetingRoom>> {
   let responseString: string = `http://localhost:5000/api/meetingRooms`;
 
   if (coworkingSpaceId)
@@ -20,7 +21,9 @@ export async function getMeetingRooms(
   return response.json();
 }
 
-export async function getMeetingRoom(id: string) {
+export async function getMeetingRoom(
+  id: string
+): Promise<BackendResponse<MeetingRoom>> {
   const response = await fetch(
     `http://localhost:5000/api/meetingRooms/${id}}`,
     {
@@ -34,7 +37,10 @@ export async function getMeetingRoom(id: string) {
   return response.json();
 }
 
-export async function createMeetingRoom(token: string, content: MeetingRoom) {
+export async function createMeetingRoom(
+  token: string,
+  content: MeetingRoom
+): Promise<BackendResponse<MeetingRoom>> {
   const response = await fetch(`http://localhost:5000/api/meetingRooms`, {
     method: "POST",
     headers: {
@@ -53,7 +59,7 @@ export async function updateMeetingRoom(
   token: string,
   id: string,
   content: MeetingRoom
-) {
+): Promise<BackendResponse<MeetingRoom>> {
   const response = await fetch(`http://localhost:5000/api/meetingRooms/${id}`, {
     method: "PUT",
     headers: {
@@ -69,7 +75,10 @@ export async function updateMeetingRoom(
   return response.json();
 }
 
-export async function deleteMeetingRoom(token: string, id: string) {
+export async function deleteMeetingRoom(
+  token: string,
+  id: string
+): Promise<BackendResponse<MeetingRoom>> {
   const response = await fetch(`http://localhost:5000/api/meetingRooms/${id}`, {
     method: "DELETE",
     headers: {
