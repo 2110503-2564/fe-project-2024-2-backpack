@@ -35,3 +35,15 @@ body {
   font-family: var(--font-sans);
 }
 
+.scroll-container {
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+

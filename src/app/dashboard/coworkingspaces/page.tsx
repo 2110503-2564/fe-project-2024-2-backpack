@@ -18,7 +18,7 @@ export default function DashboardCoworkingspaces () {
     }
 
     const clickNavi = (itid:string) => {
-        router.push(`/dashboard/coworkingspaces/${itid}`)
+        router.push(`/dashboard/coworkingspaces/${itid}/meetingrooms`)
     }
 
     const removeFunction = () => {

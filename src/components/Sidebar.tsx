@@ -1,9 +1,9 @@
 "use client"
 import { Searchbar, SmallSearchbar, BarCheckBox } from "./BarComponents";
 import { useState } from "react";
+import Link from "next/link";
+export default function Sidebar() {
 
-export default function Sidebar () {
-    
     // set variable
     const [searchName, setSearchName] = useState(null);
     const [searchLoc, setSearchLoc] = useState(null);
@@ -14,7 +14,7 @@ export default function Sidebar () {
     const [searchWB, setSearchWB] = useState(false);
     const [searchTV, setSearchTV] = useState(false);
     const [searchSpeaker, setSearchSpeaker] = useState(false);
-    
+
 
     return (
         <div className="flex flex-col w-[350px] h-[90vh] p-8 gap-b-4 bg-linear-to-t
@@ -30,22 +30,22 @@ export default function Sidebar () {
                 <h1 className="text-black text-[16px] font-bold mx-2 [-webkit-text-stroke:0.2px_white]">to</h1>
                 <SmallSearchbar text="Time..." setValue={setSearchEnd}/>
             </div>
+                <div className="bg-white p-3 rounded-2xl flex-auto max-h-full">
+                    <div className="font-bold text-center text-lg">FACILITIES !!! :O</div>
 
-            <div className="bg-white p-3 rounded-2xl flex-auto max-h-full">
-                <div className="font-bold text-center text-lg">FACILITIES !!! :O</div>
+                    <BarCheckBox text="Projector" id="projector" setValue={setSearchProj} />
+                    <BarCheckBox text="White Board" id="whiteBoard" setValue={setSearchWB} />
+                    <BarCheckBox text="LED TV" id="ledTV" setValue={setSearchTV} />
+                    <BarCheckBox text="Speaker" id="speaker" setValue={setSearchSpeaker} />
+                </div>
+                <Link href="/coworkingspaces/">
+                    <button className="cursor-pointer border-white border-4 rounded-md text-center font-bold font-stretch-125% w-full h-11 text-bold"
+                        style={{ backgroundImage: "var(--color-rainbow)" }}>SEARCH</button>
+                </Link>
 
-                <BarCheckBox text="Projector" id="projector" setValue={setSearchProj}/>
-                <BarCheckBox text="White Board" id="whiteBoard" setValue={setSearchWB}/>
-                <BarCheckBox text="LED TV" id="ledTV" setValue={setSearchTV}/>
-                <BarCheckBox text="Speaker" id="speaker" setValue={setSearchSpeaker}/>
             </div>
 
-            <button className="border-white border-4 rounded-md text-center font-bold font-stretch-125% w-full h-11 text-bold" 
-            style={{ backgroundImage: "var(--color-rainbow)" }}>SEARCH</button>
-
-            </div>
-
-        </div>
+        </div >
     )
 
 }
