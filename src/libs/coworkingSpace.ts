@@ -1,9 +1,9 @@
-import { CoWorkingSpace } from "@/types/CoWorkingSpace";
+import { CoworkingSpace } from "@/types/CoworkingSpace";
 import { BackendResponse } from "@/types/BackendResponses";
 
 export async function getCoWorkingSpaces(
   page?: string
-): Promise<BackendResponse<CoWorkingSpace>> {
+): Promise<BackendResponse<CoworkingSpace>> {
   let responseString: string = `http://localhost:5000/api/coworkingSpace`;
 
   if (page) responseString += `?page=${page}`;
@@ -20,7 +20,7 @@ export async function getCoWorkingSpaces(
 
 export async function getCoWorkingSpace(
   id: string
-): Promise<BackendResponse<CoWorkingSpace>> {
+): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}}`,
     {
@@ -36,8 +36,8 @@ export async function getCoWorkingSpace(
 
 export async function createCoWorkingSpace(
   token: string,
-  content: CoWorkingSpace
-): Promise<BackendResponse<CoWorkingSpace>> {
+  content: CoworkingSpace
+): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(`http://localhost:5000/api/coworkingSpace`, {
     method: "POST",
     headers: {
@@ -55,8 +55,8 @@ export async function createCoWorkingSpace(
 export async function updateCoWorkingSpace(
   token: string,
   id: string,
-  content: CoWorkingSpace
-): Promise<BackendResponse<CoWorkingSpace>> {
+  content: CoworkingSpace
+): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}`,
     {
@@ -78,7 +78,7 @@ export async function updateCoWorkingSpace(
 export async function deleteCoWorkingSpace(
   token: string,
   id: string
-): Promise<BackendResponse<CoWorkingSpace>> {
+): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}`,
     {

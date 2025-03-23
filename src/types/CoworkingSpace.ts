@@ -1,4 +1,4 @@
-export type CoWorkingSpace = {
+export type CoworkingSpace = {
   _id?: string;
   name: string;
   address: string;
