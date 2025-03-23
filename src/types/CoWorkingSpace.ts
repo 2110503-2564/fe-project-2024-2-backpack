@@ -1,4 +1,5 @@
 export type CoWorkingSpace = {
+  _id?: string;
   name: string;
   address: string;
   district: string;

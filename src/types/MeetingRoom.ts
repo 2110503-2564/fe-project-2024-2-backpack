@@ -1,4 +1,5 @@
 export type MeetingRoom = {
+  _id?: string;
   roomNumber: bigint;
   location: string;
   coworkingSpace: string;
