@@ -2,7 +2,7 @@ import CoworkingSpaceCard from "@/components/CoworkingSpaceCard";
 export default function coworkingSpacesList() {
   return (
     <div className="w-full min-h-[90vh] h-auto px-7 py-6 bg-fixed bg-gradient-to-b from-white to-red-100 flex flex-row justify-start items-start gap-6 flex-wrap content-start">
-      <div className="lg:basis-1/3 flex-grow">
+      <div className="w-full xl:w-1/3 flex-grow">
         <CoworkingSpaceCard
           name="Menacing Space"
           id="1"
@@ -13,7 +13,7 @@ export default function coworkingSpacesList() {
       </div>
 
       {Array.from({ length: 5 }).map((_, index) => (
-        <div key={index} className="lg:basis-1/3 flex-grow">
+        <div key={index} className="w-full xl:w-1/3  flex-grow">
           <CoworkingSpaceCard
             name="... Space"
             id="2" // Make ID unique if needed

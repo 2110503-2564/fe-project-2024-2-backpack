@@ -8,8 +8,8 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
             <div className="self-stretch justify-start text-black text-2xl font-bold leading-loose">
                 {name}
             </div>
-            <div className="self-stretch flex-1  inline-flex justify-start items-center gap-2.5">
-                <div className="w-1/2 h-120 lg:h-72 relative rounded-[20px] overflow-hidden">
+            <div className="w-full lg:inline-flex justify-start items-center gap-2.5">
+                <div className="min-w-full lg:min-w-3/5 min-h-72 h-auto lg:h-full relative rounded-[20px] overflow-hidden">
                     <Image src={"/img/coworkingSpace/" + id + ".png"}
                         alt="coworking space"
                         quality={100}
@@ -18,7 +18,7 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
                     >
                     </Image>
                 </div>
-                <div className="w-1/2 min-h-full p-2.5 inline-flex flex-col justify-start items-start gap-2.5">
+                <div className="min-w-full lg:min-w-2/5 h-auto p-2.5 inline-flex flex-col justify-start items-start gap-2.5 overflow-hidden">
                     <div className="h-1/4 self-stretch justify-start text-neutral-600 text-base font-normal   leading-tight">
                         {location}
                     </div>
@@ -28,7 +28,7 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
                     <div className="h-1/4 self-stretch justify-start text-neutral-600 text-base font-normal   leading-tight">
                         Open-Close time: {openinghours}
                     </div>
-                    <div className="h-auto w-full cursor-pointer">
+                    <div className="h-auto w-full">
                         <Link href="/coworkingspaces/1/meetingrooms">
                             <BlueButton text="view meeting rooms">
                             </BlueButton>
