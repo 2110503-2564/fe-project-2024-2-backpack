@@ -13,7 +13,7 @@ export default function CoworkingSpaceCard({ id }
                 >
                 </Image>
             </div>
-            <div className="min-w-full lg:min-w-1/2 h-auto p-2.5 inline-flex flex-col justify-start items-start gap-2.5 overflow-hidden">
+            <div className="min-w-full lg:min-w-2/5 h-auto p-2.5 inline-flex flex-col justify-start items-start gap-2.5 overflow-hidden">
                 <div className="self-stretch justify-start text-black text-2xl font-bold  leading-loose">
                     Menacing Space
                 </div>
