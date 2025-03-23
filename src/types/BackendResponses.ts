@@ -14,9 +14,14 @@ interface SuccessResponse<T> {
   };
 }
 
+interface LoginSuccessResponse {
+  success: true;
+  token: string;
+}
+
 interface ErrorResponse {
   success: false;
   message: string;
 }
 
-export type BackendResponse<T> = SuccessResponse<T> | ErrorResponse;
+export type BackendResponse<T> = SuccessResponse<T> | LoginSuccessResponse | ErrorResponse;
