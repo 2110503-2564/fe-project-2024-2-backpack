@@ -499,6 +499,7 @@ export function EditCoworkingSpace({
             <EditBg text="Name">
               <input
                 type="text"
+                name="name"
                 className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                 value={formData.name}
                 onChange={handleChange}
@@ -508,14 +509,16 @@ export function EditCoworkingSpace({
               <EditBg text="Address">
                 <input
                   type="text"
+                  name="address"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.address}
                   onChange={handleChange}
                 />
               </EditBg>
-              <EditBg text="Distinct">
+              <EditBg text="District">
                 <input
                   type="text"
+                  name="district"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.district}
                   onChange={handleChange}
@@ -524,6 +527,7 @@ export function EditCoworkingSpace({
               <EditBg text="Province">
                 <input
                   type="text"
+                  name="province"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.province}
                   onChange={handleChange}
@@ -532,6 +536,7 @@ export function EditCoworkingSpace({
               <EditBg text="Postal code">
                 <input
                   type="text"
+                  name="postalcode"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.postalcode}
                   onChange={handleChange}
@@ -540,6 +545,7 @@ export function EditCoworkingSpace({
               <EditBg text="Telephone">
                 <input
                   type="text"
+                  name="tel"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.tel}
                   onChange={handleChange}
@@ -548,6 +554,7 @@ export function EditCoworkingSpace({
               <EditBg text="Region">
                 <input
                   type="text"
+                  name="region"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.region}
                   onChange={handleChange}
@@ -556,6 +563,7 @@ export function EditCoworkingSpace({
               <EditBg text="Open">
                 <input
                   type="time"
+                  name="open_time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={
                     formData.open_time
@@ -570,6 +578,7 @@ export function EditCoworkingSpace({
               <EditBg text="Close">
                 <input
                   type="time"
+                  name="close_time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={
                     formData.close_time
