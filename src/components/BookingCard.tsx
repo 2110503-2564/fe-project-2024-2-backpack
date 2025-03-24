@@ -2,6 +2,9 @@ import Image from "next/image";
 import { BlueButton } from "@/components/BlueButton";
 import { useState, useEffect } from "react";
 import { EditReservation } from "./EditOverlay";
+import { deleteReservation } from "@/libs/reservation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 
 export default function BookingCard({ reservationId, meetingRoomId, meetingRoomName, coworkingSpaceName, date, startTime, endTime }
     : { reservationId: string, meetingRoomId: string, meetingRoomName: string, coworkingSpaceName: string, date: string, startTime: string, endTime: string }) {
@@ -17,8 +20,16 @@ export default function BookingCard({ reservationId, meetingRoomId, meetingRoomN
         }
     }, [isEditOpen]);
 
-    const removeFunction = () => {
+    const { token } = useSelector((state: RootState) => state.auth);
+
+    const removeFunction = async () => {
         // call DELETE api to remove this id from database
+        if (token && token !== null) {
+            const res = await deleteReservation(token, reservationId);
+        } else {
+            alert("token is goneee !!!");
+            return;
+        }    
     }
 
     return (
@@ -76,7 +87,7 @@ export default function BookingCard({ reservationId, meetingRoomId, meetingRoomN
                 </div>
                 <div className="flex flex-col justify-center">
                     <div className="min-w-full h-auto lg:h-full flex flex-col justify-center items-center">
-                        <BlueButton text="remove" />
+                        <BlueButton text="remove" clickto={removeFunction} />
                     </div>
                 </div>
             </div>

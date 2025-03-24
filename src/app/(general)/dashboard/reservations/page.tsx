@@ -6,9 +6,13 @@ import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/User";
+import { Reservation } from "@/types/Reservation";
+import { deleteReservation, getReservations } from "@/libs/reservation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 
 export default function DashboardUsers () {
-
+    const { token } = useSelector((state: RootState) => state.auth);
     const router = useRouter();
 
     // for New button
@@ -32,25 +36,36 @@ export default function DashboardUsers () {
         router.push(`/dashboard/users/${itid}/bookings`)
     }
 
-    const removeFunction = () => {
+    const removeFunction = async (itid:string) => {
         // call DELETE api to remove this id from database
+        if (token && token !== null) {
+            const res = await deleteReservation(token, itid);
+        } else {
+            alert("token is goneee !!!");
+            return;
+        }     
     }
 
-    // // to fetch data from backend 🗿
-    // const [userData, setUserData] = useState<User[]>([]);
-    // const fetchData = async () => {
-    //     const uData = await getUsers();
-        
-    //     if (coData.success === false) {
-    //         alert(coData.message);
-    //         return;
-    //     } else if ("data" in coData) {
-    //         setCoworkingData(coData.data)
-    //     }
-    // }
+    // to fetch data from backend 🗿
+    const [bookData, setBookData] = useState<Reservation[]>([]);
+    const fetchData = async () => {
+        if (token && token === null) {
+            const bData = await getReservations(token);
 
-    // // use effect to deal with async
-    // useEffect(() => { fetchData() },[]);
+            if (bData.success === false) {
+                alert(bData.message);
+                return;
+            } else if ("data" in bData) {
+                setBookData(bData.data);
+            }
+        } else {
+            alert("where tokennnnnn TOT");
+            return;
+        }
+    }
+
+    // use effect to deal with async
+    useEffect(() => { fetchData() },[]);
 
     return (
         <main className="pb-50 pt-3">
@@ -60,8 +75,17 @@ export default function DashboardUsers () {
 
             <DoraNextPrev/>
             
-            {/* <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="Nong Kwang" email="nk@gmail.com" editFunction={clickNavi}/> */}
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="Nong Kwang" uid="909yg90yw094gh90w34hghw" mid="9fuwhg9w-nvgp9nepp-gp094" editFunction={clickEdit}/>
+            {/* <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="Nong Kwang" uid="909yg90yw094gh90w34hghw" mid="9fuwhg9w-nvgp9nepp-gp094" editFunction={clickEdit}/> */}
+            {bookData.map((item) => (
+            <AdminObjectCard
+                key={item._id}
+                id={item._id}
+                uid={item.user}
+                mid={item.meetingRoom?._id}
+                editFunction={clickEdit}
+                removeFunction={removeFunction}
+            />
+            ))}
 
             {
             isEditOpen? 

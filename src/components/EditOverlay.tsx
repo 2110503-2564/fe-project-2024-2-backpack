@@ -208,31 +208,31 @@ export function EditMeetingRoom({
   });
 
   // for type !== new
+  useEffect(() => {
   if (type !== "new") {
-    const fetchData = async () => {
-      const res = await getMeetingRoom(id);
-      if (res.success === false) {
-        alert(res.message);
-        return;
-      } else if ("data" in res) {
-        setFormData({
-          _id: id,
-          roomNumber: res.data[0].roomNumber || -1,
-          location: res.data[0].location || "",
-          coworkingSpace: res.data[0].coworkingSpace || null,
-          capacity: res.data[0].capacity || -1,
-          projector: res.data[0].projector || false,
-          whiteboard: res.data[0].whiteboard || false,
-          ledTV: res.data[0].ledTV || false,
-          speaker: res.data[0].speaker || false,
-        });
-      }
-    };
+      const fetchData = async () => {
+        const res = await getMeetingRoom(id);
+        if (res.success === false) {
+          alert(res.message);
+          return;
+        } else if ("data" in res) {
+          setFormData({
+            _id: id,
+            roomNumber: res.data[0].roomNumber || -1,
+            location: res.data[0].location || "",
+            coworkingSpace: res.data[0].coworkingSpace || null,
+            capacity: res.data[0].capacity || -1,
+            projector: res.data[0].projector || false,
+            whiteboard: res.data[0].whiteboard || false,
+            ledTV: res.data[0].ledTV || false,
+            speaker: res.data[0].speaker || false,
+          });
+        }
+      };
 
-    useEffect(() => {
       fetchData();
-    }, []);
-  }
+    }  
+  }, []);
 
   // handle change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
