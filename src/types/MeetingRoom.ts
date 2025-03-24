@@ -1,8 +1,10 @@
+import { CoworkingSpace } from "./CoworkingSpace";
+
 export type MeetingRoom = {
   _id?: string;
   roomNumber: number;
   location: string;
-  coworkingSpace: string;
+  coworkingSpace: CoworkingSpace;
   capacity: number;
   projector: boolean;
   whiteboard: boolean;
