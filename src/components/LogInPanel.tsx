@@ -1,24 +1,35 @@
 "use client"
-// import { signIn } from "next-auth/react";
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '@/libs/slices/authSlice';
+import { getUserProfile, userLogIn } from '@/libs/auth';
 import { useState, useRef } from "react";
-import { TextField, Typography} from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { BlueButton } from "./BlueButton";
-
-// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 export default function Login() {
+    const dispatch = useDispatch();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
-    // const router = useRouter();
+    const router = useRouter();
     const formRef = useRef<HTMLFormElement | null>(null);
     const handleSubmit = async (e: React.FormEvent) => {
-        // e.preventDefault();
-        // const res = await signIn("credentials", { redirect: false, email, password });
-        // if (res?.error) {
-        //     setError("Invalid credentials");
-        // } else {
-        //     router.push("/dashboard");
-        // }
+        e.preventDefault();
+        try {
+            const res = await userLogIn(email, password);
+            if (res.success && "token" in res) {
+                const token = res.token;
+                const profile = await getUserProfile(token);
+                if (profile.success && "data" in profile && "role" in profile.data) {
+                    dispatch(setCredentials({ token:res.token, role: profile.data.role as string }));
+                    router.push("/");
+                    router.refresh();
+                }
+            }
+        } catch (error) {
+            setError("Invalid credentials");
+        }
     };
     const handleDivClick = () => {
         if (formRef.current) {
@@ -28,7 +39,7 @@ export default function Login() {
     return (
         <div className="bg-sky-100/40 w-2/3 lg:w-1/2 h-1/2 px-4 py-4 rounded-[30px] outline outline-[2px] outline-offset-[-2px] outline-white inline-flex flex-col justify-start items-center gap-1 overflow-hidden">
             <div className="w-full text-center justify-start text-white text-2xl font-bold"
-            style={{ WebkitTextStroke: '2px black', color: 'white' }}>
+                style={{ WebkitTextStroke: '2px black', color: 'white' }}>
                 Log in? :D
             </div>
 
