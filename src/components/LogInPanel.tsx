@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 import { TextField, Typography } from "@mui/material";
 import { BlueButton } from "./BlueButton";
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 export default function Login() {
     const dispatch = useDispatch();
 
@@ -22,7 +23,7 @@ export default function Login() {
                 const token = res.token;
                 const profile = await getUserProfile(token);
                 if (profile.success && "data" in profile && "role" in profile.data) {
-                    dispatch(setCredentials({ token:res.token, role: profile.data.role as string }));
+                    dispatch(setCredentials({ token: res.token, role: profile.data.role as string }));
                     router.push("/");
                     router.refresh();
                 }
@@ -72,9 +73,11 @@ export default function Login() {
                     <div className="justify-start text-black text-base font-bold">
                         no account? pfft lame.
                     </div>
-                    <div className="justify-start text-red-600 text-base font-boldunderline">
-                        Create one! CLICK NOW
-                    </div>
+                    <Link href="/register" >
+                        <div className="justify-start text-red-600 text-base font-boldunderline">
+                            Create one! CLICK NOW
+                        </div>
+                    </Link>
                 </div>
                 <div className="w-3/5">
 
