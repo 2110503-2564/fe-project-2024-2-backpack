@@ -1,13 +1,13 @@
-import CoworkingSpaceInfoCard from "@/components/CoworkingSpaceInfoCard";
+import CoworkingSpaceInfo from "@/components/CoworkingSpaceInfo";
 import MeetingRoomInfoCard from "@/components/MeetingRoomInfoCard";
 import { getCoWorkingSpace } from "@/libs/coworkingSpace"
-import {CoworkingSpace} from "@/types/CoworkingSpace"
+import { CoworkingSpace } from "@/types/CoworkingSpace"
 export default async function meetingRoomsList({ params }: { params: { id: string } }) {
     const { id } = await params;
     const res = await getCoWorkingSpace(id);
     console.log(params.id);
     var coworkingSpace;
-    let cws:CoworkingSpace[] = [];
+    let cws: CoworkingSpace[] = [];
     if (res.success && "data" in res) {
         coworkingSpace = res.data;
         if (!Array.isArray(coworkingSpace)) {
@@ -20,19 +20,17 @@ export default async function meetingRoomsList({ params }: { params: { id: strin
     return (
         <div className="h-auto min-h-[90vh] bg-gray-200 ">
             {cws ? (cws.map((cw) => (
-                <div className="w-full xl:w-1/3 flex-grow">
-                    <CoworkingSpaceInfoCard
-                        about={cw.about}
-                        id={cw._id}
-                        name={cw.name}
-                        location={cw.address + ", " + cw.district + ", " + cw.province + ", " + cw.postalcode}
-                        openinghours={
-                            new Date(cw.open_time).toISOString().slice(11, 16) + "-" +
-                            new Date(cw.close_time).toISOString().slice(11, 16)
-                        }
-                        telephone={cw.tel} 
-                    />
-                </div>
+                <CoworkingSpaceInfo
+                    about={cw.about}
+                    id={cw._id}
+                    name={cw.name}
+                    location={cw.address + ", " + cw.district + ", " + cw.province + ", " + cw.postalcode}
+                    openinghours={
+                        new Date(cw.open_time).toISOString().slice(11, 16) + "-" +
+                        new Date(cw.close_time).toISOString().slice(11, 16)
+                    }
+                    telephone={cw.tel}
+                />
             ))) : (
                 <p>No coworking space with id {params.id}.</p>
             )}
