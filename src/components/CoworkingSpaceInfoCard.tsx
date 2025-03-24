@@ -6,11 +6,14 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { YellowButton } from "./YellowButton";
 import { EditCoworkingSpace } from "./EditOverlay";
+import { deleteCoWorkingSpace } from "@/libs/coworkingSpace";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 export default function CoworkingSpaceInfoCard({ id }
     : { id: string }) {       
 
         const pathname = usePathname();
-
+        const { token } = useSelector((state: RootState) => state.auth);
         const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
         // to disable scrolling
@@ -22,8 +25,14 @@ export default function CoworkingSpaceInfoCard({ id }
             }
         }, [isEditOpen]);
 
-        const removeFunction = () => {
+        const removeFunction = async () => {
             // call DELETE api to remove this id from database
+            if (token && token !== null) {
+                const res = await deleteCoWorkingSpace(token, id);
+            } else {
+                alert("token is goneeee TT");
+                return;
+            }            
         }
 
         const bgColor:string = pathname.includes("/dashboard") ? "bg-linear-to-tl from-[#06F157] to-[#01C3FF]" : "bg-white"

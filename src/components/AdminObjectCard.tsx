@@ -86,7 +86,7 @@ export default function AdminObjectCard({
       </div>
       <div className="flex flex-col space-y-2.5 w-fit flex-none items-start">
         <YellowButton text="edit" clickto={triggerEditFunction}/>
-        <YellowButton text="remove" clickto={removeFunction}/>
+        <YellowButton text="remove" clickto={() => (removeFunction && id) ? removeFunction(id) : ""}/>
       </div>
     </div>
   );

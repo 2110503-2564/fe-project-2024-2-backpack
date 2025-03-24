@@ -5,11 +5,13 @@ import { EditCoworkingSpace, EditMeetingRoom, EditProfile } from "@/components/E
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { useRouter } from "next/navigation";
-import { getCoWorkingSpaces } from "@/libs/coworkingSpace";
+import { deleteCoWorkingSpace, getCoWorkingSpaces } from "@/libs/coworkingSpace";
 import { CoworkingSpace } from "@/types/CoworkingSpace";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 
 export default function DashboardCoworkingspaces () {
-
+    const { token } = useSelector((state: RootState) => state.auth);
     const router = useRouter();
 
     // for new button
@@ -28,8 +30,13 @@ export default function DashboardCoworkingspaces () {
         router.push(`/dashboard/coworkingspaces/${itid}/meetingrooms`)
     }
 
-    const removeFunction = () => {
-        // call DELETE api to remove this id from database
+    const removeFunction = async (itid:string) => {
+        if (token && token !== null) {
+            const res = await deleteCoWorkingSpace(token, itid);
+        } else {
+            alert("token is goneee !!!");
+            return;
+        }      
     }
 
     // to fetch data from backend 🗿
@@ -63,6 +70,7 @@ export default function DashboardCoworkingspaces () {
                         id= {item._id}
                         name= {item.name}
                         editFunction={clickNavi}
+                        removeFunction={removeFunction}
                         />
                     ) : ""               
                 ))

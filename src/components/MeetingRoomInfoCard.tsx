@@ -5,15 +5,24 @@ import Image from "next/image";
 import { YellowButton } from "./YellowButton";
 import { EditMeetingRoom } from "./EditOverlay";
 import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
+import { deleteMeetingRoom } from "@/libs/meetingRoom";
 export default function MeetingRoomInfoCard({ id }
     : { id: string }) { 
 
     const pathname = usePathname();
-    
+    const { token } = useSelector((state: RootState) => state.auth);
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
-    const removeFunction = () => {
+    const removeFunction = async () => {
         // call DELETE api to remove this id from database
+        if (token && token !== null) {
+            const res = await deleteMeetingRoom(token, id);
+        } else {
+            alert("token is goneee ??");
+            return;
+        }
     }
 
     useEffect(() => {
@@ -53,7 +62,7 @@ export default function MeetingRoomInfoCard({ id }
                     <>
                     <div className="flex-col flex space-y-4 mb-3">
                         <YellowButton text="edit" clickto={() => setIsEditOpen(!isEditOpen)}/>
-                        <YellowButton text="remove"/>  
+                        <YellowButton text="remove" clickto={removeFunction}/>  
                     </div>              
                     </>
                 )

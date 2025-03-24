@@ -1,115 +1,102 @@
-"use client"
-import AdminObjectCard from "@/components/AdminObjectCard"
-import { useState, useEffect } from "react"
+"use client";
+import AdminObjectCard from "@/components/AdminObjectCard";
+import { useState, useEffect } from "react";
 import { EditMeetingRoom, EditProfile } from "@/components/EditOverlay";
 import DoraNextPrev from "@/components/DoraPrevNext";
-import { getMeetingRooms } from "@/libs/meetingRoom";
+import { deleteMeetingRoom, getMeetingRooms } from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
 import { getCoWorkingSpace } from "@/libs/coworkingSpace";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 
-export default function DashboardMeetingrooms () {
+export default function DashboardMeetingrooms() {
+  // edit meeting room
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [clickId, setClickId] = useState<string>("");
+  const clickEdit = (itid: string) => {
+    setIsEditOpen(!isEditOpen);
+    setClickId(itid);
+  };
 
-    // edit meeting room
-    const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-    const [clickId, setClickId] = useState<string>("");
-    const clickEdit = (itid:string) => {
-        setIsEditOpen(!isEditOpen);
-        setClickId(itid);
+  // new meeting room
+  // const [isNewOpen, setIsNewOpen] = useState<boolean>(false);
+
+  // to disable scrolling
+  useEffect(() => {
+    if (isEditOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
     }
+  }, [isEditOpen]);
 
-    // new meeting room
-    // const [isNewOpen, setIsNewOpen] = useState<boolean>(false);
+  const { token } = useSelector((state: RootState) => state.auth);
 
-    // to disable scrolling
-    useEffect(() => {
-        if (isEditOpen) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "auto"
-        }
-    }, [isEditOpen]);
+  const removeFunction = async (itid:string) => {
+    // call DELETE api to remove this id from database
+    if (token && token !== null) {
+        const res = await deleteMeetingRoom(token, itid);
+    } else {
+        alert("token is goneee !!!");
+        return;
+    }     
+  };
 
-    const removeFunction = () => {
-        // call DELETE api to remove this id from database
+  // to fetch data from backend 🗿
+  const [meetingRooms, setMeetingRooms] = useState<MeetingRoom[]>([]);
+
+  const fetchData = async () => {
+    const meetingrooms = await getMeetingRooms();
+
+    if (meetingrooms.success === false) {
+      alert(meetingrooms.message);
+      return;
+    } else if ("data" in meetingrooms) {
+      setMeetingRooms(meetingrooms.data);
     }
+  };
 
-    // to fetch data from backend 🗿
-    const [meetingRooms, setMeetingRooms] = useState<MeetingRoom[]>([]);
-    
-    const fetchData = async () => {
-        const meetingrooms = await getMeetingRooms();
-        
-        if (meetingrooms.success === false) {
-            alert(meetingrooms.message);
-            return;
-        } else if ("data" in meetingrooms) {
-            const meetingroomPromises = meetingrooms.data.map(async (item:MeetingRoom) => {
-                if (!item) {
-                    alert("all item should be defined !")
-                    return undefined;
-                }
-                const co = await getCoWorkingSpace(item.coworkingSpace);
+  // use effect to deal with async
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-                if (co.success === false) {
-                    alert(co.message);
-                    return;
-                } else if ("data" in co) {
-                    return {
-                        _id: item._id || "",
-                        roomNumber: item.roomNumber || -1,
-                        coworkingSpace: item.coworkingSpace || -1,
-                        location: co.data[0].name || "", 
-                        capacity: item.capacity || -1,
-                        projector: item.projector || false,
-                        whiteboard: item.whiteboard || false,
-                        ledTV: item.ledTV || false,
-                        speaker: item.speaker || false,
-                        __v: item.__v || -1,
-                    }
-                }
-            });
-
-        // wait for all promise
-        const finalMeetingRooms = (await Promise.all(meetingroomPromises)).filter(
-            (room) => room !== undefined
-        ) as MeetingRoom[];
-        setMeetingRooms(finalMeetingRooms);
-        }
-    }
-
-    // use effect to deal with async
-    useEffect(() => { fetchData() },[]);
-
-    return (
-        <main className="pb-50 pt-3">
-            {/* <div className="w-(calc[100vw-35opx]) flex justify-center">
+  return (
+    <main className="pb-50 pt-3">
+      {/* <div className="w-(calc[100vw-35opx]) flex justify-center">
                 <YellowButton text="New" clickto={() => setIsNewOpen(!isNewOpen)}/>
             </div> */}
-            
-            <DoraNextPrev/>
-            
-            {
-                meetingRooms.map((item) => (
-                    <AdminObjectCard
-                    id = {item._id}
-                    number = {item.roomNumber}
-                    coid = {item.coworkingSpace}
-                    coname= {item.location}
-                    editFunction={clickEdit}/>
-                ))
-            }
-            
-            {
-            isEditOpen? 
-            <>
-                <EditMeetingRoom id={clickId} closeOverlayWhenSubmit={() => setIsEditOpen(false)}/>
-                <button className="fixed inset-0 bg-black z-70 opacity-40"
-                onClick={() => setIsEditOpen(false)}></button>
-            </>
-             : ""  
-            }
 
-            {/* {
+      <DoraNextPrev />
+
+      {meetingRooms.map((item) => (
+        <AdminObjectCard
+          key={item._id}
+          id={item._id}
+          number={item.roomNumber}
+          coid={item.coworkingSpace._id}
+          coname={item.coworkingSpace.name}
+          editFunction={clickEdit}
+          removeFunction={removeFunction}
+        />
+      ))}
+
+      {isEditOpen ? (
+        <>
+          <EditMeetingRoom
+            id={clickId}
+            closeOverlayWhenSubmit={() => setIsEditOpen(false)}
+          />
+          <button
+            className="fixed inset-0 bg-black z-70 opacity-40"
+            onClick={() => setIsEditOpen(false)}
+          ></button>
+        </>
+      ) : (
+        ""
+      )}
+
+      {/* {
             isNewOpen? 
             <>
                 <EditMeetingRoom id="{New Meeting room}" closeOverlayWhenSubmit={() => setIsNewOpen(false)} type="new"/>
@@ -119,8 +106,7 @@ export default function DashboardMeetingrooms () {
              : ""  
             } */}
 
-            <div className="fixed w-[calc(100vw-350px)] h-[90vh] right-0 bottom-0 z-[-10] bg-linear-to-tl from-[#7100FF] to-[#1A46FF]"/>
-
-        </main>
-    );
+      <div className="fixed w-[calc(100vw-350px)] h-[90vh] right-0 bottom-0 z-[-10] bg-linear-to-tl from-[#7100FF] to-[#1A46FF]" />
+    </main>
+  );
 }
