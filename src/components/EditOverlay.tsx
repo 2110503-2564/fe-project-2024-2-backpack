@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { SubmitButton } from "./OtherComponents";
+import { getReservation } from "@/libs/reservation";
 
 export function EditBg ({children, text}:{children:ReactNode, text:string}) {
 
@@ -51,7 +52,10 @@ export function EditProfile ({id, closeOverlayWhenSubmit, type}:{id:string, clos
     );
 }
 
-export function EditReservation ({id, closeOverlayWhenSubmit, type}:{id:string, closeOverlayWhenSubmit:Function, type?:string}) {
+export async function EditReservation ({id, closeOverlayWhenSubmit, type}:{id:string, closeOverlayWhenSubmit:Function, type?:string}) {
+
+    const (data:session) = unstable_useSwipeTransition
+    // const thisReservation = await getReservation(token, id)
 
     return (
         <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 

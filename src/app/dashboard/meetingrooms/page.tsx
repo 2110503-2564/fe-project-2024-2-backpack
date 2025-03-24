@@ -2,8 +2,10 @@
 import AdminObjectCard from "@/components/AdminObjectCard"
 import { useState, useEffect } from "react"
 import { EditMeetingRoom, EditProfile } from "@/components/EditOverlay";
-import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
+import { getMeetingRooms } from "@/libs/meetingRoom";
+import { MeetingRoom } from "@/types/MeetingRoom";
+import { getCoWorkingSpace } from "@/libs/coworkingSpace";
 
 export default function DashboardMeetingrooms () {
 
@@ -31,6 +33,52 @@ export default function DashboardMeetingrooms () {
         // call DELETE api to remove this id from database
     }
 
+    // to fetch data from backend 🗿
+    const [meetingRooms, setMeetingRooms] = useState<MeetingRoom[]>([]);
+    const fetchData = async () => {
+        const meetingrooms = await getMeetingRooms();
+        
+        if (meetingrooms.success === false) {
+            alert(meetingrooms.message);
+            return;
+        } else if ("data" in meetingrooms) {
+            const meetingroomPromises = meetingrooms.data.map(async (item:MeetingRoom) => {
+                if (!item) {
+                    alert("all item should be defined !")
+                    return undefined;
+                }
+                const co = await getCoWorkingSpace(item.coworkingSpace);
+
+                if (co.success === false) {
+                    alert(co.message);
+                    return;
+                } else if ("data" in co) {
+                    return {
+                        _id: item._id || "",
+                        roomNumber: item.roomNumber || -1,
+                        coworkingSpace: item.coworkingSpace || -1,
+                        location: co.data[0].name || "", 
+                        capacity: item.capacity || -1,
+                        projector: item.projector || false,
+                        whiteboard: item.whiteboard || false,
+                        ledTV: item.ledTV || false,
+                        speaker: item.speaker || false,
+                        __v: item.__v || -1,
+                    }
+                }
+            });
+
+        // wait for all promise
+        const finalMeetingRooms = (await Promise.all(meetingroomPromises)).filter(
+            (room) => room !== undefined
+        ) as MeetingRoom[];
+        setMeetingRooms(finalMeetingRooms);
+        }
+    }
+
+    // use effect to deal with async
+    useEffect(() => { fetchData() },[]);
+
     return (
         <main className="pb-50 pt-3">
             {/* <div className="w-(calc[100vw-35opx]) flex justify-center">
@@ -39,12 +87,16 @@ export default function DashboardMeetingrooms () {
             
             <DoraNextPrev/>
             
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" coid="92urf924uruf0w9yf02" coname="sth" editFunction={clickEdit}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" coid="92urf924uruf0w9yf02" coname="sth" editFunction={clickEdit}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" coid="92urf924uruf0w9yf02" coname="sth" editFunction={clickEdit}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" coid="92urf924uruf0w9yf02" coname="sth" editFunction={clickEdit}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" coid="92urf924uruf0w9yf02" coname="sth" editFunction={clickEdit}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" coid="92urf924uruf0w9yf02" coname="sth" editFunction={clickEdit}/>
+            {
+                meetingRooms.map((item) => (
+                    <AdminObjectCard
+                    id = {item._id}
+                    number = {item.roomNumber}
+                    coid = {item.coworkingSpace}
+                    coname= {item.location}
+                    editFunction={clickEdit}/>
+                ))
+            }
             
             {
             isEditOpen? 

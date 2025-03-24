@@ -1,5 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
+import { BackendResponse } from "@/types/BackendResponses";
 
 export function RainbowSelectButton ({text, goto, setPopup}:{text:string, goto?:string, setPopup:Function}) {
 

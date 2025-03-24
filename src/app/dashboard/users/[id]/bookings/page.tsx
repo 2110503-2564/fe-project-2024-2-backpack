@@ -31,7 +31,11 @@ export default function DashbordUserBooking({
               className="text-[#FF029A] mb-2 text-start"
               style={{
                 textShadow:
-                  "2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 0px 4px 0px rgba(0, 0, 0, 1), 0px -2px 0px rgba(0, 0, 0, 1),2px -2px 0px rgba(0, 0, 0, 1), 3px 3px 0px rgba(0, 0, 0, 1), -3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 0px 4px 9px rgba(0, 0, 0, 0.3)",
+                  `2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 
+                  0px 4px 0px rgba(0, 0, 0, 1), 0px -2px 0px rgba(0, 0, 0, 1), 
+                  2px -2px 0px rgba(0, 0, 0, 1), 3px 3px 0px rgba(0, 0, 0, 1), 
+                  -3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 
+                  0px 4px 9px rgba(0, 0, 0, 0.3)`,
               }}
             >
               User id
@@ -41,7 +45,11 @@ export default function DashbordUserBooking({
               className="text-[#FF029A] mb-2 text-start"
               style={{
                 textShadow:
-                  "2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 0px 4px 0px rgba(0, 0, 0, 1), 0px -2px 0px rgba(0, 0, 0, 1),2px -2px 0px rgba(0, 0, 0, 1), 3px 3px 0px rgba(0, 0, 0, 1), -3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 0px 4px 9px rgba(0, 0, 0, 0.3)",
+                  `2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 
+                  0px 4px 0px rgba(0, 0, 0, 1), 0px -2px 0px rgba(0, 0, 0, 1), 
+                  2px -2px 0px rgba(0, 0, 0, 1), 3px 3px 0px rgba(0, 0, 0, 1), 
+                  -3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 
+                  0px 4px 9px rgba(0, 0, 0, 0.3)`,
               }}
             >
               Name

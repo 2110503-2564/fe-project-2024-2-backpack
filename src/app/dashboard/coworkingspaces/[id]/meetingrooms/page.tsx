@@ -4,6 +4,7 @@ import MeetingRoomInfoCard from "@/components/MeetingRoomInfoCard";
 import { YellowButton } from "@/components/YellowButton";
 import { useState, useEffect } from "react";
 import { EditMeetingRoom } from "@/components/EditOverlay";
+import { getMeetingRoom } from "@/libs/meetingRoom";
 
 export default function DashboardCoworkingspaceMeetingrooms ({ params }: { params: { id: string } }) {
 

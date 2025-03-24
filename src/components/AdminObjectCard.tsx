@@ -3,15 +3,19 @@ import { YellowButton } from "./YellowButton";
 export default function AdminObjectCard({
   id,
   name,
-  email,
+  number,
+  uid,
+  mid,
   coid,
   coname,
   editFunction,
   removeFunction
 }: {
-  id: string;
-  name: string;
-  email?: string;
+  id?: string;
+  name?: string;
+  number?: number;
+  uid?: string;
+  mid?: string;
   coid?: string;
   coname?: string;
   editFunction?: (id:string) => void;
@@ -20,7 +24,7 @@ export default function AdminObjectCard({
 {
 
     const triggerEditFunction = () => {
-        if (editFunction) {
+        if (editFunction && id) {
             editFunction(id);
         }
     }
@@ -33,17 +37,42 @@ export default function AdminObjectCard({
       <div className="grid grid-cols-8 col-span-1 flex-1">
         <h2 className="text-center h-9 font-bold">id</h2>
         <h2 className="col-span-7">{id}</h2>
-        <h2 className="text-center h-9 font-bold">name</h2>
-        <h2 className="col-span-7">{name}</h2>
 
-        {email ? (
+        {uid ? (
           <>
-            <h2 className="text-center h-9 font-bold">email</h2>
-            <h2 className="col-span-7">{email}</h2>
+            <h2 className="text-center h-9 font-bold">User id</h2>
+            <h2 className="col-span-7">{uid}</h2>
           </>
         ) : (
           ""
         )}
+        
+        {name ? (
+          <>
+            <h2 className="text-center h-9 font-bold">name</h2>
+            <h2 className="col-span-7">{name}</h2>
+          </>
+        ) : (
+          ""
+        )}
+
+        {number ? (
+          <>
+            <h2 className="text-center h-9 font-bold">number</h2>
+            <h2 className="col-span-7">{number}</h2>
+          </>
+        ) : (
+          ""
+        )}
+
+        {mid ? (
+          <>
+            <h2 className="text-center h-9 font-bold">Room id</h2>
+            <h2 className="col-span-7">{mid}</h2>
+          </>
+        ) : (
+          ""
+        )}        
 
         {coid ? (
           <>

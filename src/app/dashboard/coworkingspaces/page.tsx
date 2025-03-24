@@ -5,6 +5,8 @@ import { EditCoworkingSpace, EditMeetingRoom, EditProfile } from "@/components/E
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { useRouter } from "next/navigation";
+import { getCoWorkingSpaces } from "@/libs/coworkingSpace";
+import { CoworkingSpace } from "@/types/CoworkingSpace";
 
 export default function DashboardCoworkingspaces () {
 
@@ -30,6 +32,22 @@ export default function DashboardCoworkingspaces () {
         // call DELETE api to remove this id from database
     }
 
+    // to fetch data from backend 🗿
+    const [coworkingData, setCoworkingData] = useState<CoworkingSpace[]>([]);
+    const fetchData = async () => {
+        const coData = await getCoWorkingSpaces();
+        
+        if (coData.success === false) {
+            alert(coData.message);
+            return;
+        } else if ("data" in coData) {
+            setCoworkingData(coData.data)
+        }
+    }
+
+    // use effect to deal with async
+    useEffect(() => { fetchData() },[]);
+
     return (
         <main className="pb-50 pt-3">
             <div className="w-(calc[100vw-35opx]) flex justify-center">
@@ -38,12 +56,17 @@ export default function DashboardCoworkingspaces () {
             
             <DoraNextPrev/>
 
-            <AdminObjectCard id="1" name="solazytodona" editFunction={clickNavi}/>
-            <AdminObjectCard id="f9wj93fjwa-j9wjv9jfvwjmoafaw" name="solazytodona" editFunction={clickNavi}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
+            {
+                coworkingData.map((item) => (
+                    item ? (
+                        <AdminObjectCard 
+                        id= {item._id}
+                        name= {item.name}
+                        editFunction={clickNavi}
+                        />
+                    ) : ""               
+                ))
+            }
             
             {
             isEditOpen? 

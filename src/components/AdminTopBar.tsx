@@ -17,6 +17,7 @@ export default function AdminTopBar() {
         "/dashboard/users": "Users",
         "/dashboard/coworkingspaces": "Co-working spaces",
         "/dashboard/meetingrooms": "Meeting rooms",
+        "/dashboard/reservations": "Reservations"
     }[pathname] || "Select" 
     
     useEffect(() => {
@@ -69,7 +70,7 @@ export default function AdminTopBar() {
           {
             isOpen && (
               <div className="absolute flex flex-col h-fit w-fit m-5" ref={popupRef}>
-                <RainbowSelectButton text="Users" goto="users" setPopup={setPopup}/>
+                <RainbowSelectButton text="Reservations" goto="reservations" setPopup={setPopup}/>
                 <RainbowSelectButton text="Co-working Space" goto="coworkingspaces" setPopup={setPopup}/>
                 <RainbowSelectButton text="Meeting Room" goto="meetingrooms" setPopup={setPopup}/>
               </div>
