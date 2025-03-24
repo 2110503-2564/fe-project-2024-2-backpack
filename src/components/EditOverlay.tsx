@@ -4,7 +4,7 @@ import { SubmitButton } from "./OtherComponents";
 import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/libs/store";
-import { getReservation } from "@/libs/reservation";
+import { getReservation, updateReservation } from "@/libs/reservation";
 import {
   createMeetingRoom,
   getMeetingRoom,
@@ -13,6 +13,7 @@ import {
 import { MeetingRoom } from "@/types/MeetingRoom";
 import { createCoWorkingSpace, getCoWorkingSpace, updateCoWorkingSpace } from "@/libs/coworkingSpace";
 import { CoworkingSpace } from "@/types/CoworkingSpace";
+import { Reservation } from "@/types/Reservation";
 
 export function EditBg({
   children,
@@ -129,36 +130,34 @@ export function EditReservation({
   const { token } = useSelector((state: RootState) => state.auth);
 
   const [formData, setFormData] = useState({
-    
+    _id: id,
+    reserveDateStart: null as Date | null,
+    reserveDateEnd: null as Date | null,
+    user: "",
+    meetingRoom: null as MeetingRoom | null,
   });
 
   // for type !== new
   useEffect(() => {
-    if (type !== "new") {
 
-      const fetchData = async () => {
-        const res = await getCoWorkingSpace(id);
+    const fetchData = async () => {
+      if (token && token !== null) {
+        const res = await getReservation(token, id);
         if (res.success === false) {
           alert(res.message);
           return;
         } else if ("data" in res) {
           setFormData({
             _id: id,
-            name: res.data[0].name || "",
-            address: res.data[0].address || "",
-            district: res.data[0].district || "",
-            province: res.data[0].province || "",
-            postalcode: res.data[0].postalcode || "",
-            tel: res.data[0].tel || "",
-            region: res.data[0].region || "",
-            open_time: res.data[0].open_time || null,
-            close_time: res.data[0].close_time || null,
+            reserveDateStart: res.data[0].reserveDateStart || null,
+            reserveDateEnd: res.data[0].reserveDateEnd || null,
+            user: res.data[0].user || "",
+            meetingRoom: res.data[0].meetingRoom || null,
           });
-        }
-      };
-
-      fetchData();
+        }   
+      }
     }
+    fetchData();
   }, []);
 
   // handle change
@@ -170,38 +169,21 @@ export function EditReservation({
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault();   
+      if (token) {
+        const res = await updateReservation(token, formData as Reservation);
+  
+        if (!res.success) {
+          alert("Can't update reservation");
+          return;
+        }
+  
+      } else {
+        console.error("cannot send req because token is undefined ! (update reservation)")
+      }
 
-    if (type !== "new") {     
-      if (token) {
-        const res = await updateCoWorkingSpace(token, formData as CoworkingSpace);
-  
-        if (!res.success) {
-          alert("Can't update meeting room");
-          return;
-        }
-  
-      } else {
-        console.error("cannot send req because token is undefined ! (update coworkingspace)")
-      }
-    } else {
-      const { token } = useSelector((state: RootState) => state.auth);
-      if (token) {
-        const res = await createCoWorkingSpace(token, formData as CoworkingSpace);
-  
-        if (!res.success) {
-          alert("Can't create meeting room");
-          return;
-        }
-  
-      } else {
-        console.error("cannot send req because token is undefined ! (create coworkingspace)")
-      }
+      closeOverlayWhenSubmit();
     }
-
-    closeOverlayWhenSubmit();
-  }
-
 
   return (
     <div
@@ -215,20 +197,10 @@ export function EditReservation({
             <h2 className="">{id}</h2>
           </EditBg>
           <EditBg text="Co-working space">
-            {/* fetch Co-working space name from backend ? */}
-            <input
-              type="text"
-              className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-            />
+            <h2 className="">{formData.meetingRoom ? formData.meetingRoom.coworkingSpace.name : ""}</h2>
           </EditBg>
           <EditBg text="Meeting room">
-            {/* fetch Meeting room name from backend ? */}
-            <input
-              type="number"
-              name="meetingRoom"
-              min="1"
-              className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-            />
+            <h2 className="">{formData.meetingRoom ? formData.meetingRoom.roomNumber : ""}</h2>
           </EditBg>
           <div className="grid grid-cols-2 w-full gap-x-3 gap-y-4">
             <EditBg text="From">
@@ -236,6 +208,8 @@ export function EditReservation({
                 type="datetime-local"
                 name="reserveDateStart"
                 className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                value={formData.reserveDateStart ? new Date(formData.reserveDateStart).toISOString().substring(11, 16) : ""}
+                onChange={handleChange}
               />
             </EditBg>
             <EditBg text="To">
@@ -243,17 +217,15 @@ export function EditReservation({
                 type="datetime-local"
                 name="reserveDateEnd"
                 className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                value={formData.reserveDateEnd ? new Date(formData.reserveDateEnd).toISOString().substring(11, 16) : ""}
+                onChange={handleChange}
               />
             </EditBg>
           </div>
         </div>
 
         <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton
-            clickto={() => {
-              closeOverlayWhenSubmit();
-            }}
-          />
+          <SubmitButton/>
         </div>
       </div>
     </div>
@@ -294,10 +266,10 @@ export function EditMeetingRoom({
         } else if ("data" in res) {
           setFormData({
             _id: id,
-            roomNumber: res.data[0].roomNumber || -1,
+            roomNumber: res.data[0].roomNumber || 0,
             location: res.data[0].location || "",
             coworkingSpace: res.data[0].coworkingSpace || null,
-            capacity: res.data[0].capacity || -1,
+            capacity: res.data[0].capacity || 0,
             projector: res.data[0].projector || false,
             whiteboard: res.data[0].whiteboard || false,
             ledTV: res.data[0].ledTV || false,
@@ -351,6 +323,7 @@ export function EditMeetingRoom({
         );
       }
     }
+    closeOverlayWhenSubmit();
   };
 
   return (
@@ -435,11 +408,7 @@ export function EditMeetingRoom({
           </div>
 
           <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-            <SubmitButton
-              clickto={() => {
-                closeOverlayWhenSubmit();
-              }}
-            />
+            <SubmitButton/>
           </div>
         </form>
       </div>
@@ -452,7 +421,7 @@ export function EditCoworkingSpace({
   closeOverlayWhenSubmit,
   type,
 }: {
-  id: string;
+  id?: string;
   closeOverlayWhenSubmit: Function;
   type?: string;
 }) {
@@ -474,7 +443,7 @@ export function EditCoworkingSpace({
 
   // for type !== new
   useEffect(() => {
-    if (type !== "new") {
+    if (type !== "new" && id) {
 
       const fetchData = async () => {
         const res = await getCoWorkingSpace(id);
@@ -503,10 +472,26 @@ export function EditCoworkingSpace({
 
   // handle change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+
+    if (name == "open_time" || name == "close_time") {
+      const nowDate = formData[name] !== null ? new Date(formData[name]) : new Date();
+      const [inputHours, inputMin] = value.split(":").map(Number);
+
+      nowDate.setHours(inputHours);
+      nowDate.setMinutes(inputMin);
+
+      setFormData({
+        ...formData,
+        [name]: nowDate,
+      });
+
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
   
   const handleSubmit = async (e: React.FormEvent) => {

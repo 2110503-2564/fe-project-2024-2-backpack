@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { BlueButton } from "@/components/BlueButton";
 import { useState, useEffect } from "react";

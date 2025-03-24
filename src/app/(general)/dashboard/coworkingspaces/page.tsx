@@ -33,8 +33,13 @@ export default function DashboardCoworkingspaces () {
     const removeFunction = async (itid:string) => {
         if (token && token !== null) {
             const res = await deleteCoWorkingSpace(token, itid);
+
+            // fix remove to dynamic 
+            if (res.success) {
+                setCoworkingData((items) => items.filter((item) => item._id != itid));
+            }          
         } else {
-            alert("token is goneee !!!");
+            console.log("token is goneee !!!");
             return;
         }      
     }
@@ -45,7 +50,7 @@ export default function DashboardCoworkingspaces () {
         const coData = await getCoWorkingSpaces();
         
         if (coData.success === false) {
-            alert(coData.message);
+            console.log(coData.message);
             return;
         } else if ("data" in coData) {
             setCoworkingData(coData.data)

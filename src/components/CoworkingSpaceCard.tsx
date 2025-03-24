@@ -30,7 +30,7 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
                         Open-Close time: {openinghours}
                     </div>
                     <div className="h-auto w-full">
-                        <Link href="/coworkingspaces/1/meetingrooms">
+                        <Link href={"/coworkingspaces/"+id+"/meetingrooms"}>
                             <BlueButton text="view meeting rooms">
                             </BlueButton>
                         </Link>
