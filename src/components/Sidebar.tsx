@@ -22,15 +22,14 @@ export default function Sidebar() {
             <div className="text-black text-3xl mb-4 font-bold text-center">Filter And Search</div>
             <div className="border-8 border-blue-900 h-full w-full rounded-3xl py-3 px-5 space-y-4 bg-linear-to-t from-blue-700 to-blue-300">
 
-                <Searchbar img="/img/searchIcon.svg" text="search by coworking space name..." setValue={setSearchName} />
-                <Searchbar img="/img/locationIcon.svg" text="search by location... ex) Ratchathewi" setValue={setSearchLoc} />
-                <Searchbar img="/img/dateIcon.svg" text="Day of reservation.." setValue={setSearchDate} />
-                <div className="flex flex-row items-center">
-                    <SmallSearchbar img="/img/timeIcon.svg" text="Time..." setValue={setSearchStart} />
-                    <h1 className="text-black text-[16px] font-bold mx-2 [-webkit-text-stroke:0.2px_white]">to</h1>
-                    <SmallSearchbar img="/img/timeIcon.svg" text="Time..." setValue={setSearchEnd} />
-                </div>
-
+            <Searchbar img="/img/searchIcon.svg" text="search by coworking space name..." setValue={setSearchName}/>
+            <Searchbar img="/img/locationIcon.svg" text="search by location... ex) Ratchathewi" setValue={setSearchLoc}/>
+            <Searchbar img="/img/dateIcon.svg" text="Day of reservation.." setValue={setSearchDate}/>
+            <div className="flex flex-row items-center">
+                <SmallSearchbar text="Time..." setValue={setSearchStart}/>
+                <h1 className="text-black text-[16px] font-bold mx-2 [-webkit-text-stroke:0.2px_white]">to</h1>
+                <SmallSearchbar text="Time..." setValue={setSearchEnd}/>
+            </div>
                 <div className="bg-white p-3 rounded-2xl flex-auto max-h-full">
                     <div className="font-bold text-center text-lg">FACILITIES !!! :O</div>
 

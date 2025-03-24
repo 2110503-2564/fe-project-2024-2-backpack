@@ -3,8 +3,8 @@ export type User = {
   name: string;
   email: string;
   telephoneNumber: string;
-  password:string;
   role?: "user" | "admin";
+  password: string;
   createdAt?: Date;
   __v?: number;
 };

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from '@/libs/store';
 import "@/app/globals.css"; // Root global styles
+import Sidebar from "@/components/Sidebar";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

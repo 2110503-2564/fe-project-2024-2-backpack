@@ -7,6 +7,7 @@ export function BlueButton ({text, clickto}:{text:string, clickto?:Function}) {
         style={{boxShadow:"inset 1px 4px 1.2px rgba(255, 255, 255, 1)"}}
         onMouseEnter={(e) => {e.currentTarget.style.boxShadow = "inset 1px 4px 1.2px rgba(255, 255, 255, 1), 3px 3px 7px rgba(0, 0, 0, 0.8)"}}
         onMouseLeave={(e) => {e.currentTarget.style.boxShadow = "inset 1px 4px 1.2px rgba(255, 255, 255, 1)"}}
+        onClick={() => {clickto?.()}}
         >
             {text}
         </button>

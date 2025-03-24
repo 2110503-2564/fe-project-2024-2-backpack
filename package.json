@@ -13,6 +13,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.8",
+    "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.6.1",
     "@types/redux-persist": "^4.0.0",
     "dayjs": "^1.11.13",

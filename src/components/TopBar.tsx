@@ -1,10 +1,13 @@
-"use client";
+"use client"
+import { getUserRole } from "@/libs/getUserRole";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/libs/store';
 import { logOut } from "@/libs/slices/authSlice";
 import Image from "next/image";
-import { AdminTopBar } from "./BarComponents";
+import AdminTopBar from "./AdminTopBar";
 import Link from 'next/link';
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 export default function TopBar() {
@@ -20,8 +23,9 @@ export default function TopBar() {
         router.push("/login");
         router.refresh;
     }
+    
     return (
-        <div className="z-50 fixed top-0 left-0 flex items-center p-8 w-full h-[10vh] 
+        <div className="z-50 fixed top-0 left-0 flex items-center p-8 w-full h-[10vh]
         bg-linear-to-r from-red-300 via-emerald-300 to-sky-300">
             <Link href="/">
                 <Image
