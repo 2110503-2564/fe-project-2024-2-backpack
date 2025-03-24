@@ -1,21 +1,19 @@
 "use client"
 import { getUserRole } from "@/libs/getUserRole";
+import clsx from "clsx";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { YellowButton } from "./YellowButton";
 import { EditCoworkingSpace } from "./EditOverlay";
 export default function CoworkingSpaceInfoCard({ id }
-    : { id: string }) {
+    : { id: string }) {       
 
-        // const session = await getServerSession(authOptions);
-        const [role, setRole] = useState<string | null>(null);
-
-        useEffect(() => {
-            setRole(getUserRole());
-        })        
+        const pathname = usePathname();
 
         const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
+        // to disable scrolling
         useEffect(() => {
             if (isEditOpen) {
                 document.body.style.overflow = "hidden"
@@ -28,11 +26,13 @@ export default function CoworkingSpaceInfoCard({ id }
             // call DELETE api to remove this id from database
         }
 
+        const bgColor:string = pathname.includes("/dashboard") ? "bg-linear-to-tl from-[#06F157] to-[#01C3FF]" : "bg-white"
+
     return (
-        <div className="relative   bg-white w-full h-auto px-12  lg:inline-flex justify-start items-center gap-7 overflow-hidden py-12">
+        <div className={clsx("relative w-full h-auto px-12  lg:inline-flex justify-start items-center gap-7 overflow-hidden py-12", bgColor)}>
 
             {
-                role === "admin" ? 
+                pathname.search("/dashboard") !== -1 ?
                 (
                     <div className="absolute right-12 top-12 z-50">
                         <YellowButton text="edit" clickto={() => (setIsEditOpen(!isEditOpen))}/>

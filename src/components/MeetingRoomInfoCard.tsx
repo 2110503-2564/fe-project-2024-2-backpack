@@ -4,14 +4,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { YellowButton } from "./YellowButton";
 import { EditMeetingRoom } from "./EditOverlay";
+import { usePathname } from "next/navigation";
 export default function MeetingRoomInfoCard({ id }
-    : { id: string }) {
+    : { id: string }) { 
 
-    const [role, setRole] = useState<string | null>(null);
-
-    useEffect(() => {
-        setRole(getUserRole());
-    })   
+    const pathname = usePathname();
     
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
@@ -51,7 +48,7 @@ export default function MeetingRoomInfoCard({ id }
             <div className="min-w-full lg:min-w-1/10 h-auto lg:h-full flex flex-col items-center justify-center flex-grow">
 
             {
-                role === "admin" ?
+                pathname.search("/dashboard") !== -1 ?
                 (
                     <>
                     <div className="flex-col flex space-y-4 mb-3">

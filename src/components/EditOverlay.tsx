@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { SubmitButton } from "./OtherComponents";
-import { ClassNames } from "@emotion/react";
 
 export function EditBg ({children, text}:{children:ReactNode, text:string}) {
 
@@ -20,7 +19,7 @@ export function EditBg ({children, text}:{children:ReactNode, text:string}) {
 
 }
 
-export function EditProfile ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
+export function EditProfile ({id, closeOverlayWhenSubmit, type}:{id:string, closeOverlayWhenSubmit:Function, type?:string}) {
 
 
 
@@ -52,7 +51,7 @@ export function EditProfile ({id, closeOverlayWhenSubmit}:{id:string, closeOverl
     );
 }
 
-export function EditReservation ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
+export function EditReservation ({id, closeOverlayWhenSubmit, type}:{id:string, closeOverlayWhenSubmit:Function, type?:string}) {
 
     return (
         <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
@@ -64,17 +63,19 @@ export function EditReservation ({id, closeOverlayWhenSubmit}:{id:string, closeO
                         <h2 className="">{id}</h2>
                     </EditBg>
                     <EditBg text="Co-working space">
+                        {/* fetch Co-working space name from backend ? */}
                         <input type="text" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                     </EditBg>
                     <EditBg text="Meeting room">
-                        <input type="number" min="1" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
+                        {/* fetch Meeting room name from backend ? */}
+                        <input type="number" name="meetingRoom" min="1" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                     </EditBg>
                     <div className="grid grid-cols-2 w-full gap-x-3 gap-y-4">
                         <EditBg text="From">
-                            <input type="time" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
+                            <input type="datetime-local" name="reserveDateStart" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                         </EditBg>
                         <EditBg text="To">
-                            <input type="time" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
+                            <input type="datetime-local" name="reserveDateEnd" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                         </EditBg>
                     </div>
                     
@@ -89,7 +90,7 @@ export function EditReservation ({id, closeOverlayWhenSubmit}:{id:string, closeO
 
 }
 
-export function EditMeetingRoom ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
+export function EditMeetingRoom ({id, closeOverlayWhenSubmit, type, coid}:{id:string, closeOverlayWhenSubmit:Function, type?:string, coid?:string}) {
 
     return (
         <div className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
@@ -135,12 +136,17 @@ export function EditMeetingRoom ({id, closeOverlayWhenSubmit}:{id:string, closeO
 
 }
 
-export function EditCoworkingSpace ({id, closeOverlayWhenSubmit}:{id:string, closeOverlayWhenSubmit:Function}) {
+export function EditCoworkingSpace ({id, closeOverlayWhenSubmit, type}:{id:string, closeOverlayWhenSubmit:Function, type?:string}) {
 
-    // set submit button to call POST api when clicked
+    // set submit button to check if use POST or PUT
     const clickSubmit = () => {
-        // pass info to api
-        // .. useState ??
+        if (type === "new") {
+            // get all info
+            // call POST api
+        } else {
+            // get all info
+            // call PUT api
+        }
     }
 
     return (
@@ -148,11 +154,12 @@ export function EditCoworkingSpace ({id, closeOverlayWhenSubmit}:{id:string, clo
         border-4 border-black rounded-2xl"
         style={{boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)"}}>
             <div className="relative w-full min-h-[75vh] p-5">
+            <form>
                 <div className="flex flex-col space-y-4 mb-[60px]">
-                    <EditBg text="User ID">
+                    <EditBg text="Co-working Space ID">
                         <h2>{id}</h2>
                     </EditBg>
-                    <EditBg text="Co-working space">
+                    <EditBg text="Name">
                         <input type="text" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
                     </EditBg>
                     <div className="grid grid-cols-2 w-full gap-x-3 gap-y-4">
@@ -179,10 +186,10 @@ export function EditCoworkingSpace ({id, closeOverlayWhenSubmit}:{id:string, clo
                         </EditBg>
                         <EditBg text="Close">
                             <input type="time" className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"/>
-                        </EditBg>
-                    </div>
-                    
+                        </EditBg>                      
+                    </div>         
                 </div>
+            </form>
                 
                 <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
                     <SubmitButton clickto={() => {closeOverlayWhenSubmit();}}/>

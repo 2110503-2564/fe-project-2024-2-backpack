@@ -1,7 +1,7 @@
 "use client"
 import AdminObjectCard from "@/components/AdminObjectCard"
-import { useState } from "react"
-import { EditMeetingRoom, EditProfile } from "@/components/EditOverlay";
+import { useState, useEffect } from "react"
+import { EditCoworkingSpace, EditMeetingRoom, EditProfile } from "@/components/EditOverlay";
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { useRouter } from "next/navigation";
@@ -10,12 +10,17 @@ export default function DashboardCoworkingspaces () {
 
     const router = useRouter();
 
+    // for new button
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-    const [clickId, setClickId] = useState<string>("");
-    const clickEdit = (itid:string) => {
-        setIsEditOpen(!isEditOpen);
-        setClickId(itid);
+
+    // to disable scrolling
+    useEffect(() => {
+    if (isEditOpen) {
+        document.body.style.overflow = "hidden"
+    } else {
+        document.body.style.overflow = "auto"
     }
+    }, [isEditOpen]);    
 
     const clickNavi = (itid:string) => {
         router.push(`/dashboard/coworkingspaces/${itid}/meetingrooms`)
@@ -28,12 +33,12 @@ export default function DashboardCoworkingspaces () {
     return (
         <main className="pb-50 pt-3">
             <div className="w-(calc[100vw-35opx]) flex justify-center">
-                <YellowButton text="New"/>
+                <YellowButton text="New" clickto={() => setIsEditOpen(!isEditOpen)}/>
             </div>
             
             <DoraNextPrev/>
 
-            <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
+            <AdminObjectCard id="1" name="solazytodona" editFunction={clickNavi}/>
             <AdminObjectCard id="f9wj93fjwa-j9wjv9jfvwjmoafaw" name="solazytodona" editFunction={clickNavi}/>
             <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
             <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="solazytodona" editFunction={clickNavi}/>
@@ -43,7 +48,7 @@ export default function DashboardCoworkingspaces () {
             {
             isEditOpen? 
             <>
-                <EditMeetingRoom id={clickId} closeOverlayWhenSubmit={() => setIsEditOpen(false)}/>
+                <EditCoworkingSpace id="{New Coworking space}" closeOverlayWhenSubmit={() => setIsEditOpen(false)} type="new"/>
                 <button className="fixed inset-0 bg-black z-70 opacity-40"
                 onClick={() => setIsEditOpen(false)}></button>
             </>

@@ -1,6 +1,6 @@
 "use client"
 import AdminObjectCard from "@/components/AdminObjectCard"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { EditProfile } from "@/components/EditOverlay";
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
@@ -10,15 +10,20 @@ export default function DashboardUsers () {
 
     const router = useRouter();
 
+    // for New button
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-    const [clickId, setClickId] = useState<string>("");
-    const clickEdit = (itid:string) => {
-        setIsEditOpen(!isEditOpen);
-        setClickId(itid);
+    
+    // to disable scrolling
+    useEffect(() => {
+    if (isEditOpen) {
+        document.body.style.overflow = "hidden"
+    } else {
+        document.body.style.overflow = "auto"
     }
+    }, [isEditOpen]);
 
     const clickNavi = (itid:string) => {
-        router.push(`/dashboard/users/${itid}`)
+        router.push(`/dashboard/users/${itid}/bookings`)
     }
 
     const removeFunction = () => {
@@ -28,7 +33,7 @@ export default function DashboardUsers () {
     return (
         <main className="pb-50 pt-3">
             <div className="w-(calc[100vw-35opx]) flex justify-center">
-                <YellowButton text="New"/>
+                <YellowButton text="New" clickto={() => setIsEditOpen(!isEditOpen)}/>
             </div>
 
             <DoraNextPrev/>
@@ -46,7 +51,7 @@ export default function DashboardUsers () {
             {
             isEditOpen? 
             <>
-                <EditProfile id={clickId} closeOverlayWhenSubmit={() => setIsEditOpen(!isEditOpen)}/>
+                <EditProfile id="{New User}" closeOverlayWhenSubmit={() => setIsEditOpen(!isEditOpen)} type="new"/>
                 <button className="fixed inset-0 bg-black z-70 opacity-40"
                 onClick={() => setIsEditOpen(false)}></button>
             </>
