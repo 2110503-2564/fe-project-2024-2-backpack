@@ -18,9 +18,9 @@ export function RainbowSelectButton ({text, goto, setPopup}:{text:string, goto?:
     );
 }
 
-export function SubmitButton ({clickto}:{clickto?:Function}) {
+export function SubmitButton ({clickto, submitto}:{clickto?:Function, submitto?:Function}) {
     return (
-        <button className="font-bold text-3xl rounded-4xl bg-red-500 w-40 h-10 text-white [-webkit-text-stroke:1.5px_black]"
+        <button type="submit" className="font-bold text-3xl rounded-4xl bg-red-500 w-40 h-10 text-white [-webkit-text-stroke:1.5px_black]"
         style={{boxShadow: "1px 4px 0px rgba(90, 0, 0, 1)"}}
         onClick={(e) => {e.stopPropagation; clickto?.()}}
         >
