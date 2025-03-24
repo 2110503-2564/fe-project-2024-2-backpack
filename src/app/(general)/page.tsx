@@ -1,6 +1,6 @@
 "use client";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/libs/store';
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 import { getUserRole } from "@/libs/getUserRole";
 import Image from "next/image";
 import FirstMainPageCard from "@/components/FirstMainPageCard";

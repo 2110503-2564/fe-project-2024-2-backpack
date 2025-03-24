@@ -9,7 +9,7 @@ export default function AdminObjectCard({
   coid,
   coname,
   editFunction,
-  removeFunction
+  removeFunction,
 }: {
   id?: string;
   name?: string;
@@ -18,16 +18,14 @@ export default function AdminObjectCard({
   mid?: string;
   coid?: string;
   coname?: string;
-  editFunction?: (id:string) => void;
+  editFunction?: (id: string) => void;
   removeFunction?: Function;
-}) 
-{
-
-    const triggerEditFunction = () => {
-        if (editFunction && id) {
-            editFunction(id);
-        }
+}) {
+  const triggerEditFunction = () => {
+    if (editFunction && id) {
+      editFunction(id);
     }
+  };
 
   return (
     <div
@@ -46,7 +44,7 @@ export default function AdminObjectCard({
         ) : (
           ""
         )}
-        
+
         {name ? (
           <>
             <h2 className="text-center h-9 font-bold">name</h2>
@@ -72,7 +70,7 @@ export default function AdminObjectCard({
           </>
         ) : (
           ""
-        )}        
+        )}
 
         {coid ? (
           <>
@@ -85,8 +83,11 @@ export default function AdminObjectCard({
         )}
       </div>
       <div className="flex flex-col space-y-2.5 w-fit flex-none items-start">
-        <YellowButton text="edit" clickto={triggerEditFunction}/>
-        <YellowButton text="remove" clickto={removeFunction}/>
+        <YellowButton text="edit" clickto={triggerEditFunction} />
+        <YellowButton
+          text="remove"
+          clickto={() => (removeFunction && id ? removeFunction(id) : "")}
+        />
       </div>
     </div>
   );

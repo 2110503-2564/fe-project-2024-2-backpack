@@ -3,9 +3,11 @@ import AdminObjectCard from "@/components/AdminObjectCard";
 import { useState, useEffect } from "react";
 import { EditMeetingRoom, EditProfile } from "@/components/EditOverlay";
 import DoraNextPrev from "@/components/DoraPrevNext";
-import { getMeetingRooms } from "@/libs/meetingRoom";
+import { deleteMeetingRoom, getMeetingRooms } from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
 import { getCoWorkingSpace } from "@/libs/coworkingSpace";
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 
 export default function DashboardMeetingrooms() {
   // edit meeting room
@@ -28,8 +30,16 @@ export default function DashboardMeetingrooms() {
     }
   }, [isEditOpen]);
 
-  const removeFunction = () => {
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  const removeFunction = async (itid: string) => {
     // call DELETE api to remove this id from database
+    if (token && token !== null) {
+      const res = await deleteMeetingRoom(token, itid);
+    } else {
+      alert("token is goneee !!!");
+      return;
+    }
   };
 
   // to fetch data from backend 🗿
@@ -67,6 +77,7 @@ export default function DashboardMeetingrooms() {
           coid={item.coworkingSpace._id}
           coname={item.coworkingSpace.name}
           editFunction={clickEdit}
+          removeFunction={removeFunction}
         />
       ))}
 

@@ -6,7 +6,7 @@ import { BackendResponse } from "@/types/BackendResponses";
  * @param content User detail, required as type.
  */
 export async function userRegister(
-  content: User
+  content: User,
 ): Promise<BackendResponse<User>> {
   content.role = "user"; // always user on registration
 
@@ -31,7 +31,7 @@ export async function userRegister(
  */
 export async function userLogIn(
   userEmail: string,
-  userPassword: string
+  userPassword: string,
 ): Promise<BackendResponse<User>> {
   const response = await fetch("http://localhost:5000/api/auth/login", {
     method: "POST",
@@ -54,7 +54,7 @@ export async function userLogIn(
  * @param token User token to log out
  */
 export async function userLogOut(
-  token: string
+  token: string,
 ): Promise<BackendResponse<User>> {
   const response = await fetch("http://localhost:5000/api/auth/logout", {
     method: "GET",
@@ -73,7 +73,7 @@ export async function userLogOut(
  * @param token User token
  */
 export async function getUserProfile(
-  token: string
+  token: string,
 ): Promise<BackendResponse<User>> {
   const response = await fetch("http://localhost:5000/api/auth/me", {
     method: "GET",

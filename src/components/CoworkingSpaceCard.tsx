@@ -48,4 +48,3 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
         </div >
     );
 }
-

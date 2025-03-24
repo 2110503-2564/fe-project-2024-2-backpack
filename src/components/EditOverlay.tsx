@@ -11,6 +11,11 @@ import {
   updateMeetingRoom,
 } from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
+import {
+  createCoWorkingSpace,
+  getCoWorkingSpace,
+  updateCoWorkingSpace,
+} from "@/libs/coworkingSpace";
 import { CoworkingSpace } from "@/types/CoworkingSpace";
 
 export function EditBg({
@@ -207,38 +212,43 @@ export function EditMeetingRoom({
   });
 
   // for type !== new
-  if (type !== "new") {
-    const fetchData = async () => {
-      const res = await getMeetingRoom(id);
-      if (res.success === false) {
-        alert(res.message);
-        return;
-      } else if ("data" in res) {
-        setFormData({
-          _id: id,
-          roomNumber: res.data[0].roomNumber || -1,
-          location: res.data[0].location || "",
-          coworkingSpace: res.data[0].coworkingSpace || null,
-          capacity: res.data[0].capacity || -1,
-          projector: res.data[0].projector || false,
-          whiteboard: res.data[0].whiteboard || false,
-          ledTV: res.data[0].ledTV || false,
-          speaker: res.data[0].speaker || false,
-        });
-      }
-    };
+  useEffect(() => {
+    if (type !== "new") {
+      const fetchData = async () => {
+        const res = await getMeetingRoom(id);
+        if (res.success === false) {
+          alert(res.message);
+          return;
+        } else if ("data" in res) {
+          let cws: MeetingRoom[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
+          setFormData({
+            _id: id,
+            roomNumber: cws[0].roomNumber || -1,
+            location: cws[0].location || "",
+            coworkingSpace: cws[0].coworkingSpace || null,
+            capacity: cws[0].capacity || -1,
+            projector: cws[0].projector || false,
+            whiteboard: cws[0].whiteboard || false,
+            ledTV: cws[0].ledTV || false,
+            speaker: cws[0].speaker || false,
+          });
+        }
+      };
 
-    useEffect(() => {
       fetchData();
-    }, []);
-  }
+    }
+  }, []);
 
   // handle change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
+    const { name, type, value, checked } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value, // ✅ Use checked for checkboxes
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -255,7 +265,7 @@ export function EditMeetingRoom({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (update meetingroom)"
+          "cannot send req because token is undefined ! (update meetingroom)",
         );
       }
     } else {
@@ -269,7 +279,7 @@ export function EditMeetingRoom({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (create meetingroom)"
+          "cannot send req because token is undefined ! (create meetingroom)",
         );
       }
     }
@@ -378,15 +388,100 @@ export function EditCoworkingSpace({
   closeOverlayWhenSubmit: Function;
   type?: string;
 }) {
-  // set submit button to check if use POST or PUT
-  const clickSubmit = () => {
-    if (type === "new") {
-      // get all info
-      // call POST api
-    } else {
-      // get all info
-      // call PUT api
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  const [formData, setFormData] = useState({
+    _id: id,
+    name: "",
+    address: "",
+    district: "",
+    province: "",
+    postalcode: "",
+    tel: "",
+    region: "",
+    open_time: null as Date | null,
+    close_time: null as Date | null,
+  });
+
+  // for type !== new
+  useEffect(() => {
+    if (type !== "new") {
+      const fetchData = async () => {
+        const res = await getCoWorkingSpace(id);
+        if (res.success === false) {
+          alert(res.message);
+          return;
+        } else if ("data" in res) {
+          let cws: CoworkingSpace[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
+          setFormData({
+            _id: id,
+            name: cws[0].name || "",
+            address: cws[0].address || "",
+            district: cws[0].district || "",
+            province: cws[0].province || "",
+            postalcode: cws[0].postalcode || "",
+            tel: cws[0].tel || "",
+            region: cws[0].region || "",
+            open_time: cws[0].open_time || null,
+            close_time: cws[0].close_time || null,
+          });
+        }
+      };
+
+      fetchData();
     }
+  }, []);
+
+  // handle change
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (type !== "new") {
+      if (token) {
+        const res = await updateCoWorkingSpace(
+          token,
+          formData as CoworkingSpace,
+        );
+
+        if (!res.success) {
+          alert("Can't update meeting room");
+          return;
+        }
+      } else {
+        console.error(
+          "cannot send req because token is undefined ! (update coworkingspace)",
+        );
+      }
+    } else {
+      const { token } = useSelector((state: RootState) => state.auth);
+      if (token) {
+        const res = await createCoWorkingSpace(
+          token,
+          formData as CoworkingSpace,
+        );
+
+        if (!res.success) {
+          alert("Can't create meeting room");
+          return;
+        }
+      } else {
+        console.error(
+          "cannot send req because token is undefined ! (create coworkingspace)",
+        );
+      }
+    }
+
+    closeOverlayWhenSubmit();
   };
 
   return (
@@ -396,7 +491,7 @@ export function EditCoworkingSpace({
       style={{ boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)" }}
     >
       <div className="relative w-full min-h-[75vh] p-5">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-4 mb-[60px]">
             <EditBg text="Co-working Space ID">
               <h2>{id}</h2>
@@ -404,56 +499,95 @@ export function EditCoworkingSpace({
             <EditBg text="Name">
               <input
                 type="text"
+                name="name"
                 className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                value={formData.name}
+                onChange={handleChange}
               />
             </EditBg>
             <div className="grid grid-cols-2 w-full gap-x-3 gap-y-4">
               <EditBg text="Address">
                 <input
                   type="text"
+                  name="address"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={formData.address}
+                  onChange={handleChange}
                 />
               </EditBg>
-              <EditBg text="Distinct">
+              <EditBg text="District">
                 <input
                   type="text"
+                  name="district"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={formData.district}
+                  onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Province">
                 <input
                   type="text"
+                  name="province"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={formData.province}
+                  onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Postal code">
                 <input
                   type="text"
+                  name="postalcode"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={formData.postalcode}
+                  onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Telephone">
                 <input
                   type="text"
+                  name="tel"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={formData.tel}
+                  onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Region">
                 <input
                   type="text"
+                  name="region"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={formData.region}
+                  onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Open">
                 <input
                   type="time"
+                  name="open_time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={
+                    formData.open_time
+                      ? new Date(formData.open_time)
+                          .toISOString()
+                          .substring(11, 16)
+                      : ""
+                  }
+                  onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Close">
                 <input
                   type="time"
+                  name="close_time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={
+                    formData.close_time
+                      ? new Date(formData.close_time)
+                          .toISOString()
+                          .substring(11, 16)
+                      : ""
+                  }
+                  onChange={handleChange}
                 />
               </EditBg>
             </div>
@@ -461,11 +595,7 @@ export function EditCoworkingSpace({
         </form>
 
         <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton
-            clickto={() => {
-              closeOverlayWhenSubmit();
-            }}
-          />
+          <SubmitButton />
         </div>
       </div>
     </div>
