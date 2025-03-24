@@ -13,6 +13,7 @@ export default function TopBar() {
     const router = useRouter();
     const handleLogOut = () => {
         dispatch(logOut());
+        router.push("/");
         router.refresh;
     };
     const routingToLogIn = () => {
@@ -44,19 +45,19 @@ export default function TopBar() {
                     token ? (
                         <div className='flex inline-flex gap-4'>
                             <Link href="/mybooking">
-                                <div className="text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
+                                <div className="cursor-pointer text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
                                 text-2xl font-bold text-right">
                                     My Booking
                                 </div>
                             </Link>
-                            <div onClick={handleLogOut} className="text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
+                            <div onClick={handleLogOut} className="cursor-pointer text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
                                 text-2xl font-bold text-right">
                                 Log Out
                             </div>
                         </div>
 
                     ) : (
-                        <div onClick={routingToLogIn} className="text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
+                        <div onClick={routingToLogIn} className="cursor-pointer text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
                                 text-4xl font-bold text-right">
                             Log In
                         </div>
