@@ -6,7 +6,7 @@ export default function myBookingList() {
                 Your Bookings
             </div>
             <div className="p-5">
-                <BookingCard meetingRoomId="1" meetingRoomName="Meeting Room 1" coworkingSpaceName="Menacing Space" date="22 March 2025" startTime="11.00" endTime="12.00" />
+                <BookingCard reservationId="1" meetingRoomId="1" meetingRoomName="Meeting Room 1" coworkingSpaceName="Menacing Space" date="22 March 2025" startTime="11.00" endTime="12.00" />
             </div>
         </div>
     );
