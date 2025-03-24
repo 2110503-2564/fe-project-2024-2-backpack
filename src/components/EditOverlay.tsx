@@ -1,12 +1,17 @@
-"use client"
+"use client";
 import { ReactNode } from "react";
 import { SubmitButton } from "./OtherComponents";
 import { useRef, useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/libs/store';
+import { useSelector } from "react-redux";
+import { RootState } from "@/libs/store";
 import { getReservation } from "@/libs/reservation";
-import { createMeetingRoom, getMeetingRoom, updateMeetingRoom } from "@/libs/meetingRoom";
+import {
+  createMeetingRoom,
+  getMeetingRoom,
+  updateMeetingRoom,
+} from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
+import { CoworkingSpace } from "@/types/CoworkingSpace";
 
 export function EditBg({
   children,
@@ -190,10 +195,10 @@ export function EditMeetingRoom({
   coid?: string;
 }) {
   const [formData, setFormData] = useState({
-    _id: "",
+    _id: id,
     roomNumber: 0,
     location: "",
-    coworkingSpace: "",
+    coworkingSpace: null as CoworkingSpace | null,
     capacity: 0,
     projector: false,
     whiteboard: false,
@@ -213,7 +218,7 @@ export function EditMeetingRoom({
           _id: id,
           roomNumber: res.data[0].roomNumber || -1,
           location: res.data[0].location || "",
-          coworkingSpace: res.data[0].coworkingSpace || "",
+          coworkingSpace: res.data[0].coworkingSpace || null,
           capacity: res.data[0].capacity || -1,
           projector: res.data[0].projector || false,
           whiteboard: res.data[0].whiteboard || false,
@@ -222,7 +227,7 @@ export function EditMeetingRoom({
         });
       }
     };
-  
+
     useEffect(() => {
       fetchData();
     }, []);
@@ -235,7 +240,7 @@ export function EditMeetingRoom({
       [event.target.name]: event.target.value,
     });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -243,31 +248,32 @@ export function EditMeetingRoom({
       const { token } = useSelector((state: RootState) => state.auth);
       if (token) {
         const res = await updateMeetingRoom(token, formData as MeetingRoom);
-  
+
         if (!res.success) {
           alert("Can't update meeting room");
           return;
         }
-  
       } else {
-        console.error("cannot send req because token is undefined ! (update meetingroom)")
+        console.error(
+          "cannot send req because token is undefined ! (update meetingroom)"
+        );
       }
     } else {
       const { token } = useSelector((state: RootState) => state.auth);
       if (token) {
         const res = await createMeetingRoom(token, formData as MeetingRoom);
-  
+
         if (!res.success) {
           alert("Can't create meeting room");
           return;
         }
-  
       } else {
-        console.error("cannot send req because token is undefined ! (create meetingroom)")
+        console.error(
+          "cannot send req because token is undefined ! (create meetingroom)"
+        );
       }
     }
-
-  }
+  };
 
   return (
     <div
@@ -349,15 +355,14 @@ export function EditMeetingRoom({
               </EditBg>
             </div>
           </div>
-        
 
-        <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton
-            clickto={() => {
-              closeOverlayWhenSubmit();
-            }}
-          />
-        </div>
+          <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
+            <SubmitButton
+              clickto={() => {
+                closeOverlayWhenSubmit();
+              }}
+            />
+          </div>
         </form>
       </div>
     </div>
