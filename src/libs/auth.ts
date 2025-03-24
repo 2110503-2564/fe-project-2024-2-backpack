@@ -1,6 +1,10 @@
 import { User } from "@/types/User";
 import { BackendResponse } from "@/types/BackendResponses";
 
+/**
+ * Register a new user, always assign the "user" role.
+ * @param content User detail, required as type.
+ */
 export async function userRegister(
   content: User
 ): Promise<BackendResponse<User>> {
@@ -19,6 +23,12 @@ export async function userRegister(
   return response.json();
 }
 
+/**
+ * Log-in a user into the system
+ * @param userEmail User email
+ * @param userPassword User password
+ * @returns Refer to LoginSuccessResponse interface in src/types/BackendResponses.ts
+ */
 export async function userLogIn(
   userEmail: string,
   userPassword: string
@@ -39,6 +49,10 @@ export async function userLogIn(
   return response.json();
 }
 
+/**
+ * Log-out a user from the system
+ * @param token User token to log out
+ */
 export async function userLogOut(
   token: string
 ): Promise<BackendResponse<User>> {
@@ -54,6 +68,10 @@ export async function userLogOut(
   return response.json();
 }
 
+/**
+ * Gets the Logged-in user detail
+ * @param token User token
+ */
 export async function getUserProfile(
   token: string
 ): Promise<BackendResponse<User>> {

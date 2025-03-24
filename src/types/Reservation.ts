@@ -3,7 +3,7 @@ export type Reservation = {
   reserveDateStart: Date;
   reserveDateEnd: Date;
   user?: string;
-  meetingRoom: string;
+  meetingRoom?: string;
   createdAt?: Date;
   __v?: number;
 };
