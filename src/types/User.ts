@@ -4,6 +4,7 @@ export type User = {
   email: string;
   telephoneNumber: string;
   role?: "user" | "admin";
+  password: string;
   createdAt?: Date;
   __v?: number;
 };
