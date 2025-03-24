@@ -54,16 +54,18 @@ export async function getReservation(
 /**
  * Create a new Reservation.
  * @param token User token, use in creation
- * @param content Reservation detail, required as type AND meetingRoom
+ * @param meetingRoomId Meeting room ID of this reservation
+ * @param reserveDateStart Reserve from date
+ * @param reserveDateEnd Reserve to date
  */
 export async function createReservation(
   token: string,
-  content: Reservation
+  meetingRoomId: string,
+  reserveDateStart: Date,
+  reserveDateEnd: Date,
 ): Promise<BackendResponse<Reservation>> {
-  if (!content.meetingRoom) throw new Error("No Meeting room ID given on Reservation create");
-
   const response = await fetch(
-    `http://localhost:5000/api/meetingRooms/${content.meetingRoom}/reservations`,
+    `http://localhost:5000/api/meetingRooms/${meetingRoomId}/reservations`,
     {
       method: "POST",
       headers: {
@@ -71,8 +73,8 @@ export async function createReservation(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        reserveDateStart: content.reserveDateStart,
-        reserveDateEnd: content.reserveDateEnd,
+        reserveDateStart: reserveDateStart,
+        reserveDateEnd: reserveDateEnd,
       }),
     }
   );
