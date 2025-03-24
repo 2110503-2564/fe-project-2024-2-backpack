@@ -1,11 +1,11 @@
 import { MeetingRoom } from "./MeetingRoom";
 
 export type Reservation = {
-  _id?: string;
+  _id: string;
   reserveDateStart: Date;
   reserveDateEnd: Date;
   user?: string;
-  meetingRoom?: MeetingRoom;
+  meetingRoom: MeetingRoom;
   createdAt?: Date;
   __v?: number;
 };
