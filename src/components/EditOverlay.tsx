@@ -1,3 +1,4 @@
+"use client"
 import { ReactNode } from "react";
 import { SubmitButton } from "./OtherComponents";
 import { useRef, useState, useEffect } from "react";

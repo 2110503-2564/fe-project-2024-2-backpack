@@ -9,5 +9,6 @@ export type CoworkingSpace = {
   region: string;
   open_time: Date;
   close_time: Date;
+  about: string;
   __v?: number;
 };
