@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import BookingCard from "@/components/BookingCard";
 import { EditProfile } from "@/components/EditOverlay";
 import { YellowButton } from "@/components/YellowButton";
@@ -9,18 +9,17 @@ export default function DashbordUserBooking({
 }: {
   params: { id: string };
 }) {
-
-    // profile edit
+  // profile edit
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
   // to disable scrolling
   useEffect(() => {
     if (isEditOpen) {
-        document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-        document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
-    }, [isEditOpen]);
+  }, [isEditOpen]);
 
   return (
     <main>
@@ -30,8 +29,7 @@ export default function DashbordUserBooking({
             <h2
               className="text-[#FF029A] mb-2 text-start"
               style={{
-                textShadow:
-                  `2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 
+                textShadow: `2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 
                   0px 4px 0px rgba(0, 0, 0, 1), 0px -2px 0px rgba(0, 0, 0, 1), 
                   2px -2px 0px rgba(0, 0, 0, 1), 3px 3px 0px rgba(0, 0, 0, 1), 
                   -3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 
@@ -44,8 +42,7 @@ export default function DashbordUserBooking({
             <h2
               className="text-[#FF029A] mb-2 text-start"
               style={{
-                textShadow:
-                  `2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 
+                textShadow: `2px 0px 0px rgba(0, 0, 0, 1), -2px 0px 0px rgba(0, 0, 0, 1), 
                   0px 4px 0px rgba(0, 0, 0, 1), 0px -2px 0px rgba(0, 0, 0, 1), 
                   2px -2px 0px rgba(0, 0, 0, 1), 3px 3px 0px rgba(0, 0, 0, 1), 
                   -3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 0, 0, 1), 
@@ -57,7 +54,10 @@ export default function DashbordUserBooking({
             <div className="col-span-5 text-white font-normal">{params.id}</div>
           </div>
           <div className="flex-auto w-auto h-auto grid items-start justify-end p-3">
-            <YellowButton text="edit" clickto={() => setIsEditOpen(!isEditOpen)}/>
+            <YellowButton
+              text="edit"
+              clickto={() => setIsEditOpen(!isEditOpen)}
+            />
           </div>
         </div>
         <div className="p-5">
@@ -73,16 +73,20 @@ export default function DashbordUserBooking({
         </div>
       </div>
 
-        {
-        isEditOpen? 
+      {isEditOpen ? (
         <>
-            <EditProfile id={params.id} closeOverlayWhenSubmit={() => setIsEditOpen(false)}/>
-            <button className="fixed inset-0 bg-black z-70 opacity-40"
-            onClick={() => setIsEditOpen(false)}></button>
+          <EditProfile
+            id={params.id}
+            closeOverlayWhenSubmit={() => setIsEditOpen(false)}
+          />
+          <button
+            className="fixed inset-0 bg-black z-70 opacity-40"
+            onClick={() => setIsEditOpen(false)}
+          ></button>
         </>
-        : ""  
-        }
-
+      ) : (
+        ""
+      )}
     </main>
   );
 }

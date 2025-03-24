@@ -3,9 +3,9 @@
 
 import { usePathname } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from '@/libs/store';
+import { persistor, store } from "@/libs/store";
 import "@/app/globals.css"; // Root global styles
 import Sidebar from "@/components/Sidebar";
 const geistSans = Geist({
@@ -35,7 +35,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ` + getBodyClass()}
+        className={
+          `${geistSans.variable} ${geistMono.variable} antialiased ` +
+          getBodyClass()
+        }
       >
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>

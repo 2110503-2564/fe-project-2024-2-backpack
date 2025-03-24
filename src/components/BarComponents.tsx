@@ -1,6 +1,5 @@
-"use client"
+"use client";
 import Image from "next/image";
-
 
 export function Searchbar({
   img,
@@ -9,7 +8,7 @@ export function Searchbar({
   setValue,
 }: {
   img: string;
-  type?:string;
+  type?: string;
   text: string;
   setValue: Function;
 }) {
@@ -23,7 +22,7 @@ export function Searchbar({
         height={360}
       />
       <input
-        type= {type || "text"}
+        type={type || "text"}
         placeholder={text}
         className="placeholder-gray-300 text-[10px] w-full text-left"
         onChange={(e) => {
@@ -46,15 +45,17 @@ export function SmallSearchbar({
 }) {
   return (
     <div className="flex flex-row bg-white rounded-3xl px-3 py-3 space-x-2">
-      {
-        img? <Image
+      {img ? (
+        <Image
           src={img}
           className="objectfit-auto w-5 h-5"
           alt="icon"
           width={360}
           height={360}
-        /> : ""
-      }
+        />
+      ) : (
+        ""
+      )}
       <input
         type="time"
         placeholder={text}
@@ -92,5 +93,3 @@ export function BarCheckBox({
     </div>
   );
 }
-
-

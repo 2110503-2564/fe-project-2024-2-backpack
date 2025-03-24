@@ -1,5 +1,5 @@
 import CoworkingSpaceCard from "@/components/CoworkingSpaceCard";
-import {getCoWorkingSpaces} from "@/libs/coworkingSpace";
+import { getCoWorkingSpaces } from "@/libs/coworkingSpace";
 import CoworkingSpaceCatalog from "@/components/CoworkingSpaceCatalog";
 export default async function coworkingSpacesList() {
   const res = await getCoWorkingSpaces();

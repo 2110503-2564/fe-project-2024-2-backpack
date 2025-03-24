@@ -1,7 +1,8 @@
 import RegisterPanel from "@/components/RegisterPanel";
 export default function Register() {
   return (
-    <div className="min-w-[100vw] min-h-[100vh] bg-cover bg-no-repeat bg-center flex justify-center items-center"
+    <div
+      className="min-w-[100vw] min-h-[100vh] bg-cover bg-no-repeat bg-center flex justify-center items-center"
       style={{
         backgroundImage: `
             url('/img/logInRegPage.png'), 
@@ -21,7 +22,7 @@ export default function Register() {
         backgroundPosition: "center",
       }}
     >
-    <RegisterPanel/>
+      <RegisterPanel />
     </div>
   );
 }

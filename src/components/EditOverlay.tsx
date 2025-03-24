@@ -11,7 +11,11 @@ import {
   updateMeetingRoom,
 } from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
-import { createCoWorkingSpace, getCoWorkingSpace, updateCoWorkingSpace } from "@/libs/coworkingSpace";
+import {
+  createCoWorkingSpace,
+  getCoWorkingSpace,
+  updateCoWorkingSpace,
+} from "@/libs/coworkingSpace";
 import { CoworkingSpace } from "@/types/CoworkingSpace";
 
 export function EditBg({
@@ -209,37 +213,41 @@ export function EditMeetingRoom({
 
   // for type !== new
   useEffect(() => {
-  if (type !== "new") {
+    if (type !== "new") {
       const fetchData = async () => {
         const res = await getMeetingRoom(id);
         if (res.success === false) {
           alert(res.message);
           return;
         } else if ("data" in res) {
+          let cws: MeetingRoom[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
           setFormData({
             _id: id,
-            roomNumber: res.data[0].roomNumber || -1,
-            location: res.data[0].location || "",
-            coworkingSpace: res.data[0].coworkingSpace || null,
-            capacity: res.data[0].capacity || -1,
-            projector: res.data[0].projector || false,
-            whiteboard: res.data[0].whiteboard || false,
-            ledTV: res.data[0].ledTV || false,
-            speaker: res.data[0].speaker || false,
+            roomNumber: cws[0].roomNumber || -1,
+            location: cws[0].location || "",
+            coworkingSpace: cws[0].coworkingSpace || null,
+            capacity: cws[0].capacity || -1,
+            projector: cws[0].projector || false,
+            whiteboard: cws[0].whiteboard || false,
+            ledTV: cws[0].ledTV || false,
+            speaker: cws[0].speaker || false,
           });
         }
       };
 
       fetchData();
-    }  
+    }
   }, []);
 
   // handle change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, value, checked } = event.target;
-    setFormData(prevState => ({
-        ...prevState,
-        [name]: type === "checkbox" ? checked : value  // ✅ Use checked for checkboxes
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value, // ✅ Use checked for checkboxes
     }));
   };
 
@@ -257,7 +265,7 @@ export function EditMeetingRoom({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (update meetingroom)"
+          "cannot send req because token is undefined ! (update meetingroom)",
         );
       }
     } else {
@@ -271,7 +279,7 @@ export function EditMeetingRoom({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (create meetingroom)"
+          "cannot send req because token is undefined ! (create meetingroom)",
         );
       }
     }
@@ -380,7 +388,6 @@ export function EditCoworkingSpace({
   closeOverlayWhenSubmit: Function;
   type?: string;
 }) {
-
   const { token } = useSelector((state: RootState) => state.auth);
 
   const [formData, setFormData] = useState({
@@ -393,30 +400,33 @@ export function EditCoworkingSpace({
     tel: "",
     region: "",
     open_time: null as Date | null,
-    close_time: null as Date | null
+    close_time: null as Date | null,
   });
 
   // for type !== new
   useEffect(() => {
     if (type !== "new") {
-
       const fetchData = async () => {
         const res = await getCoWorkingSpace(id);
         if (res.success === false) {
           alert(res.message);
           return;
         } else if ("data" in res) {
+          let cws: CoworkingSpace[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
           setFormData({
             _id: id,
-            name: res.data[0].name || "",
-            address: res.data[0].address || "",
-            district: res.data[0].district || "",
-            province: res.data[0].province || "",
-            postalcode: res.data[0].postalcode || "",
-            tel: res.data[0].tel || "",
-            region: res.data[0].region || "",
-            open_time: res.data[0].open_time || null,
-            close_time: res.data[0].close_time || null,
+            name: cws[0].name || "",
+            address: cws[0].address || "",
+            district: cws[0].district || "",
+            province: cws[0].province || "",
+            postalcode: cws[0].postalcode || "",
+            tel: cws[0].tel || "",
+            region: cws[0].region || "",
+            open_time: cws[0].open_time || null,
+            close_time: cws[0].close_time || null,
           });
         }
       };
@@ -432,39 +442,47 @@ export function EditCoworkingSpace({
       [event.target.name]: event.target.value,
     });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (type !== "new") {     
+    if (type !== "new") {
       if (token) {
-        const res = await updateCoWorkingSpace(token, formData as CoworkingSpace);
-  
+        const res = await updateCoWorkingSpace(
+          token,
+          formData as CoworkingSpace,
+        );
+
         if (!res.success) {
           alert("Can't update meeting room");
           return;
         }
-  
       } else {
-        console.error("cannot send req because token is undefined ! (update coworkingspace)")
+        console.error(
+          "cannot send req because token is undefined ! (update coworkingspace)",
+        );
       }
     } else {
       const { token } = useSelector((state: RootState) => state.auth);
       if (token) {
-        const res = await createCoWorkingSpace(token, formData as CoworkingSpace);
-  
+        const res = await createCoWorkingSpace(
+          token,
+          formData as CoworkingSpace,
+        );
+
         if (!res.success) {
           alert("Can't create meeting room");
           return;
         }
-  
       } else {
-        console.error("cannot send req because token is undefined ! (create coworkingspace)")
+        console.error(
+          "cannot send req because token is undefined ! (create coworkingspace)",
+        );
       }
     }
 
     closeOverlayWhenSubmit();
-  }
+  };
 
   return (
     <div
@@ -539,7 +557,13 @@ export function EditCoworkingSpace({
                 <input
                   type="time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-                  value={formData.open_time ? new Date(formData.open_time).toISOString().substring(11, 16) : ""}
+                  value={
+                    formData.open_time
+                      ? new Date(formData.open_time)
+                          .toISOString()
+                          .substring(11, 16)
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </EditBg>
@@ -547,7 +571,13 @@ export function EditCoworkingSpace({
                 <input
                   type="time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-                  value={formData.close_time ? new Date(formData.close_time).toISOString().substring(11, 16) : ""}
+                  value={
+                    formData.close_time
+                      ? new Date(formData.close_time)
+                          .toISOString()
+                          .substring(11, 16)
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </EditBg>
@@ -556,7 +586,7 @@ export function EditCoworkingSpace({
         </form>
 
         <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton/>
+          <SubmitButton />
         </div>
       </div>
     </div>
