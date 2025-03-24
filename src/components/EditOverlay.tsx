@@ -116,7 +116,7 @@ export function EditProfile({
   );
 }
 
-export async function EditReservation({
+export function EditReservation({
   id,
   closeOverlayWhenSubmit,
   type,
@@ -125,7 +125,83 @@ export async function EditReservation({
   closeOverlayWhenSubmit: Function;
   type?: string;
 }) {
-  // const thisReservation = await getReservation(token, id)
+  
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  const [formData, setFormData] = useState({
+    
+  });
+
+  // for type !== new
+  useEffect(() => {
+    if (type !== "new") {
+
+      const fetchData = async () => {
+        const res = await getCoWorkingSpace(id);
+        if (res.success === false) {
+          alert(res.message);
+          return;
+        } else if ("data" in res) {
+          setFormData({
+            _id: id,
+            name: res.data[0].name || "",
+            address: res.data[0].address || "",
+            district: res.data[0].district || "",
+            province: res.data[0].province || "",
+            postalcode: res.data[0].postalcode || "",
+            tel: res.data[0].tel || "",
+            region: res.data[0].region || "",
+            open_time: res.data[0].open_time || null,
+            close_time: res.data[0].close_time || null,
+          });
+        }
+      };
+
+      fetchData();
+    }
+  }, []);
+
+  // handle change
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (type !== "new") {     
+      if (token) {
+        const res = await updateCoWorkingSpace(token, formData as CoworkingSpace);
+  
+        if (!res.success) {
+          alert("Can't update meeting room");
+          return;
+        }
+  
+      } else {
+        console.error("cannot send req because token is undefined ! (update coworkingspace)")
+      }
+    } else {
+      const { token } = useSelector((state: RootState) => state.auth);
+      if (token) {
+        const res = await createCoWorkingSpace(token, formData as CoworkingSpace);
+  
+        if (!res.success) {
+          alert("Can't create meeting room");
+          return;
+        }
+  
+      } else {
+        console.error("cannot send req because token is undefined ! (create coworkingspace)")
+      }
+    }
+
+    closeOverlayWhenSubmit();
+  }
+
 
   return (
     <div
