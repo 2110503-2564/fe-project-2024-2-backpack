@@ -1,7 +1,26 @@
 import Image from "next/image";
 import { BlueButton } from "@/components/BlueButton";
-export default function BookingCard({ meetingRoomId, meetingRoomName, coworkingSpaceName, date, startTime, endTime }
-    : { meetingRoomId: string, meetingRoomName: string, coworkingSpaceName: string, date: string, startTime: string, endTime: string }) {
+import { useState, useEffect } from "react";
+import { EditReservation } from "./EditOverlay";
+
+export default function BookingCard({ reservationId, meetingRoomId, meetingRoomName, coworkingSpaceName, date, startTime, endTime }
+    : { reservationId: string, meetingRoomId: string, meetingRoomName: string, coworkingSpaceName: string, date: string, startTime: string, endTime: string }) {
+    
+    const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+
+    // to disable scrolling
+    useEffect(() => {
+        if (isEditOpen) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = "auto"
+        }
+    }, [isEditOpen]);
+
+    const removeFunction = () => {
+        // call DELETE api to remove this id from database
+    }
+
     return (
         <div className="bg-zinc-100 w-full min-h-45 h-auto pl-4 pr-4 py-6 bg-white rounded-[30px] grid grid-cols-1 lg:grid-cols-6 gap-4 content-start overflow-hidden">
 
@@ -46,7 +65,7 @@ export default function BookingCard({ meetingRoomId, meetingRoomName, coworkingS
 
                 <div className="flex flex-col justify-center">
                     <div className="min-w-full h-auto lg:h-full flex flex-col justify-center items-center">
-                        <BlueButton text="edit" />
+                        <BlueButton text="edit" clickto={() => setIsEditOpen(!isEditOpen)} />
                     </div>
                 </div>
                 <div className="flex flex-col justify-center">
@@ -61,6 +80,16 @@ export default function BookingCard({ meetingRoomId, meetingRoomName, coworkingS
                     </div>
                 </div>
             </div>
+
+            {
+            isEditOpen? 
+            <>
+                <EditReservation id={reservationId} closeOverlayWhenSubmit={() => setIsEditOpen(false)}/>
+                <button className="fixed inset-0 bg-black z-70 opacity-40"
+                onClick={() => setIsEditOpen(false)}></button>
+            </>
+                : ""  
+            }
 
         </div>
 

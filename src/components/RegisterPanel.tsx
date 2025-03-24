@@ -1,36 +1,45 @@
 "use client"
-// import { signIn } from "next-auth/react";
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '@/libs/slices/authSlice';
 import { useState, useRef } from "react";
-import { TextField, Typography} from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { BlueButton } from "./BlueButton";
-
-// import { useRouter } from "next/router";
+import { getUserProfile, userRegister } from '@/libs/auth';
+import { useRouter } from "next/navigation";
+import { User } from "@/types/User";
 export default function RegisterPanel() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [telephone, setTelephone] = useState("");
     const [error, setError] = useState<string | null>(null);
-    // const router = useRouter();
+    
+    const router = useRouter();
+    const dispatch = useDispatch();
     const formRef = useRef<HTMLFormElement | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Here, you would typically send the form data to your API to create the user
-        // For now, we'll log it to the console.
-        if (!email || !password || !name || !telephone) {
-            setError("All fields are required");
-            return;
-        }
-
         try {
-            // Simulate successful registration (replace with actual API call)
-            console.log("User registered:", { email, password, name, telephone });
-            // Redirect to login or dashboard
-            // router.push("/login");
+            const newUser: User = {
+                name: name,
+                email: email,
+                telephoneNumber: telephone,
+                password: password,
+            };
+            console.log(newUser);
+            const res = await userRegister(newUser);
+            if (res.success && "token" in res) {
+                const token = res.token;
+                const profile = await getUserProfile(token);
+                if (profile.success && "data" in profile && "role" in profile.data) {
+                    dispatch(setCredentials({ token: res.token, role: profile.data.role as string }));
+                    router.push("/");
+                    router.refresh();
+                }
+            }
         } catch (error) {
-            setError("Registration failed, please try again.");
+            setError("Invalid credentials");
         }
     };
 
@@ -42,7 +51,7 @@ export default function RegisterPanel() {
     return (
         <div className="bg-sky-100/40 w-2/3 lg:w-1/2 h-1/2 px-4 py-4 rounded-[30px] outline outline-[2px] outline-offset-[-2px] outline-white inline-flex flex-col justify-start items-center gap-1 overflow-hidden">
             <div className="w-full text-center justify-start text-white text-2xl font-bold"
-             style={{ WebkitTextStroke: '2px black', color: 'white' }}>
+                style={{ WebkitTextStroke: '2px black', color: 'white' }}>
                 Register {'>'}:D
             </div>
 

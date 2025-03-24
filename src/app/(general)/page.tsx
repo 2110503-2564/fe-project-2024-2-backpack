@@ -1,8 +1,7 @@
-// /app/page.tsx
 "use client";
-import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/libs/store';
 import { getUserRole } from "@/libs/getUserRole";
-import AdminHomePage from "@/components/AdminHomePage";
 import Image from "next/image";
 import FirstMainPageCard from "@/components/FirstMainPageCard";
 import NormalMainPageCard from "@/components/NormalMainPageCard";
@@ -12,14 +11,7 @@ import FinalMainPageCard from "@/components/FinalMainPageCard";
 type UserRole = "admin" | "user" | null;
 
 export default function Home() {
-  const [role, setRole] = useState<UserRole>(null);
-
-  useEffect(() => {
-    const userRole = getUserRole() as UserRole; // Cast to UserRole type
-    setRole(userRole);
-  }, []);
-
-  if (!role) return <h1>Loading...</h1>;
+  const { token, role } = useSelector((state: RootState) => state.auth);
 
   return (
     <main className="flex flex-col justify-center px-11 pt-11 pb-8 bg-linear-to-b from-[#EAFFE0] via-[#B3D757] to-[#FC0004]">
