@@ -3,7 +3,7 @@ import { MeetingRoom } from "@/types/MeetingRoom"
 const MeetingRoomCatalog = ({ meetingRooms }: { meetingRooms?: MeetingRoom[] }) => {
     return (
         <div className="w-full h-auto px-12 py-6 bg-gray-200 inline-flex flex-col justify-start items-start gap-6">
-            {meetingRooms ? (meetingRooms.map((mr) => (
+            {(meetingRooms && meetingRooms.length>0) ? (meetingRooms.map((mr) => (
                 <MeetingRoomInfoCard id={mr._id}
                     capacity={mr.capacity}
                     ledTV={mr.ledTV}
@@ -14,7 +14,9 @@ const MeetingRoomCatalog = ({ meetingRooms }: { meetingRooms?: MeetingRoom[] }) 
                     whiteBoard={mr.whiteBoard}
                 />
             ))) : (
-                <p>No meeting rooms available.</p>
+                <div className="w-full h-auto flex justify-center">
+                    No meeting room is available at the date and time you provided.
+                </div>
             )}
         </div>
     );
