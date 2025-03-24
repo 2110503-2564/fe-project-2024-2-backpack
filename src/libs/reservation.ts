@@ -8,7 +8,7 @@ import { Reservation } from "@/types/Reservation";
  */
 export async function getReservations(
   token: string,
-  meetingRoomId?: string
+  meetingRoomId?: string,
 ): Promise<BackendResponse<Reservation>> {
   let responseString: string = `http://localhost:5000/api/reservations`;
 
@@ -34,7 +34,7 @@ export async function getReservations(
  */
 export async function getReservation(
   token: string,
-  id: string
+  id: string,
 ): Promise<BackendResponse<Reservation>> {
   const response = await fetch(
     `http://localhost:5000/api/reservations/${id}}`,
@@ -43,7 +43,7 @@ export async function getReservation(
       headers: {
         authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   if (!response.ok) throw new Error(`Failed to fetch reservation of id: ${id}`);
@@ -54,16 +54,18 @@ export async function getReservation(
 /**
  * Create a new Reservation.
  * @param token User token, use in creation
- * @param content Reservation detail, required as type AND meetingRoom
+ * @param meetingRoomId Meeting room ID of this reservation
+ * @param reserveDateStart Reserve from date
+ * @param reserveDateEnd Reserve to date
  */
 export async function createReservation(
   token: string,
-  content: Reservation
+  meetingRoomId: string,
+  reserveDateStart: Date,
+  reserveDateEnd: Date,
 ): Promise<BackendResponse<Reservation>> {
-  if (!content.meetingRoom) throw new Error("No Meeting room ID given on Reservation create");
-
   const response = await fetch(
-    `http://localhost:5000/api/meetingRooms/${content.meetingRoom}/reservations`,
+    `http://localhost:5000/api/meetingRooms/${meetingRoomId}/reservations`,
     {
       method: "POST",
       headers: {
@@ -71,13 +73,17 @@ export async function createReservation(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        reserveDateStart: content.reserveDateStart,
-        reserveDateEnd: content.reserveDateEnd,
+        reserveDateStart: reserveDateStart,
+        reserveDateEnd: reserveDateEnd,
       }),
-    }
+    },
   );
 
-  if (!response.ok) throw new Error("Failed to create new reservation");
+  if (!response.ok) {
+    // Get the backend error message
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to create new reservation");
+  }
 
   return response.json();
 }
@@ -89,7 +95,7 @@ export async function createReservation(
  */
 export async function updateReservation(
   token: string,
-  content: Reservation
+  content: Reservation,
 ): Promise<BackendResponse<Reservation>> {
   if (!content._id) throw new Error("No ID given on Reservation update");
 
@@ -105,7 +111,7 @@ export async function updateReservation(
         reserveDateStart: content.reserveDateStart,
         reserveDateEnd: content.reserveDateEnd,
       }),
-    }
+    },
   );
 
   if (!response.ok)
@@ -121,7 +127,7 @@ export async function updateReservation(
  */
 export async function deleteReservation(
   token: string,
-  id: string
+  id: string,
 ): Promise<BackendResponse<Reservation>> {
   const response = await fetch(`http://localhost:5000/api/reservations/${id}`, {
     method: "DELETE",

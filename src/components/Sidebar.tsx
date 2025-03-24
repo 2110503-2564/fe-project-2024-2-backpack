@@ -1,6 +1,6 @@
 "use client";
 import { Searchbar, SmallSearchbar } from "./BarComponents";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Sidebar() {
@@ -13,25 +13,51 @@ export default function Sidebar() {
     const [searchDate, setSearchDate] = useState("");
     const [searchStart, setSearchStart] = useState("");
     const [searchEnd, setSearchEnd] = useState("");
-    const [searchProj, setSearchProj] = useState(false);
-    const [searchWB, setSearchWB] = useState(false);
-    const [searchTV, setSearchTV] = useState(false);
-    const [searchSpeaker, setSearchSpeaker] = useState(false);
 
+    // State for Notice Textbox
+    const [noticeText, setNoticeText] = useState("");
+
+    // Update noticeText whenever URL parameters change
+    useEffect(() => {
+        if (searchParams) {
+            const date = searchParams.get("date") || "N/A";
+            const start = searchParams.get("startTime") || "N/A";
+            const end = searchParams.get("endTime") || "N/A";
+
+            const newNotice = `Making reservation on Date: ${date} from ${start} to ${end}`;
+            setNoticeText(newNotice);
+        }
+    }, [searchParams]); // Trigger on URL param change
     // Handle Search Button Click
     const handleSearch = () => {
-        const params = new URLSearchParams(searchParams?.toString());
+        // If date, start, and end are not all filled, show an alert
+        if ((searchDate && searchStart && searchEnd) || (!searchDate && !searchStart && !searchEnd)) {
+            const params = new URLSearchParams();
 
-        if (searchName?.trim()) params.set("name", searchName.trim());
-        if (searchLoc?.trim()) params.set("location", searchLoc.trim());
-        if (searchDate?.trim()) params.set("date", searchDate.trim());
-        if (searchStart?.trim()) params.set("startTime", searchStart.trim());
-        if (searchEnd?.trim()) params.set("endTime", searchEnd.trim());
-
-        // Navigate with Query Params
-        router.push(`/coworkingspaces/?${params.toString()}`);
+            if (searchName?.trim()) params.set("name", searchName.trim());
+            if (searchLoc?.trim()) params.set("location", searchLoc.trim());
+            if (searchDate?.trim()) params.set("date", searchDate.trim());
+            if (searchStart?.trim()) params.set("startTime", searchStart.trim());
+            if (searchEnd?.trim()) params.set("endTime", searchEnd.trim());
+            const newNotice = (searchDate && searchStart && searchEnd)?`Last Search - Date: ${searchDate || "N/A"}, Start Time: ${searchStart || "N/A"}, End Time: ${searchEnd || "N/A"}`:"";
+            
+            // Navigate with Query Params
+            router.push(`/coworkingspaces/?${params.toString()}`);
+        } else {
+            alert("Please fill in the Date, Start Time, and End Time together, or leave all of them blank.");
+        }
     };
-
+    // Handle Clear Button Click
+    const handleClear = () => {
+        // Clear all search parameters
+        setSearchName("");
+        setSearchLoc("");
+        setSearchDate("");
+        setSearchStart("");
+        setSearchEnd("");
+        // Refresh the page (reset URL query params)
+        router.push("/coworkingspaces");
+    };
     return (
         <div className="flex flex-col w-[350px] h-[90vh] p-8 gap-b-4 bg-linear-to-t
          from-cyan-400 via-50% via-white to-white mt-[10vh] z-50 fixed top-0 left-0">
@@ -72,6 +98,21 @@ export default function Sidebar() {
                     SEARCH
                 </button>
             </div>
+
+            {/* Notice Textbox */}
+            {noticeText && (
+                <div className="mt-4 text-center text-black bg-yellow-300 p-2 rounded-md">
+                    {noticeText}
+                </div>
+            )}
+
+            {/* Clear Button */}
+            <button
+                onClick={handleClear}
+                className="cursor-pointer border-white border-4 rounded-md text-center font-bold font-stretch-125% w-full h-11 mt-4 bg-red-500 text-white"
+            >
+                CLEAR
+            </button>
         </div>
     );
 }

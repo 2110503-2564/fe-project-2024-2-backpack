@@ -1,20 +1,47 @@
 "use client"
-import { getUserRole } from "@/libs/getUserRole";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { YellowButton } from "./YellowButton";
 import { EditMeetingRoom } from "./EditOverlay";
 import { usePathname } from "next/navigation";
-export default function MeetingRoomInfoCard({ id }
-    : { id: string }) { 
+import { createReservation } from "@/libs/reservation";
+import { useSelector } from "react-redux";
+import { RootState } from '@/libs/store';
+import { useSearchParams } from "next/navigation";
+
+export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity, ledTV, projector, speaker, whiteBoard: whiteboard }
+    : {
+        id: string, roomNumber: number, location: string
+        capacity: number, projector: boolean, whiteBoard: boolean,
+        ledTV: boolean, speaker: boolean
+    }) {
+
+    const { token } = useSelector((state: RootState) => state.auth);
+    const searchParams = useSearchParams();
+    const date = searchParams.get("date");
+    const startTime = searchParams.get("startTime");
+    const endTime = searchParams.get("endTime");
+    const reserveDateStart = date && startTime ? new Date(`${date}T${startTime}:00.000Z`) : undefined;
+    const reserveDateEnd = date && endTime ? new Date(`${date}T${endTime}:00.000Z`) : undefined;
+
 
     const pathname = usePathname();
-    
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-
     const removeFunction = () => {
         // call DELETE api to remove this id from database
     }
+    const handleReserveClick = async () => {
+        if (!reserveDateStart || !reserveDateEnd || !token) {
+            alert("Please provide all the necessary details.");
+            return;
+        }
+        try {
+            await createReservation(token, id, reserveDateStart, reserveDateEnd);
+            alert("Reservation created successfully!");
+        } catch (error) {
+            alert("Failed to create reservation: " + error);
+        }
+    };
 
     useEffect(() => {
         if (isEditOpen) {
@@ -37,48 +64,62 @@ export default function MeetingRoomInfoCard({ id }
             </div>
             <div className="min-w-full lg:min-w-3/7 h-auto lg:h-full pl-3.5 pr-2.5 pt-6 pb-2.5 inline-flex flex-col justify-start items-center gap-2.5 overflow-hidden">
                 <div className="w-full h-24 justify-start text-black text-base font-bold    leading-relaxed">
-                    Meeting room 1<br /> Location: 1st Floor Zone A<br />Capacity: 10<br />Facilities:<br /></div>
+                    Meeting room {roomNumber}
+                    <br />Location: {location}
+                    <br />Capacity: {capacity}
+                    <br />Facilities:
+                    <br />
+                </div>
                 <div className="w-full p-2.5 inl ine-flex justify- center items-cen ter gap-2.5 flex-wrap flex-col content-center overflow-hidden">
-                    <div className="justify-start text-black text-base font-bold    leading-relaxed">Projector: ✘</div>
-                    <div className="justify-start text-black text-base font-bold    leading-relaxed">White Board: ✔</div>
-                    <div className="justify-start text-black text-base font-bold    leading-relaxed">LED TV: ✔</div>
-                    <div className="justify-start text-black text-base font-bold    leading-relaxed">Speaker: ✔</div>
+                    <div className="justify-start text-black text-base font-bold leading-relaxed">
+                        Projector: {projector?"✔":"✘"}
+                    </div>
+                    <div className="justify-start text-black text-base font-bold leading-relaxed">
+                        White Board: {whiteboard?"✔":"✘"}
+                    </div>
+                    <div className="justify-start text-black text-base font-bold leading-relaxed">
+                        LED TV: {ledTV?"✔":"✘"}
+                    </div>
+                    <div className="justify-start text-black text-base font-bold leading-relaxed">
+                        Speaker: {speaker?"✔":"✘"}
+                    </div>
                 </div>
             </div>
             <div className="min-w-full lg:min-w-1/10 h-auto lg:h-full flex flex-col items-center justify-center flex-grow">
 
-            {
-                pathname.search("/dashboard") !== -1 ?
-                (
-                    <>
-                    <div className="flex-col flex space-y-4 mb-3">
-                        <YellowButton text="edit" clickto={() => setIsEditOpen(!isEditOpen)}/>
-                        <YellowButton text="remove"/>  
-                    </div>              
-                    </>
-                )
-                : ""
-            }
+                {
+                    pathname.search("/dashboard") !== -1 ?
+                        (
+                            <>
+                                <div className="flex-col flex space-y-4 mb-3">
+                                    <YellowButton text="edit" clickto={() => setIsEditOpen(!isEditOpen)} />
+                                    <YellowButton text="remove" />
+                                </div>
+                            </>
+                        )
+                        : ""
+                }
 
                 <div className="cursor-pointer justify-start text-green-600 text-lg font-bold leading-relaxed">Reserve</div>
                 <Image
-                src="/img/bookingSymbol.svg"
-                alt="booking"
-                width="60"
-                height="60"
-                className="cursor-pointer h-auto"
-                />          
-                
+                    src="/img/bookingSymbol.svg"
+                    alt="booking"
+                    width="60"
+                    height="60"
+                    className="cursor-pointer h-auto"
+                    onClick={handleReserveClick}
+                />
+
             </div>
 
             {
-            isEditOpen? 
-            <>
-                <EditMeetingRoom id={id} closeOverlayWhenSubmit={() => setIsEditOpen(false)}/>
-                <button className="fixed inset-0 bg-black z-70 opacity-40"
-                onClick={() => setIsEditOpen(false)}></button>
-            </>
-                : ""  
+                isEditOpen ?
+                    <>
+                        <EditMeetingRoom id={id} closeOverlayWhenSubmit={() => setIsEditOpen(false)} />
+                        <button className="fixed inset-0 bg-black z-70 opacity-40"
+                            onClick={() => setIsEditOpen(false)}></button>
+                    </>
+                    : ""
             }
 
 

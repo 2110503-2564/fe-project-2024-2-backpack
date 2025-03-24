@@ -18,7 +18,7 @@ export async function getMeetingRooms(
   let searchParams:URLSearchParams = new URLSearchParams();
 
   if (coworkingSpaceId)
-    responseString = `http://localhost:5000/api/coworkingSpace/${coworkingSpaceId}/meetingRooms`;
+    responseString = `http://localhost:5000/api/coworkingSpace/${coworkingSpaceId}/meetingRooms/?`;
   if (page) searchParams.append("page", page)
   if (reserveDateStart && reserveDateEnd) {
     searchParams.append("reserveDateStart", reserveDateStart.toISOString());

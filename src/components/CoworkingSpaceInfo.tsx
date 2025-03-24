@@ -1,5 +1,4 @@
 "use client"
-import clsx from "clsx";
 import Image from "next/image";
 export default function CoworkingSpaceCard({ id, name, location, about, telephone, openinghours }
     : { id?: string, name: string, location: string, about: string, telephone: string, openinghours: string }) {

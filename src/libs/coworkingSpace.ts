@@ -1,5 +1,5 @@
 import { CoworkingSpace } from "@/types/CoworkingSpace";
-import { BackendResponse } from "@/types/BackendResponses";
+import { BackendResponse , SuccessResponseButSingle} from "@/types/BackendResponses";
 
 /**
  * Fetch all Co-working Spaces from the database by default.
@@ -28,7 +28,7 @@ export async function getCoWorkingSpaces(
  */
 export async function getCoWorkingSpace(
   id: string
-): Promise<BackendResponse<CoworkingSpace>> {
+): Promise<SuccessResponseButSingle<CoworkingSpace>> {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}`,
     {

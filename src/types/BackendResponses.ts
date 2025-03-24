@@ -13,6 +13,21 @@ interface SuccessResponse<T> {
     };
   };
 }
+export interface SuccessResponseButSingle<T> {
+  success: true;
+  data: T;
+  count?: number;
+  pagination?: {
+    prev?: {
+      page: number;
+      limit: number;
+    };
+    next?: {
+      page: number;
+      limit: number;
+    };
+  };
+}
 
 interface LoginSuccessResponse {
   success: true;
