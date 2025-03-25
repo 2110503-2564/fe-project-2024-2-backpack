@@ -1,5 +1,4 @@
 "use client";
-import { getUserRole } from "@/libs/getUserRole";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/libs/store";
 import { logOut } from "@/libs/slices/authSlice";
