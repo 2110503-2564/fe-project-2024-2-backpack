@@ -2,25 +2,92 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000;
+
+  --color-rainbow: linear-gradient(
+    135deg,
+    red,
+    orange,
+    rgb(238, 255, 0),
+    rgb(0, 186, 0),
+    rgb(0, 159, 227),
+    blue,
+    indigo
+  );
+  --font-sans: "Comic Sans MS", "Comic Sans", cursive;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-rainbow);
+  --color-foreground: rgb(0, 0, 0);
+  --color-editgradient: linear-gradient(90deg, #ffe11c, #30ffee);
+  --font-sans: "Comic Sans MS", "Comic Sans", cursive;
+  --font-mono: "Arial", mono;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-rainbow);
+    --foreground: #000000;
   }
 }
 
 body {
+  max-width: 100vw;
+  overflow-x: hidden;
+
+  padding-top: 10vh;
+  padding-left: 350px;
+
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+.scroll-container {
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-container {
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.general-body {
+  max-width: 100vw;
+  overflow-x: hidden;
+
+  padding-top: 10vh;
+  padding-left: 350px;
+
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.logInReg-body {
+  max-width: 100vw;
+  overflow-x: hidden;
+
+  padding-top: 0;
+  padding-left: 0;
+
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
 }
