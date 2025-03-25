@@ -2,9 +2,7 @@
 import AdminObjectCard from "@/components/AdminObjectCard";
 import { useState, useEffect } from "react";
 import {
-  EditCoworkingSpace,
-  EditMeetingRoom,
-  EditProfile,
+  EditCoworkingSpace
 } from "@/components/EditOverlay";
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
