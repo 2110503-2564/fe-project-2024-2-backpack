@@ -1,5 +1,8 @@
 import { CoworkingSpace } from "@/types/CoworkingSpace";
-import { BackendResponse , SuccessResponseButSingle} from "@/types/BackendResponses";
+import {
+  BackendResponse,
+  SuccessResponseButSingle,
+} from "@/types/BackendResponses";
 import { backendUrl } from "./url";
 
 /**
@@ -28,14 +31,11 @@ export async function getCoWorkingSpaces(
  * @param id Co-working Space ID to retrieve
  */
 export async function getCoWorkingSpace(
-  id: string
+  id: string,
 ): Promise<SuccessResponseButSingle<CoworkingSpace>> {
-  const response = await fetch(
-    `${backendUrl}/coworkingSpace/${id}`,
-    {
-      method: "GET",
-    },
-  );
+  const response = await fetch(`${backendUrl}/coworkingSpace/${id}`, {
+    method: "GET",
+  });
 
   if (!response.ok)
     throw new Error(`Failed to fetch co-working space of id: ${id}`);
@@ -77,17 +77,14 @@ export async function updateCoWorkingSpace(
 ): Promise<BackendResponse<CoworkingSpace>> {
   if (!content._id) throw new Error("No ID given on CoworkingSpace update");
 
-  const response = await fetch(
-    `${backendUrl}/coworkingSpace/${content._id}`,
-    {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(content),
+  const response = await fetch(`${backendUrl}/coworkingSpace/${content._id}`, {
+    method: "PUT",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(content),
+  });
 
   if (!response.ok)
     throw new Error(`Failed to update co-working space of id: ${content._id}`);
@@ -104,15 +101,12 @@ export async function deleteCoWorkingSpace(
   token: string,
   id: string,
 ): Promise<BackendResponse<CoworkingSpace>> {
-  const response = await fetch(
-    `${backendUrl}/coworkingSpace/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+  const response = await fetch(`${backendUrl}/coworkingSpace/${id}`, {
+    method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
     },
-  );
+  });
 
   if (!response.ok)
     throw new Error(`Failed to update co-working space of id: ${id}`);

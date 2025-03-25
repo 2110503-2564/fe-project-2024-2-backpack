@@ -33,17 +33,17 @@ export default function DashboardMeetingrooms() {
   const { token } = useSelector((state: RootState) => state.auth);
 
   // force to fetch
-  const [pleaseReload, setPleaseReload] = useState<boolean>(false)
+  const [pleaseReload, setPleaseReload] = useState<boolean>(false);
 
   const removeFunction = async (itid: string) => {
     // call DELETE api to remove this id from database
     if (token && token !== null) {
       const res = await deleteMeetingRoom(token, itid);
 
-      // fix remove to dynamic 
+      // fix remove to dynamic
       if (res.success) {
         setMeetingRooms((items) => items.filter((item) => item._id != itid));
-      } 
+      }
     } else {
       alert("token is goneee !!!");
       return;

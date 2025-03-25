@@ -1,9 +1,7 @@
 "use client";
 import AdminObjectCard from "@/components/AdminObjectCard";
 import { useState, useEffect } from "react";
-import {
-  EditCoworkingSpace
-} from "@/components/EditOverlay";
+import { EditCoworkingSpace } from "@/components/EditOverlay";
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { useRouter } from "next/navigation";
@@ -31,44 +29,44 @@ export default function DashboardCoworkingspaces() {
     }
   }, [isEditOpen]);
 
-    const clickNavi = (itid:string) => {
-        router.push(`/dashboard/coworkingspaces/${itid}/meetingrooms`)
+  const clickNavi = (itid: string) => {
+    router.push(`/dashboard/coworkingspaces/${itid}/meetingrooms`);
+  };
+
+  const removeFunction = async (itid: string) => {
+    if (token && token !== null) {
+      const res = await deleteCoWorkingSpace(token, itid);
+
+      // fix remove to dynamic
+      if (res.success) {
+        setCoworkingData((items) => items.filter((item) => item._id != itid));
+      }
+    } else {
+      console.log("token is goneee !!!");
+      return;
     }
+  };
 
-    const removeFunction = async (itid:string) => {
-        if (token && token !== null) {
-            const res = await deleteCoWorkingSpace(token, itid);
+  // force to fetch
+  const [pleaseReload, setPleaseReload] = useState<boolean>(false);
 
-            // fix remove to dynamic 
-            if (res.success) {
-                setCoworkingData((items) => items.filter((item) => item._id != itid));
-            }          
-        } else {
-            console.log("token is goneee !!!");
-            return;
-        }      
+  // to fetch data from backend 🗿
+  const [coworkingData, setCoworkingData] = useState<CoworkingSpace[]>([]);
+  const fetchData = async () => {
+    const coData = await getCoWorkingSpaces();
+
+    if (coData.success === false) {
+      alert(coData.message);
+      return;
+    } else if ("data" in coData) {
+      setCoworkingData(coData.data);
     }
+  };
 
-    // force to fetch
-    const [pleaseReload, setPleaseReload] = useState<boolean>(false)
-
-    // to fetch data from backend 🗿
-    const [coworkingData, setCoworkingData] = useState<CoworkingSpace[]>([]);
-    const fetchData = async () => {
-        const coData = await getCoWorkingSpaces();
-        
-        if (coData.success === false) {
-            alert(coData.message);
-            return;
-        } else if ("data" in coData) {
-            setCoworkingData(coData.data)
-        }
-    }
-
-    // use effect to deal with async
-    useEffect(() => {
-        fetchData();
-    }, [pleaseReload]);
+  // use effect to deal with async
+  useEffect(() => {
+    fetchData();
+  }, [pleaseReload]);
 
   return (
     <main className="pb-50 pt-3">
@@ -98,7 +96,9 @@ export default function DashboardCoworkingspaces() {
             id="{New Coworking space}"
             closeOverlayWhenSubmit={() => setIsEditOpen(false)}
             type="new"
-            reloadList={() => {setPleaseReload(!pleaseReload)}}
+            reloadList={() => {
+              setPleaseReload(!pleaseReload);
+            }}
           />
           <button
             className="fixed inset-0 bg-black z-70 opacity-40"

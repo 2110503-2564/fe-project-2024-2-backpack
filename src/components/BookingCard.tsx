@@ -25,7 +25,7 @@ export default function BookingCard({
   date: string;
   startTime: string;
   endTime: string;
-  userId?: string,
+  userId?: string;
   reloadList: Function;
 }) {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
@@ -57,10 +57,15 @@ export default function BookingCard({
 
   return (
     <div className="bg-zinc-100 w-full min-h-45 h-auto pl-4 pr-4 py-6 content-start rounded-[20px] overflow-hidden">
-      {userId ? <div className="w-full text-center break-words">Booking of User ID {userId}</div> : ""}
+      {userId ? (
+        <div className="w-full text-center break-words">
+          Booking of User ID {userId}
+        </div>
+      ) : (
+        ""
+      )}
 
       <div className="w-full min-h-45 h-auto  grid grid-cols-1 lg:grid-cols-6 gap-4  content-start">
-
         <div className="col-span-full xl:col-span-2 min-h-55 h-auto lg:h-full rounded-[20px] relative overflow-hidden">
           <Image
             src={imgSrc}

@@ -118,7 +118,7 @@ export function EditReservation({
       }
     } else {
       console.error(
-        "cannot send req because token is undefined ! (update reservation)"
+        "cannot send req because token is undefined ! (update reservation)",
       );
     }
 
@@ -276,7 +276,7 @@ export function EditMeetingRoom({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (update meetingroom)"
+          "cannot send req because token is undefined ! (update meetingroom)",
         );
       }
     } else {
@@ -294,7 +294,7 @@ export function EditMeetingRoom({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (create meetingroom)"
+          "cannot send req because token is undefined ! (create meetingroom)",
         );
       }
     }
@@ -477,7 +477,7 @@ export function EditCoworkingSpace({
       if (token) {
         const res = await updateCoWorkingSpace(
           token,
-          payload as CoworkingSpace
+          payload as CoworkingSpace,
         );
 
         if (!res.success) {
@@ -489,7 +489,7 @@ export function EditCoworkingSpace({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (update coworkingspace)"
+          "cannot send req because token is undefined ! (update coworkingspace)",
         );
       }
     } else {
@@ -497,7 +497,7 @@ export function EditCoworkingSpace({
         console.log(formData);
         const res = await createCoWorkingSpace(
           token,
-          formData as CoworkingSpace
+          formData as CoworkingSpace,
         );
 
         if (!res.success) {
@@ -509,7 +509,7 @@ export function EditCoworkingSpace({
         }
       } else {
         console.error(
-          "cannot send req because token is undefined ! (create coworkingspace)"
+          "cannot send req because token is undefined ! (create coworkingspace)",
         );
       }
     }

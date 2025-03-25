@@ -47,7 +47,7 @@ export default function DashboardReservations() {
   };
 
   // force to fetch
-  const [pleaseReload, setPleaseReload] = useState<boolean>(false)
+  const [pleaseReload, setPleaseReload] = useState<boolean>(false);
 
   // to fetch data from backend 🗿
   const [bookData, setBookData] = useState<Reservation[]>([]);

@@ -6,13 +6,13 @@ export function Searchbar({
   img,
   type,
   text,
-  value,          // Add value prop use to sync when clear on side bar
+  value, // Add value prop use to sync when clear on side bar
   setValue,
 }: {
   img: string;
   type?: string;
   text: string;
-  value: string;   // Define value prop
+  value: string; // Define value prop
   setValue: (value: string) => void;
 }) {
   return (
@@ -42,12 +42,12 @@ export function Searchbar({
 export function SmallSearchbar({
   img,
   text,
-  value,          // Add value prop use to sync when clear on side bar
+  value, // Add value prop use to sync when clear on side bar
   setValue,
 }: {
   img?: string;
   text: string;
-  value: string;   // Define value prop
+  value: string; // Define value prop
   setValue: (value: string) => void;
 }) {
   return (

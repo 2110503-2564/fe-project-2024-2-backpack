@@ -20,7 +20,7 @@ export async function getMeetingRooms(
 
   if (coworkingSpaceId)
     responseString = `${backendUrl}/coworkingSpace/${coworkingSpaceId}/meetingRooms/?`;
-  if (page) searchParams.append("page", page)
+  if (page) searchParams.append("page", page);
   if (reserveDateStart && reserveDateEnd) {
     searchParams.append("reserveDateStart", reserveDateStart.toISOString());
     searchParams.append("reserveDateEnd", reserveDateEnd.toISOString());
@@ -88,17 +88,14 @@ export async function updateMeetingRoom(
 ): Promise<BackendResponse<MeetingRoom>> {
   if (!content._id) throw new Error("No ID given on MeetingRoom update");
 
-  const response = await fetch(
-    `${backendUrl}/meetingRooms/${content._id}`,
-    {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(content),
+  const response = await fetch(`${backendUrl}/meetingRooms/${content._id}`, {
+    method: "PUT",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(content),
+  });
 
   if (!response.ok)
     throw new Error(`Failed to update meeting room of id: ${content._id}`);

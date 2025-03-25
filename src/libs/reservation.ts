@@ -37,15 +37,12 @@ export async function getReservation(
   token: string,
   id: string,
 ): Promise<BackendResponse<Reservation>> {
-  const response = await fetch(
-    `${backendUrl}/reservations/${id}`,
-    {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+  const response = await fetch(`${backendUrl}/reservations/${id}`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${token}`,
     },
-  );
+  });
 
   if (!response.ok) throw new Error(`Failed to fetch reservation of id: ${id}`);
 
@@ -100,20 +97,17 @@ export async function updateReservation(
 ): Promise<BackendResponse<Reservation>> {
   if (!content._id) throw new Error("No ID given on Reservation update");
 
-  const response = await fetch(
-    `${backendUrl}/reservations/${content._id}`,
-    {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        reserveDateStart: content.reserveDateStart,
-        reserveDateEnd: content.reserveDateEnd,
-      }),
+  const response = await fetch(`${backendUrl}/reservations/${content._id}`, {
+    method: "PUT",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      reserveDateStart: content.reserveDateStart,
+      reserveDateEnd: content.reserveDateEnd,
+    }),
+  });
 
   if (!response.ok)
     throw new Error(`Failed to update reservation of id: ${content._id}`);
