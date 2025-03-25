@@ -49,7 +49,7 @@ export default function DashboardUsers() {
   // to fetch data from backend 🗿
   const [bookData, setBookData] = useState<Reservation[]>([]);
   const fetchData = async () => {
-    if (token && token === null) {
+    if (token && token !== null) {
       const bData = await getReservations(token);
 
       if (bData.success === false) {

@@ -37,7 +37,7 @@ export default function Login() {
             setCredentials({
               token: res.token,
               role: profile.data.role as string,
-            })
+            }),
           );
           router.push("/");
           router.refresh();
