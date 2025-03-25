@@ -44,7 +44,7 @@ export default function Login() {
         }
       }
     } catch (error) {
-      setError("Invalid credentials");
+      setError("Invalid credentials. Log in failed");
     }
   };
   const handleDivClick = () => {
@@ -90,7 +90,8 @@ export default function Login() {
             variant="body2"
             color="error"
             align="center"
-            sx={{ marginTop: 2 }}
+            sx={{ marginBottom: 2 }}
+            fontSize={15}
           >
             {error}
           </Typography>

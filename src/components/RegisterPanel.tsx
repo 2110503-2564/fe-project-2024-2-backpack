@@ -44,7 +44,7 @@ export default function RegisterPanel() {
         }
       }
     } catch (error) {
-      setError("Invalid credentials");
+      setError("Invalid credentials. Register failed");
     }
   };
 
@@ -108,7 +108,8 @@ export default function RegisterPanel() {
             variant="body2"
             color="error"
             align="center"
-            sx={{ marginTop: 2 }}
+            sx={{ marginBottom: 2 }}
+            fontSize={15}
           >
             {error}
           </Typography>
