@@ -29,25 +29,24 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
 
   const pathname = usePathname();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const removeFunction = () => {
-    const removeFunction = async () => {
-      // call DELETE api to remove this id from database
-      if (token && token !== null) {
-        const res = await deleteMeetingRoom(token, id);
-      } else {
-        alert("token is goneee ??");
-        return;
-      }
-    };
+  const removeFunction = async () => {
+    // call DELETE api to remove this id from database
+    if (token && token !== null) {
+      const res = await deleteMeetingRoom(token, id);
+    } else {
+      alert("token is goneee ??");
+      return;
+    }
+  };
 
-    useEffect(() => {
-      if (isEditOpen) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
-      }
-    }, [isEditOpen]);
-  }
+  useEffect(() => {
+    if (isEditOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isEditOpen]);
+  
   const handleReserveClick = async () => {
     if (!reserveDateStart || !reserveDateEnd || !token) {
       alert("Please provide all the necessary details.");
@@ -73,7 +72,7 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
     <div className="w-full min-h-65 h-auto pl-14 pr-14 py-7 bg-white rounded-[30px] flex flex-row justify-start items-center flex-wrap content-start gap-2.5 overflow-hidden">
       <div className="min-w-full lg:min-w-2/5 min-h-60 h-auto lg:h-full relative rounded-[20px] overflow-hidden">
         <Image src={imgSrc}
-          alt="coworking space"
+          alt="meeting room"
           quality={100}
           className="bg-black w-full h-full object-cover"
           fill={true}
