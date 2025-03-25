@@ -13,7 +13,7 @@ export default function myBookingList() {
     const [isLoading, setIsLoading] = useState(true);
     const [profile, setProfile] = useState<any>(undefined);
 
-    const { token } = useSelector((state: RootState) => state.auth);
+    const { token, role } = useSelector((state: RootState) => state.auth);
     
     /** admin **/
 
@@ -100,7 +100,7 @@ export default function myBookingList() {
             </div>
 
             <div className="w-4/5 p-4 bg-linear-to-t from-sky-500 to-white rounded-[10px] text-center justify-center text-black text-5xl font-bold leading-tight">
-                Your Bookings
+                {role==="admin"?"Everyone's Bookings😈":"Your Bookings"}
             </div>
             <div className="px-5 w-full">
                 {reservations && reservations.length > 0 ? (
@@ -120,6 +120,7 @@ export default function myBookingList() {
                                 startTime={new Date(rs.reserveDateStart).toISOString().slice(11, 16)}
                                 endTime={new Date(rs.reserveDateEnd).toISOString().slice(11, 16)}
                                 reloadList={() => {setPleaseReload(!pleaseReload)}}
+                                userId={rs.user}
                             />
                         );
                     })
