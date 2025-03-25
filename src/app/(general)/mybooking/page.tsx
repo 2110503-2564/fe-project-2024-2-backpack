@@ -31,11 +31,11 @@ export default function myBookingList() {
     if (isLoading) return <p>Loading...</p>;
     if (!reservations) return;
     return (
-        <div className="h-auto min-h-[90vh] bg-white ">
-            <div className="self-stretch text-center justify-start text-black text-6xl font-bold leading-[162.28px]">
+        <div className="h-auto min-h-[90vh] bg-white flex flex-col justify-start items-center">
+            <div className="w-4/5 bg-linear-to-t from-sky-500 to-white rounded-[30px] text-center justify-center text-black text-6xl font-bold leading-[162.28px]">
                 Your Bookings
             </div>
-            <div className="p-5">
+            <div className="p-5 w-full">
                 {reservations.length > 0 ? (
                     reservations.map((rs) => {
                         const dateObj = new Date(rs.reserveDateStart);
@@ -56,7 +56,7 @@ export default function myBookingList() {
                         );
                     })
                 ) : (<div className="self-stretch text-center justify-start text-black text-4xl font-bold leading-[162.28px]">
-                    No bookings.
+                    {"No booking :("}
                 </div>
                 )}
             </div>
