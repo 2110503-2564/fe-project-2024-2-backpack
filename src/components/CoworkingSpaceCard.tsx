@@ -3,11 +3,13 @@ import { BlueButton } from "@/components/BlueButton";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation"; // Import useSearchParams
+import { useState } from "react";
 
 export default function CoworkingSpaceCard({ id, name, location, about, openinghours }
     : { id?: string, name: string, location: string, about: string, openinghours: string }) {
     if (!id) id = "1";
     const searchParams = useSearchParams(); // Get the current query parameters
+    const [imgSrc, setImgSrc] = useState(`/img/coworkingSpace/${id}.png`);
 
     return (
         <div className="w-full h-auto px-5 py-5 bg-white rounded-[31px] outline outline-2 outline-offset-[-2px] outline-zinc-400 inline-flex flex-col justify-start items-start gap-1">
@@ -16,11 +18,12 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
             </div>
             <div className="w-full lg:inline-flex justify-start items-center gap-2.5">
                 <div className="min-w-full lg:min-w-3/5 min-h-72 h-auto lg:h-full relative rounded-[20px] overflow-hidden">
-                    <Image src={"/img/coworkingSpace/" + 1 + ".png"}
+                    <Image src={imgSrc}
                         alt="coworking space"
                         quality={100}
                         className="bg-black w-full h-full object-cover"
                         fill={true}
+                        onError={() => setImgSrc("/img/coworkingSpace/default.png")} // Fallback to default image
                     >
                     </Image>
                 </div>
@@ -47,7 +50,7 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
                             width={360}
                             height={360}
                         />
-                        Opening hours:<br/> {openinghours}
+                        Opening hours:<br /> {openinghours}
                     </div>
                     <div className="h-auto w-full">
                         <Link href={{

@@ -10,6 +10,7 @@ import { YellowButton } from "./YellowButton";
 import { EditCoworkingSpace } from "./EditOverlay";
 export default function CoworkingSpaceCard({ id, name, location, about, telephone, openinghours }
     : { id?: string, name: string, location: string, about: string, telephone: string, openinghours: string }) {
+    const [imgSrc, setImgSrc] = useState(`/img/coworkingSpace/${id}.png`);
 
     /** admin **/
     const pathname = usePathname();
@@ -59,11 +60,12 @@ export default function CoworkingSpaceCard({ id, name, location, about, telephon
             }
 
             <div className="min-w-full lg:min-w-3/5 xl:min-w-2/5 min-h-72 h-auto lg:h-full relative rounded-[20px] overflow-hidden">
-                <Image src={"/img/coworkingspace/" + id + ".png"}
+                <Image src={imgSrc}
                     alt="coworking space"
                     quality={100}
                     className="bg-black w-full h-full object-cover"
                     fill={true}
+                    onError={() => setImgSrc("/img/coworkingSpace/default.png")} // Fallback to default image
                 >
                 </Image>
             </div>
