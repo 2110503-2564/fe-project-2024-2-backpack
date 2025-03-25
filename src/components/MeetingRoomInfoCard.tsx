@@ -10,11 +10,11 @@ import { RootState } from '@/libs/store';
 import { useSearchParams } from "next/navigation";
 import { deleteMeetingRoom } from "@/libs/meetingRoom";
 
-export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity, ledTV, projector, speaker, whiteBoard: whiteboard }
+export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity, ledTV, projector, speaker, whiteBoard: whiteboard, reloadList }
   : {
     id: string, roomNumber: number, location: string
     capacity: number, projector: boolean, whiteBoard: boolean,
-    ledTV: boolean, speaker: boolean
+    ledTV: boolean, speaker: boolean, reloadList: Function,
   }) {
 
   const { token } = useSelector((state: RootState) => state.auth);
@@ -26,13 +26,13 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
   const reserveDateEnd = date && endTime ? new Date(`${date}T${endTime}:00.000Z`) : undefined;
   const [imgSrc, setImgSrc] = useState(`/img/meetingRoom/${id}.png`);
 
-
   const pathname = usePathname();
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const removeFunction = async () => {
     // call DELETE api to remove this id from database
     if (token && token !== null) {
       const res = await deleteMeetingRoom(token, id);
+      window.location.reload();
     } else {
       alert("token is goneee ??");
       return;
@@ -46,7 +46,7 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
       document.body.style.overflow = "auto";
     }
   }, [isEditOpen]);
-  
+
   const handleReserveClick = async () => {
     if (!reserveDateStart || !reserveDateEnd || !token) {
       alert("Please provide all the necessary details.");
@@ -117,26 +117,32 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
               </div>
             </>
           ) : (
-            ""
+            <>
+              <div className="cursor-pointer justify-start text-green-600 text-lg font-bold leading-relaxed">Reserve</div>
+              <Image
+                src="/img/bookingSymbol.svg"
+                alt="booking"
+                width="60"
+                height="60"
+                className="cursor-pointer h-auto"
+                onClick={handleReserveClick}
+              />
+            </>
           )
         }
 
-        <div className="cursor-pointer justify-start text-green-600 text-lg font-bold leading-relaxed">Reserve</div>
-        <Image
-          src="/img/bookingSymbol.svg"
-          alt="booking"
-          width="60"
-          height="60"
-          className="cursor-pointer h-auto"
-          onClick={handleReserveClick}
-        />
+
 
       </div>
 
       {
         isEditOpen ?
           <>
-            <EditMeetingRoom id={id} closeOverlayWhenSubmit={() => setIsEditOpen(false)} />
+            <EditMeetingRoom 
+            id={id} 
+            closeOverlayWhenSubmit={() => setIsEditOpen(false)} 
+            reloadList={reloadList}
+            />
             <button className="fixed inset-0 bg-black z-70 opacity-40"
               onClick={() => setIsEditOpen(false)}></button>
           </>

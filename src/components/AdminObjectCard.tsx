@@ -38,7 +38,7 @@ export default function AdminObjectCard({
 
         {uid ? (
           <>
-            <h2 className="text-center h-9 font-bold">User id</h2>
+            <h2 className="text-center h-9 font-bold">user id</h2>
             <h2 className="col-span-7">{uid}</h2>
           </>
         ) : (
@@ -54,19 +54,19 @@ export default function AdminObjectCard({
           ""
         )}
 
-        {number ? (
+        {mid ? (
           <>
-            <h2 className="text-center h-9 font-bold">number</h2>
-            <h2 className="col-span-7">{number}</h2>
+            <h2 className="text-center h-9 font-bold">room id</h2>
+            <h2 className="col-span-7">{mid}</h2>
           </>
         ) : (
           ""
         )}
 
-        {mid ? (
+        {number ? (
           <>
-            <h2 className="text-center h-9 font-bold">Room id</h2>
-            <h2 className="col-span-7">{mid}</h2>
+            <h2 className="text-center h-9 font-bold">number</h2>
+            <h2 className="col-span-7">{number}</h2>
           </>
         ) : (
           ""
@@ -91,13 +91,4 @@ export default function AdminObjectCard({
       </div>
     </div>
   );
-}
-
-{
-  /* <main className="w-[100vw]">
-      <div className="w-[calc(100vw-350px)] h-fit min-h-[90vh] p-4"
-      style={{backgroundImage: "var(--color-rainbow)"}}>
-        <AdminObjectCard id="o8w49829109efwojvpwewap023jm-jgw" name="I LOVE TOMORROW BY TOGATHER" coid="vswjt90j42-g2g-qa2g"/>
-      </div>
-    </main> */
 }

@@ -15,6 +15,7 @@ export default function BookingCard({
   date,
   startTime,
   endTime,
+  reloadList,
 }: {
   reservationId: string;
   meetingRoomId: string;
@@ -23,6 +24,7 @@ export default function BookingCard({
   date: string;
   startTime: string;
   endTime: string;
+  reloadList: Function;
 }) {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [imgSrc, setImgSrc] = useState(`/img/meetingRoom/${meetingRoomId}.png`);
@@ -42,6 +44,9 @@ export default function BookingCard({
     // call DELETE api to remove this id from database
     if (token && token !== null) {
       const res = await deleteReservation(token, reservationId);
+      if (res.success) {
+        reloadList();
+      }
     } else {
       alert("token is goneee !!!");
       return;
@@ -127,6 +132,7 @@ export default function BookingCard({
           <EditReservation
             id={reservationId}
             closeOverlayWhenSubmit={() => setIsEditOpen(false)}
+            reloadList={reloadList}
           />
           <button
             className="fixed inset-0 bg-black z-70 opacity-40"

@@ -14,6 +14,13 @@ export default function myBookingList() {
     const [profile, setProfile] = useState<any>(undefined);
 
     const { token } = useSelector((state: RootState) => state.auth);
+    
+    /** admin **/
+
+    // force to fetch
+    const [pleaseReload, setPleaseReload] = useState<boolean>(false)
+
+    /** admin **/
 
     useEffect(() => {
         const fetchReservations = async () => {
@@ -32,7 +39,7 @@ export default function myBookingList() {
             setIsLoading(false);
         };
         fetchReservations();
-    }, []);
+    }, [pleaseReload]);
     useEffect(() => {
         const fetchProfile = async () => {
             setIsLoading(true);
@@ -112,6 +119,7 @@ export default function myBookingList() {
                                 date={formattedDate}
                                 startTime={new Date(rs.reserveDateStart).toISOString().slice(11, 16)}
                                 endTime={new Date(rs.reserveDateEnd).toISOString().slice(11, 16)}
+                                reloadList={() => {setPleaseReload(!pleaseReload)}}
                             />
                         );
                     })

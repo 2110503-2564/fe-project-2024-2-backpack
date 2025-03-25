@@ -37,7 +37,7 @@ export async function getReservation(
   id: string,
 ): Promise<BackendResponse<Reservation>> {
   const response = await fetch(
-    `http://localhost:5000/api/reservations/${id}}`,
+    `http://localhost:5000/api/reservations/${id}`,
     {
       method: "GET",
       headers: {

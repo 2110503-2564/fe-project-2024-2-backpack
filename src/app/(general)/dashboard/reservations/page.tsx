@@ -1,17 +1,16 @@
 "use client";
 import AdminObjectCard from "@/components/AdminObjectCard";
 import { useState, useEffect } from "react";
-import { EditProfile, EditReservation } from "@/components/EditOverlay";
+import { EditReservation } from "@/components/EditOverlay";
 import { YellowButton } from "@/components/YellowButton";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { useRouter } from "next/navigation";
-import { User } from "@/types/User";
 import { Reservation } from "@/types/Reservation";
 import { deleteReservation, getReservations } from "@/libs/reservation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/libs/store";
 
-export default function DashboardUsers() {
+export default function DashboardReservations() {
   const { token } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
@@ -40,11 +39,15 @@ export default function DashboardUsers() {
     // call DELETE api to remove this id from database
     if (token && token !== null) {
       const res = await deleteReservation(token, itid);
+      setPleaseReload(!pleaseReload);
     } else {
-      alert("token is goneee !!!");
+      console.log("token is goneee !!!");
       return;
     }
   };
+
+  // force to fetch
+  const [pleaseReload, setPleaseReload] = useState<boolean>(false)
 
   // to fetch data from backend 🗿
   const [bookData, setBookData] = useState<Reservation[]>([]);
@@ -59,7 +62,7 @@ export default function DashboardUsers() {
         setBookData(bData.data);
       }
     } else {
-      alert("where tokennnnnn TOT");
+      console.log("where tokennnnnn TOT");
       return;
     }
   };
@@ -67,23 +70,20 @@ export default function DashboardUsers() {
   // use effect to deal with async
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [pleaseReload]);
 
   return (
     <main className="pb-50 pt-3">
-      {/* <div className="w-(calc[100vw-35opx]) flex justify-center">
-                <YellowButton text="New" clickto={() => setIsEditOpen(!isEditOpen)}/>
-            </div> */}
-
       <DoraNextPrev />
 
-      {/* <AdminObjectCard id="85ug9ep-39gpegsehg0ert0wtaw9t3f" name="Nong Kwang" uid="909yg90yw094gh90w34hghw" mid="9fuwhg9w-nvgp9nepp-gp094" editFunction={clickEdit}/> */}
       {bookData.map((item) => (
         <AdminObjectCard
           key={item._id}
           id={item._id}
           uid={item.user}
           mid={item.meetingRoom?._id}
+          coid={item.meetingRoom?.coworkingSpace._id}
+          coname={item.meetingRoom?.coworkingSpace.name}
           editFunction={clickEdit}
           removeFunction={removeFunction}
         />
@@ -94,6 +94,7 @@ export default function DashboardUsers() {
           <EditReservation
             id={clickId}
             closeOverlayWhenSubmit={() => setIsEditOpen(!isEditOpen)}
+            reloadList={() => setPleaseReload(!pleaseReload)}
           />
           <button
             className="fixed inset-0 bg-black z-70 opacity-40"
