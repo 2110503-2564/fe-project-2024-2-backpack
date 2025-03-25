@@ -1,10 +1,15 @@
+"use client";
 import { BlueButton } from "@/components/BlueButton";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
+
 export default function CoworkingSpaceCard({ id, name, location, about, openinghours }
     : { id?: string, name: string, location: string, about: string, openinghours: string }) {
-        if(!id) id="1";
-        return (
+    if (!id) id = "1";
+    const searchParams = useSearchParams(); // Get the current query parameters
+
+    return (
         <div className="w-full h-auto px-5 py-5 bg-white rounded-[31px] outline outline-2 outline-offset-[-2px] outline-zinc-400 inline-flex flex-col justify-start items-start gap-4">
             <div className="self-stretch justify-start text-black text-2xl font-bold leading-loose">
                 {name}
@@ -30,14 +35,16 @@ export default function CoworkingSpaceCard({ id, name, location, about, openingh
                         Open-Close time: {openinghours}
                     </div>
                     <div className="h-auto w-full">
-                        <Link href={"/coworkingspaces/"+id+"/meetingrooms"}>
+                        <Link href={{
+                            pathname: `/coworkingspaces/${id}/meetingrooms`,
+                            query: Object.fromEntries(searchParams) // Pass the query params
+                        }}>
                             <BlueButton text="view meeting rooms">
                             </BlueButton>
                         </Link>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
-

@@ -32,14 +32,22 @@ export default function DashboardMeetingrooms() {
 
   const { token } = useSelector((state: RootState) => state.auth);
 
-  const removeFunction = async (itid:string) => {
+  // force to fetch
+  const [pleaseReload, setPleaseReload] = useState<boolean>(false)
+
+  const removeFunction = async (itid: string) => {
     // call DELETE api to remove this id from database
     if (token && token !== null) {
-        const res = await deleteMeetingRoom(token, itid);
+      const res = await deleteMeetingRoom(token, itid);
+
+      // fix remove to dynamic 
+      if (res.success) {
+        setMeetingRooms((items) => items.filter((item) => item._id != itid));
+      } 
     } else {
-        alert("token is goneee !!!");
-        return;
-    }     
+      alert("token is goneee !!!");
+      return;
+    }
   };
 
   // to fetch data from backend 🗿
@@ -59,7 +67,7 @@ export default function DashboardMeetingrooms() {
   // use effect to deal with async
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [pleaseReload]);
 
   return (
     <main className="pb-50 pt-3">
@@ -86,6 +94,7 @@ export default function DashboardMeetingrooms() {
           <EditMeetingRoom
             id={clickId}
             closeOverlayWhenSubmit={() => setIsEditOpen(false)}
+            reloadList={() => setPleaseReload(!pleaseReload)}
           />
           <button
             className="fixed inset-0 bg-black z-70 opacity-40"

@@ -1,12 +1,12 @@
 import { CoworkingSpace } from "@/types/CoworkingSpace";
-import { BackendResponse } from "@/types/BackendResponses";
+import { BackendResponse , SuccessResponseButSingle} from "@/types/BackendResponses";
 
 /**
  * Fetch all Co-working Spaces from the database by default.
  * @param page If given, returns data on specific page
  */
 export async function getCoWorkingSpaces(
-  page?: string
+  page?: string,
 ): Promise<BackendResponse<CoworkingSpace>> {
   let responseString: string = `http://localhost:5000/api/coworkingSpace`;
 
@@ -28,12 +28,12 @@ export async function getCoWorkingSpaces(
  */
 export async function getCoWorkingSpace(
   id: string
-): Promise<BackendResponse<CoworkingSpace>> {
+): Promise<SuccessResponseButSingle<CoworkingSpace>> {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}`,
     {
       method: "GET",
-    }
+    },
   );
 
   if (!response.ok)
@@ -49,7 +49,7 @@ export async function getCoWorkingSpace(
  */
 export async function createCoWorkingSpace(
   token: string,
-  content: CoworkingSpace
+  content: CoworkingSpace,
 ): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(`http://localhost:5000/api/coworkingSpace`, {
     method: "POST",
@@ -72,7 +72,7 @@ export async function createCoWorkingSpace(
  */
 export async function updateCoWorkingSpace(
   token: string,
-  content: CoworkingSpace
+  content: CoworkingSpace,
 ): Promise<BackendResponse<CoworkingSpace>> {
   if (!content._id) throw new Error("No ID given on CoworkingSpace update");
 
@@ -85,7 +85,7 @@ export async function updateCoWorkingSpace(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(content),
-    }
+    },
   );
 
   if (!response.ok)
@@ -101,7 +101,7 @@ export async function updateCoWorkingSpace(
  */
 export async function deleteCoWorkingSpace(
   token: string,
-  id: string
+  id: string,
 ): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(
     `http://localhost:5000/api/coworkingSpace/${id}`,
@@ -110,7 +110,7 @@ export async function deleteCoWorkingSpace(
       headers: {
         authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   if (!response.ok)

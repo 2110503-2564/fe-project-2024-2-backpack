@@ -12,13 +12,13 @@ export async function getMeetingRooms(
   page?: string,
   coworkingSpaceId?: string,
   reserveDateStart?: Date,
-  reserveDateEnd?: Date
+  reserveDateEnd?: Date,
 ): Promise<BackendResponse<MeetingRoom>> {
   let responseString: string = `http://localhost:5000/api/meetingRooms`;
-  let searchParams:URLSearchParams = new URLSearchParams();
+  let searchParams: URLSearchParams = new URLSearchParams();
 
   if (coworkingSpaceId)
-    responseString = `http://localhost:5000/api/coworkingSpace/${coworkingSpaceId}/meetingRooms`;
+    responseString = `http://localhost:5000/api/coworkingSpace/${coworkingSpaceId}/meetingRooms/?`;
   if (page) searchParams.append("page", page)
   if (reserveDateStart && reserveDateEnd) {
     searchParams.append("reserveDateStart", reserveDateStart.toISOString());
@@ -38,17 +38,14 @@ export async function getMeetingRooms(
 
 /**
  * Fetch a single Meeting room by the given ID.
- * @param id Meeting room ID to retrieve 
+ * @param id Meeting room ID to retrieve
  */
 export async function getMeetingRoom(
-  id: string
+  id: string,
 ): Promise<BackendResponse<MeetingRoom>> {
-  const response = await fetch(
-    `http://localhost:5000/api/meetingRooms/${id}}`,
-    {
-      method: "GET",
-    }
-  );
+  const response = await fetch(`http://localhost:5000/api/meetingRooms/${id}`, {
+    method: "GET",
+  });
 
   if (!response.ok)
     throw new Error(`Failed to fetch meeting rooms of id: ${id}`);
@@ -63,7 +60,7 @@ export async function getMeetingRoom(
  */
 export async function createMeetingRoom(
   token: string,
-  content: MeetingRoom
+  content: MeetingRoom,
 ): Promise<BackendResponse<MeetingRoom>> {
   const response = await fetch(`http://localhost:5000/api/meetingRooms`, {
     method: "POST",
@@ -86,18 +83,21 @@ export async function createMeetingRoom(
  */
 export async function updateMeetingRoom(
   token: string,
-  content: MeetingRoom
+  content: MeetingRoom,
 ): Promise<BackendResponse<MeetingRoom>> {
   if (!content._id) throw new Error("No ID given on MeetingRoom update");
 
-  const response = await fetch(`http://localhost:5000/api/meetingRooms/${content._id}`, {
-    method: "PUT",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `http://localhost:5000/api/meetingRooms/${content._id}`,
+    {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(content),
     },
-    body: JSON.stringify(content),
-  });
+  );
 
   if (!response.ok)
     throw new Error(`Failed to update meeting room of id: ${content._id}`);
@@ -112,7 +112,7 @@ export async function updateMeetingRoom(
  */
 export async function deleteMeetingRoom(
   token: string,
-  id: string
+  id: string,
 ): Promise<BackendResponse<MeetingRoom>> {
   const response = await fetch(`http://localhost:5000/api/meetingRooms/${id}`, {
     method: "DELETE",

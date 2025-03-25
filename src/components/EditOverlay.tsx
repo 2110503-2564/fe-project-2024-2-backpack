@@ -11,7 +11,11 @@ import {
   updateMeetingRoom,
 } from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
-import { createCoWorkingSpace, getCoWorkingSpace, updateCoWorkingSpace } from "@/libs/coworkingSpace";
+import {
+  createCoWorkingSpace,
+  getCoWorkingSpace,
+  updateCoWorkingSpace,
+} from "@/libs/coworkingSpace";
 import { CoworkingSpace } from "@/types/CoworkingSpace";
 import { Reservation } from "@/types/Reservation";
 
@@ -35,111 +39,29 @@ export function EditBg({
   );
 }
 
-export function EditProfile({
-  id,
-  closeOverlayWhenSubmit,
-  type,
-}: {
-  id: string;
-  closeOverlayWhenSubmit: Function;
-  type?: string;
-}) {
-  // ไม่ได้ใช้ละ
-
-  // send data to backend when submit
-  const formRef = useRef(null);
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent page reload <chat>
-
-    if (!formRef.current) return;
-    const formData = new FormData(formRef.current);
-
-    // Convert FormData to a JSON object <chat>
-    const data = Object.fromEntries(formData);
-
-    // Send to backend
-    const response = await fetch("/api/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    console.log(JSON.stringify(data));
-  };
-
-  const submitData = () => {};
-
-  return (
-    <div
-      className="fixed top-1/2 left-1/2 transfrom -translate-1/2 z-90 bg-white w-[calc(100vw-500px)] min-h-[75vh] 
-        border-4 border-black rounded-2xl"
-      style={{ boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)" }}
-    >
-      <div className="relative w-full h-[75vh] p-5">
-        <div className="flex flex-col space-y-4 mb-[60px]">
-          <form ref={formRef}>
-            <EditBg text="User ID">
-              <h2 className="">{id}</h2>
-            </EditBg>
-            <EditBg text="Name">
-              <input
-                type="text"
-                name="name"
-                className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-              />
-            </EditBg>
-            <EditBg text="Email">
-              <input
-                type="text"
-                name="email"
-                className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-              />
-            </EditBg>
-            <EditBg text="Password">
-              <input
-                type="password"
-                name="password"
-                className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-              />
-            </EditBg>
-          </form>
-        </div>
-
-        <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton
-            clickto={() => {
-              closeOverlayWhenSubmit();
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function EditReservation({
   id,
   closeOverlayWhenSubmit,
   type,
+  reloadList,
 }: {
   id: string;
   closeOverlayWhenSubmit: Function;
   type?: string;
+  reloadList: Function;
 }) {
-  
   const { token } = useSelector((state: RootState) => state.auth);
 
   const [formData, setFormData] = useState({
     _id: id,
-    reserveDateStart: null as Date | null,
-    reserveDateEnd: null as Date | null,
+    reserveDateStart: new Date(0) as Date,
+    reserveDateEnd: new Date(0) as Date,
     user: "",
     meetingRoom: null as MeetingRoom | null,
   });
 
   // for type !== new
   useEffect(() => {
-
     const fetchData = async () => {
       if (token && token !== null) {
         const res = await getReservation(token, id);
@@ -147,43 +69,71 @@ export function EditReservation({
           alert(res.message);
           return;
         } else if ("data" in res) {
+          let cws: Reservation[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
+          console.log(cws[0]);
           setFormData({
             _id: id,
-            reserveDateStart: res.data[0].reserveDateStart || null,
-            reserveDateEnd: res.data[0].reserveDateEnd || null,
-            user: res.data[0].user || "",
-            meetingRoom: res.data[0].meetingRoom || null,
+            reserveDateStart:
+              new Date(cws[0].reserveDateStart) || formData.reserveDateStart,
+            reserveDateEnd:
+              new Date(cws[0].reserveDateEnd) || formData.reserveDateEnd,
+            user: cws[0].user || "",
+            meetingRoom: cws[0].meetingRoom || null,
           });
-        }   
+        }
       }
-    }
+    };
     fetchData();
   }, []);
 
   // handle change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();   
-      if (token) {
-        const res = await updateReservation(token, formData as Reservation);
-  
-        if (!res.success) {
-          alert("Can't update reservation");
-          return;
-        }
-  
-      } else {
-        console.error("cannot send req because token is undefined ! (update reservation)")
-      }
-
-      closeOverlayWhenSubmit();
+    const { name, value } = event.target;
+    if (name == "reserveDateStart" || name == "reserveDateEnd") {
+      setFormData({
+        ...formData,
+        [name]: new Date(value + "Z"),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (token) {
+      const res = await updateReservation(token, formData as Reservation);
+
+      if (!res.success) {
+        alert("Can't update reservation");
+        return;
+      } else {
+        reloadList();
+      }
+    } else {
+      console.error(
+        "cannot send req because token is undefined ! (update reservation)"
+      );
+    }
+
+    closeOverlayWhenSubmit();
+  };
+
+  const toInputDatetime = (date: Date) => {
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    const year = date.getUTCFullYear();
+    const month = pad(date.getUTCMonth() + 1);
+    const day = pad(date.getUTCDate());
+    const hours = pad(date.getUTCHours());
+    const minutes = pad(date.getUTCMinutes());
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
   return (
     <div
@@ -192,41 +142,50 @@ export function EditReservation({
       style={{ boxShadow: "5px 5px 40px rgba(0, 0, 0, 0.6)" }}
     >
       <div className="relative w-full h-[75vh] p-5">
-        <div className="flex flex-col space-y-4 mb-[60px]">
-          <EditBg text="User ID">
-            <h2 className="">{id}</h2>
-          </EditBg>
-          <EditBg text="Co-working space">
-            <h2 className="">{formData.meetingRoom ? formData.meetingRoom.coworkingSpace.name : ""}</h2>
-          </EditBg>
-          <EditBg text="Meeting room">
-            <h2 className="">{formData.meetingRoom ? formData.meetingRoom.roomNumber : ""}</h2>
-          </EditBg>
-          <div className="grid grid-cols-2 w-full gap-x-3 gap-y-4">
-            <EditBg text="From">
-              <input
-                type="datetime-local"
-                name="reserveDateStart"
-                className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-                value={formData.reserveDateStart ? new Date(formData.reserveDateStart).toISOString().substring(11, 16) : ""}
-                onChange={handleChange}
-              />
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col space-y-4 mb-[60px]">
+            <EditBg text="User ID">
+              <h2 className="">{id}</h2>
             </EditBg>
-            <EditBg text="To">
-              <input
-                type="datetime-local"
-                name="reserveDateEnd"
-                className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-                value={formData.reserveDateEnd ? new Date(formData.reserveDateEnd).toISOString().substring(11, 16) : ""}
-                onChange={handleChange}
-              />
+            <EditBg text="Co-working space">
+              <h2 className="">
+                {formData.meetingRoom
+                  ? formData.meetingRoom.coworkingSpace.name
+                  : ""}
+              </h2>
             </EditBg>
-          </div>
-        </div>
+            <EditBg text="Meeting room">
+              <h2 className="">
+                {formData.meetingRoom ? formData.meetingRoom.roomNumber : ""}
+              </h2>
+            </EditBg>
 
-        <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton/>
-        </div>
+            <div className="grid grid-cols-2 w-full gap-x-3 gap-y-4">
+              <EditBg text="From">
+                <input
+                  type="datetime-local"
+                  name="reserveDateStart"
+                  className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={toInputDatetime(formData.reserveDateStart)}
+                  onChange={handleChange}
+                />
+              </EditBg>
+              <EditBg text="To">
+                <input
+                  type="datetime-local"
+                  name="reserveDateEnd"
+                  className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
+                  value={toInputDatetime(formData.reserveDateEnd)}
+                  onChange={handleChange}
+                />
+              </EditBg>
+            </div>
+          </div>
+
+          <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
+            <SubmitButton />
+          </div>
+        </form>
       </div>
     </div>
   );
@@ -236,58 +195,63 @@ export function EditMeetingRoom({
   id,
   closeOverlayWhenSubmit,
   type,
-  coid,
+  co,
+  reloadList,
 }: {
   id: string;
   closeOverlayWhenSubmit: Function;
   type?: string;
-  coid?: string;
+  co?: CoworkingSpace;
+  reloadList: Function;
 }) {
+  const { token } = useSelector((state: RootState) => state.auth);
   const [formData, setFormData] = useState({
-    _id: id,
     roomNumber: 0,
     location: "",
-    coworkingSpace: null as CoworkingSpace | null,
+    coworkingSpace: co,
     capacity: 0,
     projector: false,
-    whiteboard: false,
+    whiteBoard: false,
     ledTV: false,
     speaker: false,
   });
 
   // for type !== new
   useEffect(() => {
-  if (type !== "new") {
+    if (type !== "new") {
       const fetchData = async () => {
         const res = await getMeetingRoom(id);
         if (res.success === false) {
           alert(res.message);
           return;
         } else if ("data" in res) {
+          let cws: MeetingRoom[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
           setFormData({
-            _id: id,
-            roomNumber: res.data[0].roomNumber || 0,
-            location: res.data[0].location || "",
-            coworkingSpace: res.data[0].coworkingSpace || null,
-            capacity: res.data[0].capacity || 0,
-            projector: res.data[0].projector || false,
-            whiteboard: res.data[0].whiteboard || false,
-            ledTV: res.data[0].ledTV || false,
-            speaker: res.data[0].speaker || false,
+            roomNumber: cws[0].roomNumber || -1,
+            location: cws[0].location || "",
+            coworkingSpace: cws[0].coworkingSpace || null,
+            capacity: cws[0].capacity || -1,
+            projector: cws[0].projector || false,
+            whiteBoard: cws[0].whiteBoard || false,
+            ledTV: cws[0].ledTV || false,
+            speaker: cws[0].speaker || false,
           });
         }
       };
 
       fetchData();
-    }  
+    }
   }, []);
 
   // handle change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, value, checked } = event.target;
-    setFormData(prevState => ({
-        ...prevState,
-        [name]: type === "checkbox" ? checked : value  // ✅ Use checked for checkboxes
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value, // ✅ Use checked for checkboxes
     }));
   };
 
@@ -295,13 +259,20 @@ export function EditMeetingRoom({
     e.preventDefault();
 
     if (type !== "new") {
-      const { token } = useSelector((state: RootState) => state.auth);
+      const payload = {
+        ...formData,
+        ...{ _id: id },
+      };
+
       if (token) {
-        const res = await updateMeetingRoom(token, formData as MeetingRoom);
+        const res = await updateMeetingRoom(token, payload as MeetingRoom);
 
         if (!res.success) {
           alert("Can't update meeting room");
           return;
+        } else {
+          reloadList();
+          console.log("create success");
         }
       } else {
         console.error(
@@ -309,13 +280,17 @@ export function EditMeetingRoom({
         );
       }
     } else {
-      const { token } = useSelector((state: RootState) => state.auth);
+      console.log(formData);
+
       if (token) {
         const res = await createMeetingRoom(token, formData as MeetingRoom);
 
         if (!res.success) {
           alert("Can't create meeting room");
           return;
+        } else {
+          reloadList();
+          console.log("create success");
         }
       } else {
         console.error(
@@ -389,9 +364,9 @@ export function EditMeetingRoom({
               <EditBg text="Whiteboard">
                 <input
                   type="checkbox"
-                  name="whiteboard"
+                  name="whiteBoard"
                   className="w-full outline-none rounded-md px-2 h-[20px]"
-                  checked={formData.whiteboard}
+                  checked={formData.whiteBoard}
                   onChange={handleChange}
                 />
               </EditBg>
@@ -408,7 +383,7 @@ export function EditMeetingRoom({
           </div>
 
           <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-            <SubmitButton/>
+            <SubmitButton />
           </div>
         </form>
       </div>
@@ -419,17 +394,17 @@ export function EditMeetingRoom({
 export function EditCoworkingSpace({
   id,
   closeOverlayWhenSubmit,
+  reloadList,
   type,
 }: {
   id?: string;
   closeOverlayWhenSubmit: Function;
+  reloadList: Function;
   type?: string;
 }) {
-
   const { token } = useSelector((state: RootState) => state.auth);
 
   const [formData, setFormData] = useState({
-    _id: id,
     name: "",
     address: "",
     district: "",
@@ -437,31 +412,34 @@ export function EditCoworkingSpace({
     postalcode: "",
     tel: "",
     region: "",
-    open_time: null as Date | null,
-    close_time: null as Date | null
+    open_time: new Date("2025-04-18T17:00:00.000z"),
+    close_time: new Date("2025-04-18T17:00:00.000z"),
   });
 
   // for type !== new
   useEffect(() => {
     if (type !== "new" && id) {
-
       const fetchData = async () => {
         const res = await getCoWorkingSpace(id);
-        if (res.success === false) {
-          alert(res.message);
-          return;
-        } else if ("data" in res) {
+        // if (res.success === false) {
+        //   alert(res.message);
+        //   return;
+        // } else
+        if ("data" in res) {
+          let cws: CoworkingSpace[] = [];
+          if (!Array.isArray(res.data)) {
+            cws = [res.data];
+          }
           setFormData({
-            _id: id,
-            name: res.data[0].name || "",
-            address: res.data[0].address || "",
-            district: res.data[0].district || "",
-            province: res.data[0].province || "",
-            postalcode: res.data[0].postalcode || "",
-            tel: res.data[0].tel || "",
-            region: res.data[0].region || "",
-            open_time: res.data[0].open_time || null,
-            close_time: res.data[0].close_time || null,
+            name: cws[0].name || "",
+            address: cws[0].address || "",
+            district: cws[0].district || "",
+            province: cws[0].province || "",
+            postalcode: cws[0].postalcode || "",
+            tel: cws[0].tel || "",
+            region: cws[0].region || "",
+            open_time: cws[0].open_time || formData.open_time,
+            close_time: cws[0].close_time || formData.open_time,
           });
         }
       };
@@ -475,17 +453,10 @@ export function EditCoworkingSpace({
     const { name, value } = event.target;
 
     if (name == "open_time" || name == "close_time") {
-      const nowDate = formData[name] !== null ? new Date(formData[name]) : new Date();
-      const [inputHours, inputMin] = value.split(":").map(Number);
-
-      nowDate.setHours(inputHours);
-      nowDate.setMinutes(inputMin);
-
       setFormData({
         ...formData,
-        [name]: nowDate,
+        [name]: new Date(`2025-04-19T${value}:00.000Z`),
       });
-
     } else {
       setFormData({
         ...formData,
@@ -493,39 +464,65 @@ export function EditCoworkingSpace({
       });
     }
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (type !== "new") {     
+    if (type !== "new") {
+      const payload = {
+        ...formData,
+        ...(id ? { _id: id } : {}),
+      };
+
       if (token) {
-        const res = await updateCoWorkingSpace(token, formData as CoworkingSpace);
-  
+        const res = await updateCoWorkingSpace(
+          token,
+          payload as CoworkingSpace
+        );
+
         if (!res.success) {
           alert("Can't update meeting room");
           return;
+        } else {
+          reloadList();
+          console.log("edit success");
         }
-  
       } else {
-        console.error("cannot send req because token is undefined ! (update coworkingspace)")
+        console.error(
+          "cannot send req because token is undefined ! (update coworkingspace)"
+        );
       }
     } else {
-      const { token } = useSelector((state: RootState) => state.auth);
       if (token) {
-        const res = await createCoWorkingSpace(token, formData as CoworkingSpace);
-  
+        console.log(formData);
+        const res = await createCoWorkingSpace(
+          token,
+          formData as CoworkingSpace
+        );
+
         if (!res.success) {
           alert("Can't create meeting room");
           return;
+        } else {
+          reloadList();
+          console.log("create success");
         }
-  
       } else {
-        console.error("cannot send req because token is undefined ! (create coworkingspace)")
+        console.error(
+          "cannot send req because token is undefined ! (create coworkingspace)"
+        );
       }
     }
 
     closeOverlayWhenSubmit();
-  }
+  };
+
+  // convert Date -> time
+  const toLocalTimeInput = (date: Date) => {
+    const tmp = date.toISOString().slice(11, 16);
+    console.log(tmp);
+    return tmp; // Format: "HH:MM"
+  };
 
   return (
     <div
@@ -542,6 +539,7 @@ export function EditCoworkingSpace({
             <EditBg text="Name">
               <input
                 type="text"
+                name="name"
                 className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                 value={formData.name}
                 onChange={handleChange}
@@ -551,14 +549,16 @@ export function EditCoworkingSpace({
               <EditBg text="Address">
                 <input
                   type="text"
+                  name="address"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.address}
                   onChange={handleChange}
                 />
               </EditBg>
-              <EditBg text="Distinct">
+              <EditBg text="District">
                 <input
                   type="text"
+                  name="district"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.district}
                   onChange={handleChange}
@@ -567,6 +567,7 @@ export function EditCoworkingSpace({
               <EditBg text="Province">
                 <input
                   type="text"
+                  name="province"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.province}
                   onChange={handleChange}
@@ -575,6 +576,7 @@ export function EditCoworkingSpace({
               <EditBg text="Postal code">
                 <input
                   type="text"
+                  name="postalcode"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.postalcode}
                   onChange={handleChange}
@@ -583,6 +585,7 @@ export function EditCoworkingSpace({
               <EditBg text="Telephone">
                 <input
                   type="text"
+                  name="tel"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.tel}
                   onChange={handleChange}
@@ -591,6 +594,7 @@ export function EditCoworkingSpace({
               <EditBg text="Region">
                 <input
                   type="text"
+                  name="region"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
                   value={formData.region}
                   onChange={handleChange}
@@ -599,26 +603,36 @@ export function EditCoworkingSpace({
               <EditBg text="Open">
                 <input
                   type="time"
+                  name="open_time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-                  value={formData.open_time ? new Date(formData.open_time).toISOString().substring(11, 16) : ""}
+                  value={
+                    formData.open_time
+                      ? toLocalTimeInput(new Date(formData.open_time))
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </EditBg>
               <EditBg text="Close">
                 <input
                   type="time"
+                  name="close_time"
                   className="w-full focus:ring-2 focus:ring-white outline-none rounded-md px-2"
-                  value={formData.close_time ? new Date(formData.close_time).toISOString().substring(11, 16) : ""}
+                  value={
+                    formData.close_time
+                      ? toLocalTimeInput(new Date(formData.close_time))
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </EditBg>
             </div>
           </div>
-        </form>
 
-        <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
-          <SubmitButton/>
-        </div>
+          <div className="absolute bottom-4 left-1/2 tranfrom -translate-x-1/2 w-auto h-fit">
+            <SubmitButton />
+          </div>
+        </form>
       </div>
     </div>
   );

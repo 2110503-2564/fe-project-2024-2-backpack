@@ -9,7 +9,7 @@ export default function AdminObjectCard({
   coid,
   coname,
   editFunction,
-  removeFunction
+  removeFunction,
 }: {
   id?: string;
   name?: string;
@@ -18,16 +18,14 @@ export default function AdminObjectCard({
   mid?: string;
   coid?: string;
   coname?: string;
-  editFunction?: (id:string) => void;
+  editFunction?: (id: string) => void;
   removeFunction?: Function;
-}) 
-{
-
-    const triggerEditFunction = () => {
-        if (editFunction && id) {
-            editFunction(id);
-        }
+}) {
+  const triggerEditFunction = () => {
+    if (editFunction && id) {
+      editFunction(id);
     }
+  };
 
   return (
     <div
@@ -40,17 +38,26 @@ export default function AdminObjectCard({
 
         {uid ? (
           <>
-            <h2 className="text-center h-9 font-bold">User id</h2>
+            <h2 className="text-center h-9 font-bold">user id</h2>
             <h2 className="col-span-7">{uid}</h2>
           </>
         ) : (
           ""
         )}
-        
+
         {name ? (
           <>
             <h2 className="text-center h-9 font-bold">name</h2>
             <h2 className="col-span-7">{name}</h2>
+          </>
+        ) : (
+          ""
+        )}
+
+        {mid ? (
+          <>
+            <h2 className="text-center h-9 font-bold">room id</h2>
+            <h2 className="col-span-7">{mid}</h2>
           </>
         ) : (
           ""
@@ -65,15 +72,6 @@ export default function AdminObjectCard({
           ""
         )}
 
-        {mid ? (
-          <>
-            <h2 className="text-center h-9 font-bold">Room id</h2>
-            <h2 className="col-span-7">{mid}</h2>
-          </>
-        ) : (
-          ""
-        )}        
-
         {coid ? (
           <>
             <h2 className="text-center h-9 font-bold row-span-2">form</h2>
@@ -85,8 +83,11 @@ export default function AdminObjectCard({
         )}
       </div>
       <div className="flex flex-col space-y-2.5 w-fit flex-none items-start">
-        <YellowButton text="edit" clickto={triggerEditFunction}/>
-        <YellowButton text="remove" clickto={() => (removeFunction && id) ? removeFunction(id) : ""}/>
+        <YellowButton text="edit" clickto={triggerEditFunction} />
+        <YellowButton
+          text="remove"
+          clickto={() => (removeFunction && id ? removeFunction(id) : "")}
+        />
       </div>
     </div>
   );
