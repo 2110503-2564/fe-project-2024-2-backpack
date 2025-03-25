@@ -1,5 +1,6 @@
 import { MeetingRoom } from "@/types/MeetingRoom";
 import { BackendResponse } from "@/types/BackendResponses";
+import { backendUrl } from "./url";
 
 /**
  * Fetch all Meeting rooms with the given parameters
@@ -14,11 +15,11 @@ export async function getMeetingRooms(
   reserveDateStart?: Date,
   reserveDateEnd?: Date,
 ): Promise<BackendResponse<MeetingRoom>> {
-  let responseString: string = `http://localhost:5000/api/meetingRooms`;
+  let responseString: string = `${backendUrl}/meetingRooms`;
   let searchParams: URLSearchParams = new URLSearchParams();
 
   if (coworkingSpaceId)
-    responseString = `http://localhost:5000/api/coworkingSpace/${coworkingSpaceId}/meetingRooms/?`;
+    responseString = `${backendUrl}/coworkingSpace/${coworkingSpaceId}/meetingRooms/?`;
   if (page) searchParams.append("page", page)
   if (reserveDateStart && reserveDateEnd) {
     searchParams.append("reserveDateStart", reserveDateStart.toISOString());
@@ -43,7 +44,7 @@ export async function getMeetingRooms(
 export async function getMeetingRoom(
   id: string,
 ): Promise<BackendResponse<MeetingRoom>> {
-  const response = await fetch(`http://localhost:5000/api/meetingRooms/${id}`, {
+  const response = await fetch(`${backendUrl}/meetingRooms/${id}`, {
     method: "GET",
   });
 
@@ -62,7 +63,7 @@ export async function createMeetingRoom(
   token: string,
   content: MeetingRoom,
 ): Promise<BackendResponse<MeetingRoom>> {
-  const response = await fetch(`http://localhost:5000/api/meetingRooms`, {
+  const response = await fetch(`${backendUrl}/meetingRooms`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
@@ -88,7 +89,7 @@ export async function updateMeetingRoom(
   if (!content._id) throw new Error("No ID given on MeetingRoom update");
 
   const response = await fetch(
-    `http://localhost:5000/api/meetingRooms/${content._id}`,
+    `${backendUrl}/meetingRooms/${content._id}`,
     {
       method: "PUT",
       headers: {
@@ -114,7 +115,7 @@ export async function deleteMeetingRoom(
   token: string,
   id: string,
 ): Promise<BackendResponse<MeetingRoom>> {
-  const response = await fetch(`http://localhost:5000/api/meetingRooms/${id}`, {
+  const response = await fetch(`${backendUrl}/meetingRooms/${id}`, {
     method: "DELETE",
     headers: {
       authorization: `Bearer ${token}`,

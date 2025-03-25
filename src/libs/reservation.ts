@@ -1,5 +1,6 @@
 import { BackendResponse } from "@/types/BackendResponses";
 import { Reservation } from "@/types/Reservation";
+import { backendUrl } from "./url";
 
 /**
  * Fetch all Reservations for the given user by default.
@@ -10,10 +11,10 @@ export async function getReservations(
   token: string,
   meetingRoomId?: string,
 ): Promise<BackendResponse<Reservation>> {
-  let responseString: string = `http://localhost:5000/api/reservations`;
+  let responseString: string = `${backendUrl}/reservations`;
 
   if (meetingRoomId)
-    responseString = `http://localhost:5000/api/meetingRooms/${meetingRoomId}/reservations`;
+    responseString = `${backendUrl}/meetingRooms/${meetingRoomId}/reservations`;
 
   const response = await fetch(responseString, {
     method: "GET",
@@ -37,7 +38,7 @@ export async function getReservation(
   id: string,
 ): Promise<BackendResponse<Reservation>> {
   const response = await fetch(
-    `http://localhost:5000/api/reservations/${id}`,
+    `${backendUrl}/reservations/${id}`,
     {
       method: "GET",
       headers: {
@@ -65,7 +66,7 @@ export async function createReservation(
   reserveDateEnd: Date,
 ): Promise<BackendResponse<Reservation>> {
   const response = await fetch(
-    `http://localhost:5000/api/meetingRooms/${meetingRoomId}/reservations`,
+    `${backendUrl}/meetingRooms/${meetingRoomId}/reservations`,
     {
       method: "POST",
       headers: {
@@ -100,7 +101,7 @@ export async function updateReservation(
   if (!content._id) throw new Error("No ID given on Reservation update");
 
   const response = await fetch(
-    `http://localhost:5000/api/reservations/${content._id}`,
+    `${backendUrl}/reservations/${content._id}`,
     {
       method: "PUT",
       headers: {
@@ -129,7 +130,7 @@ export async function deleteReservation(
   token: string,
   id: string,
 ): Promise<BackendResponse<Reservation>> {
-  const response = await fetch(`http://localhost:5000/api/reservations/${id}`, {
+  const response = await fetch(`${backendUrl}/reservations/${id}`, {
     method: "DELETE",
     headers: {
       authorization: `Bearer ${token}`,

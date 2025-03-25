@@ -1,5 +1,6 @@
 import { CoworkingSpace } from "@/types/CoworkingSpace";
 import { BackendResponse , SuccessResponseButSingle} from "@/types/BackendResponses";
+import { backendUrl } from "./url";
 
 /**
  * Fetch all Co-working Spaces from the database by default.
@@ -8,7 +9,7 @@ import { BackendResponse , SuccessResponseButSingle} from "@/types/BackendRespon
 export async function getCoWorkingSpaces(
   page?: string,
 ): Promise<BackendResponse<CoworkingSpace>> {
-  let responseString: string = `http://localhost:5000/api/coworkingSpace`;
+  let responseString: string = `${backendUrl}/coworkingSpace`;
 
   if (page) responseString += `?page=${page}`;
 
@@ -30,7 +31,7 @@ export async function getCoWorkingSpace(
   id: string
 ): Promise<SuccessResponseButSingle<CoworkingSpace>> {
   const response = await fetch(
-    `http://localhost:5000/api/coworkingSpace/${id}`,
+    `${backendUrl}/coworkingSpace/${id}`,
     {
       method: "GET",
     },
@@ -51,7 +52,7 @@ export async function createCoWorkingSpace(
   token: string,
   content: CoworkingSpace,
 ): Promise<BackendResponse<CoworkingSpace>> {
-  const response = await fetch(`http://localhost:5000/api/coworkingSpace`, {
+  const response = await fetch(`${backendUrl}/coworkingSpace`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
@@ -77,7 +78,7 @@ export async function updateCoWorkingSpace(
   if (!content._id) throw new Error("No ID given on CoworkingSpace update");
 
   const response = await fetch(
-    `http://localhost:5000/api/coworkingSpace/${content._id}`,
+    `${backendUrl}/coworkingSpace/${content._id}`,
     {
       method: "PUT",
       headers: {
@@ -104,7 +105,7 @@ export async function deleteCoWorkingSpace(
   id: string,
 ): Promise<BackendResponse<CoworkingSpace>> {
   const response = await fetch(
-    `http://localhost:5000/api/coworkingSpace/${id}`,
+    `${backendUrl}/coworkingSpace/${id}`,
     {
       method: "DELETE",
       headers: {
