@@ -24,6 +24,7 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
   const endTime = searchParams.get("endTime");
   const reserveDateStart = date && startTime ? new Date(`${date}T${startTime}:00.000Z`) : undefined;
   const reserveDateEnd = date && endTime ? new Date(`${date}T${endTime}:00.000Z`) : undefined;
+  const [imgSrc, setImgSrc] = useState(`/img/meetingRoom/${id}.png`);
 
 
   const pathname = usePathname();
@@ -71,11 +72,12 @@ export default function MeetingRoomInfoCard({ id, roomNumber, location, capacity
   return (
     <div className="w-full min-h-65 h-auto pl-14 pr-14 py-7 bg-white rounded-[30px] flex flex-row justify-start items-center flex-wrap content-start gap-2.5 overflow-hidden">
       <div className="min-w-full lg:min-w-2/5 min-h-60 h-auto lg:h-full relative rounded-[20px] overflow-hidden">
-        <Image src={"/img/meetingRoom/" + id + ".png"}
+        <Image src={imgSrc}
           alt="coworking space"
           quality={100}
           className="bg-black w-full h-full object-cover"
           fill={true}
+          onError={() => setImgSrc("/img/meetingRoom/default.png")} // Fallback to default image
         >
         </Image>
       </div>
