@@ -25,6 +25,7 @@ export default function BookingCard({
   endTime: string;
 }) {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [imgSrc, setImgSrc] = useState(`/img/meetingRoom/${meetingRoomId}.png`);
 
   // to disable scrolling
   useEffect(() => {
@@ -51,11 +52,12 @@ export default function BookingCard({
     <div className="bg-zinc-100 w-full min-h-45 h-auto pl-4 pr-4 py-6 bg-white rounded-[30px] grid grid-cols-1 lg:grid-cols-6 gap-4 content-start overflow-hidden">
       <div className="col-span-full xl:col-span-2 min-h-55 h-auto lg:h-full relative rounded-[20px] overflow-hidden">
         <Image
-          src={"/img/meetingRoom/" + meetingRoomId + ".png"}
-          alt="coworking space"
+          src={imgSrc}
+          alt="meeting room"
           quality={100}
           className="bg-black w-full h-full object-cover"
           fill={true}
+          onError={() => setImgSrc("/img/meetingRoom/default.png")} // Fallback to default image
         />
       </div>
 
