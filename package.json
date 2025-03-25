@@ -16,6 +16,7 @@
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.6.1",
     "@types/redux-persist": "^4.0.0",
+    "cookie": "^1.0.2",
     "dayjs": "^1.11.13",
     "next": "15.2.3",
     "react": "^19.0.0",
