@@ -107,9 +107,10 @@ export default function myBookingList() {
       <div className="w-4/5 p-4 bg-linear-to-t from-sky-500 to-white rounded-[10px] text-center justify-center text-black text-5xl font-bold leading-tight">
         {role === "admin" ? "Everyone's Bookings😈" : "Your Bookings"}
       </div>
-      <div className="px-5 w-full">
+      <div className="px-5 gap-5 flex flex-col w-full h-auto">
         {reservations && reservations.length > 0 ? (
           reservations.map((rs) => {
+            if(role==="user") rs.user=undefined;
             const dateObj = new Date(rs.reserveDateStart);
             const isoString = dateObj.toISOString();
             const dateParts = isoString.slice(0, 10).split("-");
