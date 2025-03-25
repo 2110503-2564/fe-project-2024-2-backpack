@@ -35,13 +35,13 @@ export default function myBookingList() {
     }, []);
     useEffect(() => {
         const fetchProfile = async () => {
+            setIsLoading(true);
             if (!token) {
                 console.log("Failed to fetch profile");
                 setProfile(undefined);
                 setIsLoading(false);
                 return;
             }
-            setIsLoading(true);
             try {
                 const response = await getUserProfile(token);
                 if (
@@ -77,12 +77,18 @@ export default function myBookingList() {
                         height={120}
                         className="rounded-full object-cover"
                     />
-                    <div className="text-left">
-                        <h2 className="text-3xl font-bold">{profile.name}</h2>
-                        <p className="text-lg text-neutral-600">{profile.role}</p>
-                        <p className="text-lg text-neutral-600">{profile.email}</p>
-                        <p className="text-lg text-neutral-600">{profile.telephoneNumber}</p>
-                    </div>
+                    {
+                        profile ?
+                            <div className="text-left">
+                                <h2 className="text-3xl font-bold">{profile.name}</h2>
+                                <p className="text-lg text-neutral-600">{profile.role}</p>
+                                <p className="text-lg text-neutral-600">{profile.email}</p>
+                                <p className="text-lg text-neutral-600">{profile.telephoneNumber}</p>
+                            </div> :
+                            <div className="text-left">
+                                loading profile
+                            </div>
+                    }
                 </div>
             </div>
 
@@ -90,7 +96,7 @@ export default function myBookingList() {
                 Your Bookings
             </div>
             <div className="px-5 w-full">
-                { reservations && reservations.length > 0 ? (
+                {reservations && reservations.length > 0 ? (
                     reservations.map((rs) => {
                         const dateObj = new Date(rs.reserveDateStart);
                         const isoString = dateObj.toISOString();
@@ -109,7 +115,7 @@ export default function myBookingList() {
                             />
                         );
                     })
-                ) : (<div className="self-stretch text-center justify-start text-black text-4xl font-bold leading-[162.28px]">
+                ) : (<div className="self-stretch text-center justify-start text-black text-2xl font-bold leading-[162.28px]">
                     {"No booking :("}
                 </div>
                 )}
