@@ -23,7 +23,7 @@ export default function CoworkingSpaceCard({
   const [imgSrc, setImgSrc] = useState(`/img/coworkingSpace/${id}.png`);
 
   return (
-    <div className="w-full h-auto px-5 py-5 bg-white rounded-[31px] outline outline-2 outline-offset-[-2px] outline-zinc-400 inline-flex flex-col justify-start items-start gap-1">
+    <div className="transition-transform duration-300 hover:scale-105 w-full h-auto px-5 py-5 bg-white rounded-[31px] outline outline-2 outline-offset-[-2px] outline-zinc-400 inline-flex flex-col justify-start items-start gap-1">
       <div className="self-stretch justify-start text-center text-black text-2xl font-bold leading-loose">
         {name}
       </div>

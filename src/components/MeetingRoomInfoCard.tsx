@@ -139,7 +139,7 @@ export default function MeetingRoomInfoCard({
             </div>
           </>
         ) : (
-          <>
+          <div className="transition-transform duration-300 hover:scale-150">
             <div className="cursor-pointer justify-start text-green-600 text-lg font-bold leading-relaxed">
               Reserve
             </div>
@@ -151,7 +151,7 @@ export default function MeetingRoomInfoCard({
               className="cursor-pointer h-auto"
               onClick={handleReserveClick}
             />
-          </>
+          </div>
         )}
       </div>
 
