@@ -74,8 +74,6 @@ export default function DashboardReservations() {
 
   return (
     <main className="pb-50 pt-3">
-      <DoraNextPrev />
-
       {bookData.map((item) => (
         <AdminObjectCard
           key={item._id}

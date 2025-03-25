@@ -71,15 +71,9 @@ export default function DashboardMeetingrooms() {
 
   return (
     <main className="pb-50 pt-3">
-      {/* <div className="w-(calc[100vw-35opx]) flex justify-center">
-                <YellowButton text="New" clickto={() => setIsNewOpen(!isNewOpen)}/>
-            </div> */}
-
-      <DoraNextPrev />
-
       {meetingRooms.map((item) => (
         <AdminObjectCard
-          // key={item._id}
+          key={item._id}
           id={item._id}
           number={item.roomNumber}
           coid={item.coworkingSpace._id}
