@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/libs/store";
 import { useSearchParams } from "next/navigation";
 import { deleteMeetingRoom } from "@/libs/meetingRoom";
+import { useNotice } from "./NoticeContext";
 
 export default function MeetingRoomInfoCard({
   id,
@@ -32,6 +33,8 @@ export default function MeetingRoomInfoCard({
   reloadList: Function;
 }) {
   const { token } = useSelector((state: RootState) => state.auth);
+  const { showNotice } = useNotice();
+  
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
   const startTime = searchParams.get("startTime");
@@ -65,14 +68,16 @@ export default function MeetingRoomInfoCard({
 
   const handleReserveClick = async () => {
     if (!reserveDateStart || !reserveDateEnd || !token) {
-      alert("Please provide all the necessary details.");
+      token?
+      showNotice("Please provide all the necessary details."):
+      showNotice("Please log in first");
       return;
     }
     try {
       await createReservation(token, id, reserveDateStart, reserveDateEnd);
-      alert("Reservation created successfully!");
+      showNotice("Reservation created successfully!", true);
     } catch (error) {
-      alert("Failed to create reservation: " + error);
+      showNotice("Failed to create reservation: " + error);
     }
   };
 

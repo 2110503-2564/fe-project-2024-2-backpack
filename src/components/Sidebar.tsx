@@ -2,10 +2,12 @@
 import { Searchbar, SmallSearchbar } from "./BarComponents";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useNotice } from "@/components/NoticeContext";
 
 export default function Sidebar() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { showNotice } = useNotice();
 
   // State Variables for Filters
   const [searchDate, setSearchDate] = useState("");
@@ -38,17 +40,12 @@ export default function Sidebar() {
       if (searchDate?.trim()) params.set("date", searchDate.trim());
       if (searchStart?.trim()) params.set("startTime", searchStart.trim());
       if (searchEnd?.trim()) params.set("endTime", searchEnd.trim());
-      const newNotice =
-        searchDate && searchStart && searchEnd
-          ? `Last Search - Date: ${searchDate || "N/A"}, Start Time: ${searchStart || "N/A"}, End Time: ${searchEnd || "N/A"}`
-          : "";
 
       // Navigate with Query Params
       router.push(`/coworkingspaces/?${params.toString()}`);
     } else {
-      alert(
-        "Please fill in the Date, Start Time, and End Time together, or clear them all.",
-      );
+        showNotice( "Please fill in the Date, Start Time, and End Time together, or clear them all.");
+        // "Please fill in the Date, Start Time, and End Time together, or clear them all.",
     }
   };
   // Handle Clear Button Click
