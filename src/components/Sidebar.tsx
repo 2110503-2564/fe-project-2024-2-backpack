@@ -3,6 +3,7 @@ import { Searchbar, SmallSearchbar } from "./BarComponents";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useNotice } from "@/components/NoticeContext";
+import Image from "next/image";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -44,8 +45,8 @@ export default function Sidebar() {
       // Navigate with Query Params
       router.push(`/coworkingspaces/?${params.toString()}`);
     } else {
-        showNotice( "Please fill in the Date, Start Time, and End Time together, or clear them all.");
-        // "Please fill in the Date, Start Time, and End Time together, or clear them all.",
+      showNotice("Please fill in the Date, Start Time, and End Time together, or clear them all.");
+      // "Please fill in the Date, Start Time, and End Time together, or clear them all.",
     }
   };
   // Handle Clear Button Click
@@ -115,6 +116,26 @@ export default function Sidebar() {
       >
         CLEAR
       </button>
+
+      <div className="w-full py-10 flex justify-center">
+  <div className="relative w-[200px] h-[200px] group">
+    <Image
+      src="/img/doraCute.png"
+      alt="Dora"
+      width={200}
+      height={0}
+      className="absolute inset-0 object-cover duration-300 ease-in-out group-hover:opacity-0"
+    />
+    <Image
+      src="/img/dorajojo.png"
+      alt="DORA"
+      width={200}
+      height={0}
+      className="absolute py-5 inset-4 object-cover opacity-0 duration-300 ease-in-out group-hover:opacity-100"
+    />
+  </div>
+</div>
+
     </div>
   );
 }
