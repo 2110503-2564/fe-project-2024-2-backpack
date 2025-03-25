@@ -6,7 +6,7 @@ export default function FinalMainPageCard() {
       <div className="order-1 row-span-1">
         <Image src="/img/jojo3.png" alt="Card image" width={2000} height={0} />
       </div>
-      <div className="order-2 row-span-1 text-3xl font-bold text-center text-white">
+      <div className="order-2 row-span-1 text-2xl font-bold text-center text-white">
         <h2>DORA COMMANDS YOU TO START BOOKING NOW!!!!!</h2>
         <h2> WE NEED TO DEFEAT DIO !!</h2>
       </div>

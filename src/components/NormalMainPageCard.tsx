@@ -21,8 +21,8 @@ export default function NormalMainPageCard({
       <h2
         className={
           imgPosition === "left"
-            ? "order-2 col-span-1 text-3xl font-bold self-center"
-            : "order-1 col-span-1 text-3xl font-bold self-center"
+            ? "order-2 col-span-1 text-2xl font-bold self-center"
+            : "order-1 col-span-1 text-2xl font-bold self-center"
         }
       >
         {text}

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function FirstMainPageCard() {
   return (
-    <div className="relative">
+    <div className="relative max-h-[80vh] w-full overflow-hidden rounded-[20px]">
       <Image
         src="/img/bigCardBackground.png"
         alt="card bg"
@@ -78,7 +78,11 @@ export default function FirstMainPageCard() {
         </svg>
       </div>
       <div className="absolute inset-x-0 bottom-0 flex justify-center">
-        <Image src="/img/dorajojo.png" alt="bg image" width="500" height="0" />
+        <Image src="/img/dorajojo.png"
+          alt="bg image"
+          width="450"
+          height="0"
+        />
       </div>
       <div className="absolute left-5 bottom-5 flex flex-row content-center">
         <svg
