@@ -92,12 +92,3 @@ export default function AdminObjectCard({
     </div>
   );
 }
-
-{
-  /* <main className="w-[100vw]">
-      <div className="w-[calc(100vw-350px)] h-fit min-h-[90vh] p-4"
-      style={{backgroundImage: "var(--color-rainbow)"}}>
-        <AdminObjectCard id="o8w49829109efwojvpwewap023jm-jgw" name="I LOVE TOMORROW BY TOGATHER" coid="vswjt90j42-g2g-qa2g"/>
-      </div>
-    </main> */
-}

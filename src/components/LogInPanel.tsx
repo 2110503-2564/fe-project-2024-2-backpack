@@ -23,6 +23,16 @@ export default function Login() {
         const token = res.token;
         const profile = await getUserProfile(token);
         if (profile.success && "data" in profile && "role" in profile.data) {
+          // set cookie
+          await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token, role: profile.data.role }),
+          });
+
+          // set dispatch
           dispatch(
             setCredentials({
               token: res.token,

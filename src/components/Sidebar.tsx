@@ -8,8 +8,6 @@ export default function Sidebar() {
     const searchParams = useSearchParams();
 
     // State Variables for Filters
-    const [searchName, setSearchName] = useState("");
-    const [searchLoc, setSearchLoc] = useState("");
     const [searchDate, setSearchDate] = useState("");
     const [searchStart, setSearchStart] = useState("");
     const [searchEnd, setSearchEnd] = useState("");
@@ -34,60 +32,57 @@ export default function Sidebar() {
         if ((searchDate && searchStart && searchEnd) || (!searchDate && !searchStart && !searchEnd)) {
             const params = new URLSearchParams();
 
-            if (searchName?.trim()) params.set("name", searchName.trim());
-            if (searchLoc?.trim()) params.set("location", searchLoc.trim());
             if (searchDate?.trim()) params.set("date", searchDate.trim());
             if (searchStart?.trim()) params.set("startTime", searchStart.trim());
             if (searchEnd?.trim()) params.set("endTime", searchEnd.trim());
-            const newNotice = (searchDate && searchStart && searchEnd)?`Last Search - Date: ${searchDate || "N/A"}, Start Time: ${searchStart || "N/A"}, End Time: ${searchEnd || "N/A"}`:"";
-            
+            const newNotice = (searchDate && searchStart && searchEnd) ? `Last Search - Date: ${searchDate || "N/A"}, Start Time: ${searchStart || "N/A"}, End Time: ${searchEnd || "N/A"}` : "";
+
             // Navigate with Query Params
             router.push(`/coworkingspaces/?${params.toString()}`);
         } else {
-            alert("Please fill in the Date, Start Time, and End Time together, or leave all of them blank.");
+            alert("Please fill in the Date, Start Time, and End Time together, or clear them all.");
         }
     };
     // Handle Clear Button Click
     const handleClear = () => {
         // Clear all search parameters
-        setSearchName("");
-        setSearchLoc("");
         setSearchDate("");
         setSearchStart("");
         setSearchEnd("");
         // Refresh the page (reset URL query params)
         router.push("/coworkingspaces");
+        router.refresh();
     };
     return (
         <div className="flex flex-col w-[350px] h-[90vh] p-8 gap-b-4 bg-linear-to-t
          from-cyan-400 via-50% via-white to-white mt-[10vh] z-50 fixed top-0 left-0">
             <div className="text-black text-3xl mb-4 font-bold text-center">
-                Filter And Search
+                Reservation
             </div>
 
-            <div className="border-8 border-blue-900 h-full w-full rounded-3xl py-3 px-5 space-y-4 bg-linear-to-t from-blue-700 to-blue-300">
-                <Searchbar
-                    img="/img/searchIcon.svg"
-                    text="Search by coworking space name..."
-                    setValue={setSearchName}
-                />
-                <Searchbar
-                    img="/img/locationIcon.svg"
-                    text="Search by location... ex) Ratchathewi"
-                    setValue={setSearchLoc}
-                />
+            <div className="border-8 border-blue-900 h-auto w-full rounded-3xl py-3 px-5 space-y-4 bg-linear-to-t from-blue-700 to-blue-300">
                 <Searchbar
                     img="/img/dateIcon.svg"
                     type="date"
                     text="Day of reservation.."
+                    value={searchDate}  // Add value prop
                     setValue={setSearchDate}
                 />
                 <div className="flex flex-row items-center">
-                    <SmallSearchbar text="Start Time..." setValue={setSearchStart} />
+                    <SmallSearchbar
+                        text="Start Time..."
+                        value={searchStart}  // Add value prop
+                        setValue={setSearchStart}
+                    />
+
                     <h1 className="text-black text-[16px] font-bold mx-2 [-webkit-text-stroke:0.2px_white]">
                         to
                     </h1>
-                    <SmallSearchbar text="End Time..." setValue={setSearchEnd} />
+                    <SmallSearchbar
+                        text="End Time..."
+                        value={searchEnd}  // Add value prop
+                        setValue={setSearchEnd}
+                    />
                 </div>
 
                 <button

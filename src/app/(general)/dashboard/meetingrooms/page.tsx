@@ -1,7 +1,7 @@
 "use client";
 import AdminObjectCard from "@/components/AdminObjectCard";
 import { useState, useEffect } from "react";
-import { EditMeetingRoom, EditProfile } from "@/components/EditOverlay";
+import { EditMeetingRoom } from "@/components/EditOverlay";
 import DoraNextPrev from "@/components/DoraPrevNext";
 import { deleteMeetingRoom, getMeetingRooms } from "@/libs/meetingRoom";
 import { MeetingRoom } from "@/types/MeetingRoom";
@@ -79,7 +79,7 @@ export default function DashboardMeetingrooms() {
 
       {meetingRooms.map((item) => (
         <AdminObjectCard
-          key={item._id}
+          // key={item._id}
           id={item._id}
           number={item.roomNumber}
           coid={item.coworkingSpace._id}
@@ -104,16 +104,6 @@ export default function DashboardMeetingrooms() {
       ) : (
         ""
       )}
-
-      {/* {
-            isNewOpen? 
-            <>
-                <EditMeetingRoom id="{New Meeting room}" closeOverlayWhenSubmit={() => setIsNewOpen(false)} type="new"/>
-                <button className="fixed inset-0 bg-black z-70 opacity-40"
-                onClick={() => setIsNewOpen(false)}></button>
-            </>
-             : ""  
-            } */}
 
       <div className="fixed w-[calc(100vw-350px)] h-[90vh] right-0 bottom-0 z-[-10] bg-linear-to-tl from-[#7100FF] to-[#1A46FF]" />
     </main>
