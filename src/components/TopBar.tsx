@@ -33,7 +33,7 @@ export default function TopBar() {
           src="/img/logo.svg"
           alt="logo"
           objectFit="contain"
-          width={150}
+          width={200}
           height={0} // Use a proper height value like 50 or 150, or set it to 'auto'
         />
       </Link>
@@ -41,7 +41,7 @@ export default function TopBar() {
 
       <div className="w-full h-fit flex inline-flex justify-end">
         {token ? (
-          <div className="flex inline-flex gap-4">
+          <div className="flex inline-flex gap-10">
             <Link href="/mybooking">
               <div
                 className="cursor-pointer text-black [text-shadow:2px_2px_0px_white,-2px_-2px_0px_white,2px_-2px_0px_white,-2px_2px_0px_white]
