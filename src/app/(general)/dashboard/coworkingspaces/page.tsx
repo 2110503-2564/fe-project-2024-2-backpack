@@ -74,8 +74,6 @@ export default function DashboardCoworkingspaces() {
         <YellowButton text="New" clickto={() => setIsEditOpen(!isEditOpen)} />
       </div>
 
-      <DoraNextPrev />
-
       {coworkingData.map((item) =>
         item ? (
           <AdminObjectCard
